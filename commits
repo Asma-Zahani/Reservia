@@ -1,0 +1,36 @@
+7. Workflow quotidien
+
+Toujours :
+
+git checkout develop
+git pull origin develop
+
+git checkout feature/room-management
+
+Coder :
+
+git add .
+git commit -m "feat(room): add room repository"
+git push
+
+Puis PR.
+
+8. Structure des commits (exemple réel)
+
+Historique idéal :
+
+Initial project setup with Spring Boot, Thymeleaf and JPA
+
+feat(ui): add landing page integration
+
+feat(room): create Room entity and repository
+
+feat(booking): implement reservation creation
+
+feat(booking): add availability validation
+
+fix(booking): solve concurrent booking issue
+
+feat(admin): add room management dashboard
+
+Ça fait très pro en soutenance.
