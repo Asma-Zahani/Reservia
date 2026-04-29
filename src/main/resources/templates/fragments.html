@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="html_head" >
+    <meta charset="utf-8">
+    <title>E-commerce</title>
+    <!-- BEGIN: CSS Assets-->
+    <link rel="stylesheet" th:href="@{/dist/css/vendors/tippy.css}">
+    <link rel="stylesheet" th:href="@{/dist/css/vendors/litepicker.css}" >
+    <link rel="stylesheet" th:href="@{/dist/css/vendors/tiny-slider.css}" >
+    <link rel="stylesheet" th:href="@{/dist/css/themes/rubick/side-nav.css}" >
+    <link rel="stylesheet" th:href="@{/dist/css/vendors/leaflet.css}" >
+    <link rel="stylesheet" th:href="@{/dist/css/vendors/simplebar.css}" >
+    <link rel="stylesheet" th:href="@{/dist/css/components/mobile-menu.css}" >
+    <link rel="stylesheet" th:href="@{/dist/css/app.css}" >
+    <!-- END: CSS Assets-->
+</head>
+<!-- END: Head -->
+<body>
+<!-- BEGIN: Mobile Menu -->
+<div th:fragment="mobile_menu">
+    <div class="mobile-menu group top-0 inset-x-0 fixed bg-theme-1/90 z-[60] border-b border-white/[0.08] dark:bg-darkmode-800/90 md:hidden before:content-[''] before:w-full before:h-screen before:z-10 before:fixed before:inset-x-0 before:bg-black/90 before:transition-opacity before:duration-200 before:ease-in-out before:invisible before:opacity-0 [&.mobile-menu--active]:before:visible [&.mobile-menu--active]:before:opacity-100">
+        <div class="flex h-[70px] items-center px-3 sm:px-8">
+            <a class="mr-auto flex" href="#">
+                <img class="w-6" th:src="@{/dist/images/logo.svg}" alt="Midone - Tailwind Admin Dashboard Template">
+            </a>
+            <a class="mobile-menu-toggler" >
+                <i data-tw-merge="" data-lucide="bar-chart2" class="stroke-1.5 h-8 w-8 -rotate-90 transform text-white"></i>
+            </a>
+        </div>
+        <div class="scrollable h-screen z-20 top-0 left-0 w-[270px] -ml-[100%] bg-primary transition-all duration-300 ease-in-out dark:bg-darkmode-800 [&[data-simplebar]]:fixed [&_.simplebar-scrollbar]:before:bg-black/50 group-[.mobile-menu--active]:ml-0">
+            <a href="#" class="fixed top-0 right-0 mt-4 mr-4 transition-opacity duration-200 ease-in-out invisible opacity-0 group-[.mobile-menu--active]:visible group-[.mobile-menu--active]:opacity-100">
+                <i data-tw-merge="" data-lucide="x-circle" class="stroke-1.5 mobile-menu-toggler h-8 w-8 -rotate-90 transform text-white"></i>
+            </a>
+            <ul class="py-2">
+                <!-- BEGIN: First Child -->
+                <li>
+                    <a class="menu" href="/index">
+                        <div class="menu__icon">
+                            <i data-tw-merge="" data-lucide="home" class="stroke-1.5 w-5 h-5"></i>
+                        </div>
+                        <div class="menu__title">
+                            Dashboard
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a class="menu" href="/universite">
+                        <div class="menu__icon">
+                            <i data-tw-merge="" data-lucide="trello" class="stroke-1.5 w-5 h-5"></i>
+                        </div>
+                        <div class="menu__title">
+                            Universite
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a class="menu" href="/departement">
+                        <div class="menu__icon">
+                            <i data-tw-merge="" data-lucide="file-text" class="stroke-1.5 w-5 h-5"></i>
+                        </div>
+                        <div class="menu__title">
+                            Departement
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a class="menu" href="/etudiant">
+                        <div class="menu__icon">
+                            <i data-tw-merge="" data-lucide="users" class="stroke-1.5 w-5 h-5"></i>
+                        </div>
+                        <div class="menu__title">
+                            Etudiant
+                        </div>
+                    </a>
+                </li>
+                <li class="menu__divider my-6"></li>
+                <!-- END: First Child -->
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Mobile Menu -->
+<!-- BEGIN: Side Menu -->
+<div th:fragment="side_menu">
+    <nav class="side-nav hidden w-[80px] overflow-x-hidden pb-16 pr-5 md:block xl:w-[230px]">
+        <a class="flex items-center pt-4 pl-5 intro-x" href="#">
+            <img class="w-6" th:src="@{/dist/images/logo.svg}" alt="Midone - Tailwind Admin Dashboard Template">
+            <span class="hidden ml-3 text-lg text-white xl:block"> Projet </span>
+        </a>
+        <div class="my-6 side-nav__divider"></div>
+        <ul>
+            <li>
+                <a href="/index" class="side-menu">
+                    <div class="side-menu__icon">
+                        <i data-tw-merge="" data-lucide="home" class="stroke-1.5 w-5 h-5"></i>
+                    </div>
+                    <div class="side-menu__title">
+                        Dashboard
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="/universite" class="side-menu">
+                    <div class="side-menu__icon">
+                        <i data-tw-merge="" data-lucide="trello" class="stroke-1.5 w-5 h-5"></i>
+                    </div>
+                    <div class="side-menu__title">
+                        Universite
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="/entreprise" class="side-menu">
+                    <div class="side-menu__icon">
+                        <i data-tw-merge="" data-lucide="layout" class="stroke-1.5 w-5 h-5"></i>
+                    </div>
+                    <div class="side-menu__title">
+                        Entreprise
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="/departement" class="side-menu">
+                    <div class="side-menu__icon">
+                        <i data-tw-merge="" data-lucide="monitor" class="stroke-1.5 w-5 h-5"></i>
+                    </div>
+                    <div class="side-menu__title">
+                        Departement
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="/etudiant" class="side-menu">
+                    <div class="side-menu__icon">
+                        <i data-tw-merge="" data-lucide="user" class="stroke-1.5 w-5 h-5"></i>
+                    </div>
+                    <div class="side-menu__title">
+                        Etudiant
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="/contrat" class="side-menu">
+                    <div class="side-menu__icon">
+                        <i data-tw-merge="" data-lucide="file-text" class="stroke-1.5 w-5 h-5"></i>
+                    </div>
+                    <div class="side-menu__title">
+                        Contrat
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="/equipe" class="side-menu">
+                    <div class="side-menu__icon">
+                        <i data-tw-merge="" data-lucide="users" class="stroke-1.5 w-5 h-5"></i>
+                    </div>
+                    <div class="side-menu__title">
+                        Equipe
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="/detailequipe" class="side-menu">
+                    <div class="side-menu__icon">
+                        <i data-tw-merge="" data-lucide="message-square" class="stroke-1.5 w-5 h-5"></i>
+                    </div>
+                    <div class="side-menu__title">
+                        Detail Equipe
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<!-- END: Side Menu -->
+<!-- BEGIN: Top Bar -->
+<div th:fragment="top_bar">
+    <div class="relative z-[51] flex h-[67px] items-center border-b border-slate-200">
+        <!-- BEGIN: Breadcrumb -->
+        <nav aria-label="breadcrumb" class="flex -intro-x mr-auto hidden sm:flex">
+            <ol class="flex items-center text-theme-1 dark:text-slate-300">
+                <li class="">
+                    <a>Application</a>
+                </li>
+                <li class="relative ml-5 pl-0.5 before:content-[''] before:w-[14px] before:h-[14px] before:bg-chevron-black before:transform before:rotate-[-90deg] before:bg-[length:100%] before:-ml-[1.125rem] before:absolute before:my-auto before:inset-y-0 dark:before:bg-chevron-white text-slate-800 cursor-text dark:text-slate-400">
+                    <a>Dashboard</a>
+                </li>
+            </ol>
+        </nav>
+        <!-- END: Breadcrumb -->
+        <!-- BEGIN: Search -->
+        <div class="search intro-x relative mr-3 sm:mr-6">
+            <div class="relative hidden sm:block">
+                <input data-tw-merge="" type="text" placeholder="Search..." class="disabled:bg-slate-100 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent [&[readonly]]:bg-slate-100 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent ease-in-out text-sm placeholder:text-slate-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-opacity-40 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 dark:placeholder:text-slate-500/80 group-[.form-inline]:flex-1 group-[.input-group]:rounded-none group-[.input-group]:[&:not(:first-child)]:border-l-transparent group-[.input-group]:first:rounded-l group-[.input-group]:last:rounded-r group-[.input-group]:z-10 w-56 rounded-full border-transparent bg-slate-300/50 pr-8 shadow-none transition-[width] duration-300 focus:w-72 focus:border-transparent dark:bg-darkmode-400/70">
+                <i data-tw-merge="" data-lucide="search" class="stroke-1.5 w-5 h-5 absolute inset-y-0 right-0 my-auto mr-3 text-slate-600 dark:text-slate-500"></i>
+            </div>
+            <a class="relative text-slate-600 sm:hidden" href="#">
+                <i data-tw-merge="" data-lucide="search" class="stroke-1.5 w-5 h-5 dark:text-slate-500"></i>
+            </a>
+        </div>
+        <!-- END: Search  -->
+        <!-- BEGIN: Account Menu -->
+        <div data-tw-merge="" data-tw-placement="bottom-end" class="dropdown relative">
+            <button data-tw-toggle="dropdown" aria-expanded="false" class="cursor-pointer image-fit zoom-in intro-x block h-8 w-8 overflow-hidden rounded-full shadow-lg">
+                <img th:src="@{/dist/images/fakers/profile-2.jpg}" alt="Midone - Tailwind Admin Dashboard Template">
+            </button>
+        </div>
+        <!-- END: Account Menu -->
+    </div>
+</div>
+<!-- END: Top Bar -->
+<!-- BEGIN: Vendor JS Assets-->
+<div th:fragment="scripts">
+    <script th:src="@{/dist/js/vendors/dom.js}"></script>
+    <script th:src="@{/dist/js/vendors/tailwind-merge.js}"></script>
+    <script th:src="@{/dist/js/vendors/lucide.js}"></script>
+    <script th:src="@{/dist/js/vendors/popper.js}"></script>
+    <script th:src="@{/dist/js/vendors/dropdown.js}"></script>
+    <script th:src="@{/dist/js/vendors/tippy.js}"></script>
+    <script th:src="@{/dist/js/vendors/modal.js}"></script>
+    <script th:src="@{/dist/js/vendors/transition.js}"></script>
+    <script th:src="@{/dist/js/vendors/simplebar.js}"></script>
+    <script th:src="@{/dist/js/components/base/theme-color.js}"></script>
+    <script th:src="@{/dist/js/components/base/lucide.js}"></script>
+    <script th:src="@{/dist/js/components/base/tippy.js}"></script>
+    <script th:src="@{/dist/js/themes/rubick.js}"></script>
+    <script th:src="@{/dist/js/components/mobile-menu.js}"></script>
+    <script th:src="@{/dist/js/components/themes/rubick/top-bar.js}"></script>
+</div>
+<!-- END: Vendor JS Assets-->
+</body>
+</html>
