@@ -1,232 +1,234 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="html_head" >
-    <meta charset="utf-8">
-    <title>E-commerce</title>
-    <!-- BEGIN: CSS Assets-->
-    <link rel="stylesheet" th:href="@{/dist/css/vendors/tippy.css}">
-    <link rel="stylesheet" th:href="@{/dist/css/vendors/litepicker.css}" >
-    <link rel="stylesheet" th:href="@{/dist/css/vendors/tiny-slider.css}" >
-    <link rel="stylesheet" th:href="@{/dist/css/themes/rubick/side-nav.css}" >
-    <link rel="stylesheet" th:href="@{/dist/css/vendors/leaflet.css}" >
-    <link rel="stylesheet" th:href="@{/dist/css/vendors/simplebar.css}" >
-    <link rel="stylesheet" th:href="@{/dist/css/components/mobile-menu.css}" >
-    <link rel="stylesheet" th:href="@{/dist/css/app.css}" >
-    <!-- END: CSS Assets-->
+<head th:fragment="head" >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="description" content="Reservia - Online Reservation System">
+    <meta name="keywords" content="hotel, resort, Spa">
+    <meta name="robots" content="index, follow">
+    <!-- for open graph social media -->
+    <meta property="og:title" content="Hotel and Resort">
+    <meta property="og:description" content="Reservia - Online Reservation Systeme">
+    <title>Reservia - Online Reservation System</title>
+
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Gilda+Display&amp;family=Jost:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/fonts/flaticon_bokinn.css}">
+    <link rel="stylesheet" th:href="@{/css/plugins.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-<!-- END: Head -->
 <body>
-<!-- BEGIN: Mobile Menu -->
-<div th:fragment="mobile_menu">
-    <div class="mobile-menu group top-0 inset-x-0 fixed bg-theme-1/90 z-[60] border-b border-white/[0.08] dark:bg-darkmode-800/90 md:hidden before:content-[''] before:w-full before:h-screen before:z-10 before:fixed before:inset-x-0 before:bg-black/90 before:transition-opacity before:duration-200 before:ease-in-out before:invisible before:opacity-0 [&.mobile-menu--active]:before:visible [&.mobile-menu--active]:before:opacity-100">
-        <div class="flex h-[70px] items-center px-3 sm:px-8">
-            <a class="mr-auto flex" href="#">
-                <img class="w-6" th:src="@{/dist/images/logo.svg}" alt="Midone - Tailwind Admin Dashboard Template">
-            </a>
-            <a class="mobile-menu-toggler" >
-                <i data-tw-merge="" data-lucide="bar-chart2" class="stroke-1.5 h-8 w-8 -rotate-90 transform text-white"></i>
-            </a>
-        </div>
-        <div class="scrollable h-screen z-20 top-0 left-0 w-[270px] -ml-[100%] bg-primary transition-all duration-300 ease-in-out dark:bg-darkmode-800 [&[data-simplebar]]:fixed [&_.simplebar-scrollbar]:before:bg-black/50 group-[.mobile-menu--active]:ml-0">
-            <a href="#" class="fixed top-0 right-0 mt-4 mr-4 transition-opacity duration-200 ease-in-out invisible opacity-0 group-[.mobile-menu--active]:visible group-[.mobile-menu--active]:opacity-100">
-                <i data-tw-merge="" data-lucide="x-circle" class="stroke-1.5 mobile-menu-toggler h-8 w-8 -rotate-90 transform text-white"></i>
-            </a>
-            <ul class="py-2">
-                <!-- BEGIN: First Child -->
-                <li>
-                    <a class="menu" href="/index">
-                        <div class="menu__icon">
-                            <i data-tw-merge="" data-lucide="home" class="stroke-1.5 w-5 h-5"></i>
-                        </div>
-                        <div class="menu__title">
-                            Dashboard
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="menu" href="/universite">
-                        <div class="menu__icon">
-                            <i data-tw-merge="" data-lucide="trello" class="stroke-1.5 w-5 h-5"></i>
-                        </div>
-                        <div class="menu__title">
-                            Universite
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="menu" href="/departement">
-                        <div class="menu__icon">
-                            <i data-tw-merge="" data-lucide="file-text" class="stroke-1.5 w-5 h-5"></i>
-                        </div>
-                        <div class="menu__title">
-                            Departement
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="menu" href="/etudiant">
-                        <div class="menu__icon">
-                            <i data-tw-merge="" data-lucide="users" class="stroke-1.5 w-5 h-5"></i>
-                        </div>
-                        <div class="menu__title">
-                            Etudiant
-                        </div>
-                    </a>
-                </li>
-                <li class="menu__divider my-6"></li>
-                <!-- END: First Child -->
-            </ul>
-        </div>
-    </div>
-</div>
-<!-- END: Mobile Menu -->
-<!-- BEGIN: Side Menu -->
-<div th:fragment="side_menu">
-    <nav class="side-nav hidden w-[80px] overflow-x-hidden pb-16 pr-5 md:block xl:w-[230px]">
-        <a class="flex items-center pt-4 pl-5 intro-x" href="#">
-            <img class="w-6" th:src="@{/dist/images/logo.svg}" alt="Midone - Tailwind Admin Dashboard Template">
-            <span class="hidden ml-3 text-lg text-white xl:block"> Projet </span>
-        </a>
-        <div class="my-6 side-nav__divider"></div>
-        <ul>
-            <li>
-                <a href="/index" class="side-menu">
-                    <div class="side-menu__icon">
-                        <i data-tw-merge="" data-lucide="home" class="stroke-1.5 w-5 h-5"></i>
+
+<div th:fragment="header">
+    <div class="header__top">
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-lg-6 col-md-6">
+                    <div class="social__links">
+                        <a class="link__item gap-10" href="callto:#"><i class="flaticon-phone-flip"></i> +12505550199</a>
+                        <a class="link__item gap-10" href="mailto:#"><i class="flaticon-envelope"></i> moonlit@gmail.com</a>
                     </div>
-                    <div class="side-menu__title">
-                        Dashboard
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="location">
+                        <a class="link__item gap-10" href="#"><i class="flaticon-marker"></i>280 Augusta Avenue, M5T 2L9 Toronto, Canada</a>
                     </div>
-                </a>
-            </li>
-            <li>
-                <a href="/universite" class="side-menu">
-                    <div class="side-menu__icon">
-                        <i data-tw-merge="" data-lucide="trello" class="stroke-1.5 w-5 h-5"></i>
-                    </div>
-                    <div class="side-menu__title">
-                        Universite
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="/entreprise" class="side-menu">
-                    <div class="side-menu__icon">
-                        <i data-tw-merge="" data-lucide="layout" class="stroke-1.5 w-5 h-5"></i>
-                    </div>
-                    <div class="side-menu__title">
-                        Entreprise
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="/departement" class="side-menu">
-                    <div class="side-menu__icon">
-                        <i data-tw-merge="" data-lucide="monitor" class="stroke-1.5 w-5 h-5"></i>
-                    </div>
-                    <div class="side-menu__title">
-                        Departement
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="/etudiant" class="side-menu">
-                    <div class="side-menu__icon">
-                        <i data-tw-merge="" data-lucide="user" class="stroke-1.5 w-5 h-5"></i>
-                    </div>
-                    <div class="side-menu__title">
-                        Etudiant
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="/contrat" class="side-menu">
-                    <div class="side-menu__icon">
-                        <i data-tw-merge="" data-lucide="file-text" class="stroke-1.5 w-5 h-5"></i>
-                    </div>
-                    <div class="side-menu__title">
-                        Contrat
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="/equipe" class="side-menu">
-                    <div class="side-menu__icon">
-                        <i data-tw-merge="" data-lucide="users" class="stroke-1.5 w-5 h-5"></i>
-                    </div>
-                    <div class="side-menu__title">
-                        Equipe
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="/detailequipe" class="side-menu">
-                    <div class="side-menu__icon">
-                        <i data-tw-merge="" data-lucide="message-square" class="stroke-1.5 w-5 h-5"></i>
-                    </div>
-                    <div class="side-menu__title">
-                        Detail Equipe
-                    </div>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</div>
-<!-- END: Side Menu -->
-<!-- BEGIN: Top Bar -->
-<div th:fragment="top_bar">
-    <div class="relative z-[51] flex h-[67px] items-center border-b border-slate-200">
-        <!-- BEGIN: Breadcrumb -->
-        <nav aria-label="breadcrumb" class="flex -intro-x mr-auto hidden sm:flex">
-            <ol class="flex items-center text-theme-1 dark:text-slate-300">
-                <li class="">
-                    <a>Application</a>
-                </li>
-                <li class="relative ml-5 pl-0.5 before:content-[''] before:w-[14px] before:h-[14px] before:bg-chevron-black before:transform before:rotate-[-90deg] before:bg-[length:100%] before:-ml-[1.125rem] before:absolute before:my-auto before:inset-y-0 dark:before:bg-chevron-white text-slate-800 cursor-text dark:text-slate-400">
-                    <a>Dashboard</a>
-                </li>
-            </ol>
-        </nav>
-        <!-- END: Breadcrumb -->
-        <!-- BEGIN: Search -->
-        <div class="search intro-x relative mr-3 sm:mr-6">
-            <div class="relative hidden sm:block">
-                <input data-tw-merge="" type="text" placeholder="Search..." class="disabled:bg-slate-100 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent [&[readonly]]:bg-slate-100 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent ease-in-out text-sm placeholder:text-slate-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-opacity-40 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 dark:placeholder:text-slate-500/80 group-[.form-inline]:flex-1 group-[.input-group]:rounded-none group-[.input-group]:[&:not(:first-child)]:border-l-transparent group-[.input-group]:first:rounded-l group-[.input-group]:last:rounded-r group-[.input-group]:z-10 w-56 rounded-full border-transparent bg-slate-300/50 pr-8 shadow-none transition-[width] duration-300 focus:w-72 focus:border-transparent dark:bg-darkmode-400/70">
-                <i data-tw-merge="" data-lucide="search" class="stroke-1.5 w-5 h-5 absolute inset-y-0 right-0 my-auto mr-3 text-slate-600 dark:text-slate-500"></i>
+                </div>
             </div>
-            <a class="relative text-slate-600 sm:hidden" href="#">
-                <i data-tw-merge="" data-lucide="search" class="stroke-1.5 w-5 h-5 dark:text-slate-500"></i>
-            </a>
         </div>
-        <!-- END: Search  -->
-        <!-- BEGIN: Account Menu -->
-        <div data-tw-merge="" data-tw-placement="bottom-end" class="dropdown relative">
-            <button data-tw-toggle="dropdown" aria-expanded="false" class="cursor-pointer image-fit zoom-in intro-x block h-8 w-8 overflow-hidden rounded-full shadow-lg">
-                <img th:src="@{/dist/images/fakers/profile-2.jpg}" alt="Midone - Tailwind Admin Dashboard Template">
-            </button>
+    </div>
+    <header class="main__header header__function">
+        <div class="container">
+            <div class="row">
+                <div class="main__header__wrapper">
+                    <div class="main__nav">
+                        <div class="navigation d-none d-lg-block">
+                            <nav class="navigation__menu" id="main__menu">
+                                <ul class="list-unstyled">
+                                    <li class="navigation__menu--item has-child has-arrow">
+                                        <a href="#" class="navigation__menu--item__link">Home</a>
+                                        <div class="has__mega__menu">
+                                            <div class="row g-30 row-cols-1 row-cols-md-3 row-cols-lg-5">
+
+                                                <div class="menu__item">
+                                                    <a href="index.html">
+                                                        <img th:src="@{/images/menu/main.webp}" height="250" alt="">
+                                                        <span>Luxury Hotel</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <li class="navigation__menu--item has-child has-arrow">
+                                        <a href="#" class="navigation__menu--item__link">Rooms</a>
+                                        <ul class="submenu sub__style" role="menu">
+                                            <li role="menuitem" class="has-child has-arrow">
+                                                <a href="#">Room Style</a>
+                                                <ul class="sub__style" role="menu">
+                                                    <li role="menuitem"><a href="room-one.html">Room One</a></li>
+                                                    <li role="menuitem"><a href="room-two.html">Room Two</a></li>
+                                                    <li role="menuitem"><a href="room-three.html">Room Three</a></li>
+                                                    <li role="menuitem"><a href="room-four.html">Room Four</a></li>
+                                                </ul>
+                                            </li>
+                                            <li role="menuitem" class="has-child has-arrow">
+                                                <a href="#">Room Details</a>
+                                                <ul class="sub__style" role="menu">
+                                                    <li role="menuitem"><a href="room-details-1.html">Room Details 1</a></li>
+                                                    <li role="menuitem"><a href="room-details-2.html">Room Details 2</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="navigation__menu--item has-child has-arrow">
+                                        <a href="#" class="navigation__menu--item__link">Pages</a>
+                                        <ul class="submenu sub__style" role="menu">
+                                            <li role="menuitem"><a href="about.html">About</a></li>
+                                            <li role="menuitem"><a href="resturant.html">Restaurant</a></li>
+                                            <li role="menuitem"><a href="gallery.html">Gallery</a></li>
+                                            <li role="menuitem"><a href="service.html">Service</a></li>
+                                            <li role="menuitem"><a href="event.html">Event</a></li>
+                                            <li role="menuitem"><a href="activities.html">Activities</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="navigation__menu--item has-child has-arrow">
+                                        <a href="#" class="navigation__menu--item__link">Blog</a>
+                                        <ul class="submenu sub__style" role="menu">
+                                            <li role="menuitem"><a href="blog.html">Blog</a></li>
+                                            <li role="menuitem"><a href="blog-details.html">Blog Details</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="navigation__menu--item">
+                                        <a href="contact.html" class="navigation__menu--item__link">Contact</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+
+                    </div>
+                    <div class="main__logo">
+                        <a href="index.html"><img class="logo__class" th:src="@{/images/logo/logo.svg}" alt="moonlit"></a>
+                    </div>
+                    <div class="main__right">
+                        <a href="#" class="theme-btn btn-style sm-btn border d-none d-lg-block" aria-label="Login Button" data-bs-toggle="modal" data-bs-target="#loginModal"><span>Sign In</span></a>
+                        <a href="#" class="theme-btn btn-style sm-btn border d-none d-lg-block" aria-label="Sign Up Button" data-bs-toggle="modal" data-bs-target="#signupModal"><span>Sign Up</span></a>
+                        <a href="room-details-1.html" class="theme-btn btn-style sm-btn fill"><span>Book Now</span></a>
+                        <button class="theme-btn btn-style sm-btn fill menu__btn d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                            <span><img th:src="@{/images/icon/menu-icon.svg}" alt=""></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- END: Account Menu -->
+    </header>
+</div>
+
+<div th:fragment="footer">
+    <footer class="rts__section rts__footer is__common__footer footer__background has__shape">
+        <div class="section__shape">
+            <div class="shape__1">
+                <img th:src="@{/images/footer/shape-1.svg}" alt="">
+            </div>
+            <div class="shape__2">
+                <img th:src="@{/images/footer/shape-2.svg}" alt="">
+            </div>
+            <div class="shape__3">
+                <img th:src="@{/images/footer/shape-3.svg}" alt="">
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="footer__newsletter">
+                    <span class="h2">Join Our Newsletter</span>
+                    <div class="rts__form">
+                        <form action="#" method="post">
+                            <input type="email" name="email" id="subscription" placeholder="Enter your mail" required>
+                            <button type="submit">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="footer__widget__wrapper">
+                    <div class="rts__widget">
+                        <a href="index.html"><img class="footer__logo" th:src="@{/images/logo/logo.svg}" alt="footer logo"></a>
+                        <p class="font-sm max-290 mt-20">
+                            Each room features plush bedding, high-quality linens, and a selection of ensure a restful night's sleep.
+                        </p>
+                    </div>
+                    <div class="rts__widget">
+                        <span class="widget__title">Quick Links</span>
+                        <ul>
+                            <li><a href="#" aria-label="footer__link">Rooms & Suites</a></li>
+                            <li><a href="#" aria-label="footer__link">Dining</a></li>
+                            <li><a href="#" aria-label="footer__link">Spa & Wellness</a></li>
+                            <li><a href="#" aria-label="footer__link">Special Offers</a></li>
+                        </ul>
+                    </div>
+                    <div class="rts__widget">
+                        <span class="widget__title">Guest Service</span>
+                        <ul>
+                            <li>24/7 Front Desk</li>
+                            <li>Parking</li>
+                            <li>Room Service</li>
+                            <li>Free Wi-Fi</li>
+                            <li>Concierge Service</li>
+                        </ul>
+                    </div>
+                    <div class="rts__widget">
+                        <span class="widget__title">Contact Us</span>
+                        <ul>
+                            <li><a aria-label="footer__contact" href="tel:+12505550199"><i class="flaticon-phone-flip"></i> +12505550199</a></li>
+                            <li><a aria-label="footer__contact" href="mailto:UjJw6@example.com"><i class="flaticon-envelope"></i>Moonlit@gmail.com</a></li>
+                            <li><a aria-label="footer__contact" href="#"><i class="flaticon-marker"></i>M5T 2L9 Toronto, Canada</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright__text">
+            <div class="container">
+                <div class="row">
+                    <div class="copyright__wrapper">
+                        <p class="mb-0">Copyright © <span id="year"></span> Moonlit. All rights reserved.</p>
+                        <div class="footer__social__link">
+                            <a href="#" aria-label="footer__social" class="link__item">Facebook</a>
+                            <a href="#" aria-label="footer__social" class="link__item">Linkedin</a>
+                            <a href="#" aria-label="footer__social" class="link__item">Twitter</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<div th:fragment="back_to_top">
+    <button type="button" class="rts__back__top" id="rts-back-to-top">
+        <svg width="20" height="20" viewBox="0 0 13 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.30201 1.51317L7.29917 21.3422C7.29912 21.7057 6.97211 21.9993 6.5674 21.9993C6.16269 21.9992 5.83577 21.7055 5.83582 21.342L5.83844 3.10055L1.39753 7.08842C1.11169 7.34511 0.647535 7.34506 0.361762 7.0883C0.0759894 6.83155 0.0760493 6.41464 0.361896 6.15795L6.05367 1.04682C6.26405 0.857899 6.5773 0.802482 6.85167 0.905201C7.12374 1.00792 7.30205 1.24823 7.30201 1.51317Z" fill="#FFF" />
+            <path d="M12.9991 6.6318C12.9991 6.80021 12.9282 6.96861 12.7841 7.09592C12.4983 7.35261 12.0341 7.35256 11.7483 7.0958L6.05118 1.97719C5.76541 1.72043 5.76547 1.30352 6.05131 1.04684C6.33716 0.790152 6.80131 0.790206 7.08709 1.04696L12.7842 6.16557C12.9283 6.29498 12.9991 6.46339 12.9991 6.6318Z" fill="#FFF" />
+        </svg>
+    </button>
+</div>
+
+<div th:fragment="preloader">
+    <div class="loader-wrapper">
+        <div class="loader">
+        </div>
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
     </div>
 </div>
-<!-- END: Top Bar -->
-<!-- BEGIN: Vendor JS Assets-->
+
 <div th:fragment="scripts">
-    <script th:src="@{/dist/js/vendors/dom.js}"></script>
-    <script th:src="@{/dist/js/vendors/tailwind-merge.js}"></script>
-    <script th:src="@{/dist/js/vendors/lucide.js}"></script>
-    <script th:src="@{/dist/js/vendors/popper.js}"></script>
-    <script th:src="@{/dist/js/vendors/dropdown.js}"></script>
-    <script th:src="@{/dist/js/vendors/tippy.js}"></script>
-    <script th:src="@{/dist/js/vendors/modal.js}"></script>
-    <script th:src="@{/dist/js/vendors/transition.js}"></script>
-    <script th:src="@{/dist/js/vendors/simplebar.js}"></script>
-    <script th:src="@{/dist/js/components/base/theme-color.js}"></script>
-    <script th:src="@{/dist/js/components/base/lucide.js}"></script>
-    <script th:src="@{/dist/js/components/base/tippy.js}"></script>
-    <script th:src="@{/dist/js/themes/rubick.js}"></script>
-    <script th:src="@{/dist/js/components/mobile-menu.js}"></script>
-    <script th:src="@{/dist/js/components/themes/rubick/top-bar.js}"></script>
+    <script th:src="@{/js/plugins.min.js}"></script>
+    <script th:src="@{/js/gdpr.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
 </div>
-<!-- END: Vendor JS Assets-->
 </body>
 </html>
