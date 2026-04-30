@@ -1,4 +1,4 @@
-package com.reservia.Entity;
+package com.reservia.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -6,26 +6,27 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private LocalDate dateDebut;
+    private LocalDate dateFin;
     private LocalDate dateReservation;
-
-    private double totalPrix;
+    private Double totalPrix;
 
     @ManyToOne
-    @JoinColumn(name = "client_id")
     private Client client;
 
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<LigneReservation> lignes;
 }

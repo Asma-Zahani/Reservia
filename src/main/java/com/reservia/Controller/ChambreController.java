@@ -1,9 +1,8 @@
-package com.reservia.Controller;
+package com.reservia.controller;
 
-import com.reservia.Entity.Chambre;
-import com.reservia.Service.ChambreService;
+import com.reservia.entity.Chambre;
+import com.reservia.service.ChambreService;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -16,13 +15,16 @@ public class ChambreController {
         this.chambreService = chambreService;
     }
 
-    // 🔹 Ajouter chambre
     @PostMapping
     public Chambre add(@RequestBody Chambre chambre) {
         return chambreService.save(chambre);
     }
 
-    // 🔹 Liste disponibles
+    @GetMapping
+    public List<Chambre> getAll() {
+        return chambreService.findAll();
+    }
+
     @GetMapping("/disponibles")
     public List<Chambre> disponibles() {
         return chambreService.getDisponibles();

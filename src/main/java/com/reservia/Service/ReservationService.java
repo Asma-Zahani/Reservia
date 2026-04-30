@@ -1,67 +1,89 @@
-package com.reservia.Service;
-
-import com.reservia.Entity.*;
-import com.reservia.Repository.*;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+package com.reservia.service;
 
 import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.reservia.entity.Chambre;
+import com.reservia.entity.Client;
+import com.reservia.entity.LigneReservation;
+import com.reservia.entity.Reservation;
+import com.reservia.entity.Trajet;
+import com.reservia.repository.ChambreRepository;
+import com.reservia.repository.ClientRepository;
+import com.reservia.repository.ReservationRepository;
+import com.reservia.repository.TrajetRepository;
 
 @Service
 public class ReservationService {
 
-    private final ReservationRepository reservationRepository;
-    private final ChambreRepository chambreRepository;
+    @Autowired
+    private ReservationRepository reservationRepository;
 
-    public ReservationService(ReservationRepository reservationRepository,
-                              ChambreRepository chambreRepository) {
-        this.reservationRepository = reservationRepository;
-        this.chambreRepository = chambreRepository;
-    }
+    @Autowired
+    private ChambreRepository chambreRepository;
 
-    // ✅ Créer réservation (UNIQUEMENT CHAMBRE)
-    @Transactional
+    @Autowired
+    private TrajetRepository trajetRepository;
+
+    @Autowired
+    private ClientRepository clientRepository;
+
     public Reservation createReservation(Reservation reservation) {
+
+        Client client = clientRepository.findById(reservation.getClient().getId())
+                .orElseThrow(() -> new RuntimeException("Client introuvable"));
+
+        reservation.setClient(client);
+
+        reservation.setDateReservation(LocalDate.now());
 
         double total = 0;
 
         for (LigneReservation ligne : reservation.getLignes()) {
 
-            Long idChambre = ligne.getRessource().getId();
+            ligne.setReservation(reservation);
 
-            Chambre chambre = chambreRepository.findById(idChambre)
-                    .orElseThrow(() -> new RuntimeException("Chambre introuvable"));
+            if (ligne.getChambre() != null) {
 
-            if (!chambre.isDisponible()) {
-                throw new RuntimeException("Chambre non disponible !");
+                Chambre ch = chambreRepository.findById(ligne.getChambre().getId())
+                        .orElseThrow(() -> new RuntimeException("Chambre introuvable"));
+
+                ligne.setChambre(ch);
+
+                ligne.setPrix(ch.getPrix());
             }
 
-            double prix = chambre.getPrix() * ligne.getQuantite();
-            ligne.setPrix(prix);
-            total += prix;
+            if (ligne.getTrajet() != null) {
 
-            chambre.setDisponible(false);
+                Trajet tr = trajetRepository.findById(ligne.getTrajet().getId())
+                        .orElseThrow(() -> new RuntimeException("Trajet introuvable"));
+
+                ligne.setTrajet(tr);
+
+                ligne.setPrix(tr.getPrix());
+            }
+
+            total += ligne.getPrix() * ligne.getQuantite();
         }
 
-        reservation.setDateReservation(LocalDate.now());
         reservation.setTotalPrix(total);
 
         return reservationRepository.save(reservation);
     }
 
-    // ❌ Annuler réservation
-    @Transactional
-    public void cancelReservation(Long id) {
+    public List<Reservation> getAll() {
+        return reservationRepository.findAll();
+    }
 
-        Reservation reservation = reservationRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Reservation non trouvée"));
+    public Reservation getById(Long id) {
+        return reservationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Reservation introuvable"));
+    }
 
-        for (LigneReservation ligne : reservation.getLignes()) {
-
-            Chambre chambre = (Chambre) ligne.getRessource();
-            chambre.setDisponible(true);
-        }
-
-        reservationRepository.delete(reservation);
+    public void delete(Long id) {
+        reservationRepository.deleteById(id);
     }
 }

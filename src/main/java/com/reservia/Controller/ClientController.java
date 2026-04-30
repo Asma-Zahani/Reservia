@@ -1,29 +1,37 @@
-package com.reservia.Controller;
+package com.reservia.controller;
 
-import com.reservia.Entity.Client;
-import com.reservia.Service.ClientService;
+import com.reservia.entity.Client;
+import com.reservia.repository.ClientRepository;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/clients")
+@CrossOrigin("*")
 public class ClientController {
 
-    private final ClientService clientService;
+    @Autowired
+    private ClientRepository clientRepository;
 
-    public ClientController(ClientService clientService) {
-        this.clientService = clientService;
+    @PostMapping
+    public Client create(@RequestBody Client client) {
+        return clientRepository.save(client);
     }
 
-    // 🔹 Inscription
-    @PostMapping("/register")
-    public Client register(@RequestBody Client client) {
-        return clientService.register(client);
+    @GetMapping
+    public List<Client> getAll() {
+        return clientRepository.findAll();
     }
 
-    // 🔹 Login simple
-    @GetMapping("/login")
-    public Client login(@RequestParam String email) {
-        return clientService.login(email)
-                .orElseThrow(() -> new RuntimeException("Client non trouvé"));
+    @GetMapping("/{id}")
+    public Client getById(@PathVariable Long id) {
+        return clientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Client introuvable"));
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        clientRepository.deleteById(id);
     }
 }

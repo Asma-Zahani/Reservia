@@ -1,9 +1,8 @@
-package com.reservia.Service;
+package com.reservia.service;
 
-import com.reservia.Entity.Client;
-import com.reservia.Repository.ClientRepository;
+import com.reservia.entity.Client;
+import com.reservia.repository.ClientRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
 @Service

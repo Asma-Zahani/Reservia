@@ -1,13 +1,10 @@
-package com.reservia.Repository;
+package com.reservia.repository;
 
-import com.reservia.Entity.Trajet;
 import org.springframework.data.jpa.repository.JpaRepository;
-
+import com.reservia.entity.Trajet;
 import java.util.List;
 
 public interface TrajetRepository extends JpaRepository<Trajet, Long> {
 
     List<Trajet> findByDepartAndDestination(String depart, String destination);
-
-    List<Trajet> findByDisponibleTrue();
 }
