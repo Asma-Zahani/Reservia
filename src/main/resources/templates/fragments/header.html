@@ -56,8 +56,13 @@
                         <a th:href="@{/reservia/}" ><img class="logo__class" th:src="@{/images/logo/logo.svg}" alt="moonlit"></a>
                     </div>
                     <div class="main__right">
-                        <a href="#" class="theme-btn btn-style sm-btn border d-none d-lg-block" aria-label="Login Button" data-bs-toggle="modal" data-bs-target="#loginModal"><span>Sign In</span></a>
-                        <a href="#" class="theme-btn btn-style sm-btn border d-none d-lg-block" aria-label="Sign Up Button" data-bs-toggle="modal" data-bs-target="#signupModal"><span>Sign Up</span></a>
+                        <div th:if="${session.user != null}">
+                            Bienvenue <span th:text="${session.user}"></span>
+                        </div>
+
+                        <div th:if="${session.user == null}">
+                            <a href="#" class="theme-btn btn-style sm-btn border d-none d-lg-block" aria-label="Login Button" data-bs-toggle="modal" data-bs-target="#loginModal"><span>Sign In</span></a>
+                        </div>
                         <a th:href="@{/reservia/rooms}" class="theme-btn btn-style sm-btn fill"><span>Book Now</span></a>
                         <button class="theme-btn btn-style sm-btn fill menu__btn d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                             <span><img th:src="@{/images/icon/menu-icon.svg}" alt=""></span>

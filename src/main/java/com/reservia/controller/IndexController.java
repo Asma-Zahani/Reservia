@@ -14,7 +14,6 @@ public class IndexController {
 		 return "pages/home";
 	 }
 
-
 	@RequestMapping(value = "/contact", method = RequestMethod.GET)
 	public String contact() {
 		return "pages/contact";
@@ -41,6 +40,4 @@ public class IndexController {
 		model.addAttribute("room", "room");
 		return "pages/rooms/details";
 	}
-
-	//return "redirect:/rooms/rooms";
 }
