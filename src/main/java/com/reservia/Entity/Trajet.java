@@ -33,7 +33,7 @@ public class Trajet {
 
     private int placesDisponibles;
 
-    @OneToMany(mappedBy = "=trajet")
+    @OneToMany(mappedBy = "trajet")
     @JsonIgnore
     private List<LigneReservation> lignes;
     
