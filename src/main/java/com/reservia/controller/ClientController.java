@@ -14,16 +14,9 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    // 🔹 Inscription
     @PostMapping("/register")
     public Client register(@RequestBody Client client) {
         return clientService.register(client);
     }
 
-    // 🔹 Login simple
-    @GetMapping("/login")
-    public Client login(@RequestParam String email) {
-        return clientService.login(email)
-                .orElseThrow(() -> new RuntimeException("Client non trouvé"));
-    }
 }

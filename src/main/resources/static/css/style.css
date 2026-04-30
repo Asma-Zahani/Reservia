@@ -7650,7 +7650,7 @@ textarea:focus-visible, input:focus-visible {
 }
 
 .page__hero__height {
-  height: 700px;
+  height: 550px;
   width: 100%;
   display: flex;
   justify-content: center;

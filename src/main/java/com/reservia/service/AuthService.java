@@ -1,5 +1,7 @@
 package com.reservia.service;
 
+import com.reservia.entity.Client;
+import com.reservia.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,7 @@ import com.reservia.repository.UserRepository;
 public class AuthService {
 
     @Autowired
-    private UserRepository repo;
+    private ClientRepository repo;
 
     @Autowired
     private PasswordEncoder encoder;
@@ -25,28 +27,26 @@ public class AuthService {
 
     public AuthResponse register(AuthRequest request) {
 
-        User user = User.builder()
-                .username(request.getUsername())
-                .password(encoder.encode(request.getPassword()))
-                .role(Role.CLIENT)
-                .build();
+        Client client = new Client();
+        client.setEmail(request.getUsername());
+        client.setPassword(encoder.encode(request.getPassword()));
 
-        repo.save(user);
+        repo.save(client);
 
-        String token = jwtService.generateToken(user.getUsername());
+        String token = jwtService.generateToken(client.getEmail());
         return new AuthResponse(token);
     }
 
     public AuthResponse login(AuthRequest request) {
 
-        User user = repo.findByUsername(request.getUsername())
+        Client client = repo.findByEmail(request.getUsername())
                 .orElseThrow();
 
-        if (!encoder.matches(request.getPassword(), user.getPassword())) {
+        if (!encoder.matches(request.getPassword(), client.getPassword())) {
             throw new RuntimeException("Invalid credentials");
         }
 
-        String token = jwtService.generateToken(user.getUsername());
+        String token = jwtService.generateToken(client.getEmail());
         return new AuthResponse(token);
     }
 }

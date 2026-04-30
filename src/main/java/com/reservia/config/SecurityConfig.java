@@ -21,6 +21,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/reservia/**").permitAll()
+                    .requestMatchers("/auth/**").permitAll()
                     .requestMatchers("/css/**" , "/fonts/**" , "/images/**", "/js/**").permitAll()
                     .requestMatchers("/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
