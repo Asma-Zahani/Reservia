@@ -28,9 +28,9 @@ public class AuthService {
     public AuthResponse register(AuthRequest request) {
 
         Client client = new Client();
-        client.setEmail(request.getUsername());
+        client.setEmail(request.getEmail());
         client.setPassword(encoder.encode(request.getPassword()));
-
+        client.setNom(request.getNom());
         repo.save(client);
 
         String token = jwtService.generateToken(client.getEmail());
@@ -39,7 +39,7 @@ public class AuthService {
 
     public AuthResponse login(AuthRequest request) {
 
-        Client client = repo.findByEmail(request.getUsername())
+        Client client = repo.findByEmail(request.getEmail())
                 .orElseThrow();
 
         if (!encoder.matches(request.getPassword(), client.getPassword())) {
