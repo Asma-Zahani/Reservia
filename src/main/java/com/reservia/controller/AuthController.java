@@ -1,6 +1,8 @@
 package com.reservia.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +12,7 @@ import com.reservia.dto.AuthRequest;
 import com.reservia.dto.AuthResponse;
 import com.reservia.service.AuthService;
 
-@RestController
+@Controller
 @RequestMapping("/auth")
 public class AuthController {
 
@@ -18,12 +20,21 @@ public class AuthController {
     private AuthService service;
 
     @PostMapping("/register")
-    public AuthResponse register(@RequestBody AuthRequest request) {
-        return service.register(request);
+    public String register(AuthRequest request, HttpSession session) {
+        AuthResponse res = service.register(request);
+
+        session.setAttribute("token", res.getToken());
+        session.setAttribute("user", request.getNom());
+        return "redirect:/reservia/";
     }
 
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody AuthRequest request) {
-        return service.login(request);
+    public String login(AuthRequest request, HttpSession session) {
+        AuthResponse res = service.login(request);
+
+        session.setAttribute("token", res.getToken());
+        session.setAttribute("user", request.getNom());
+
+        return "redirect:/reservia/";
     }
 }
