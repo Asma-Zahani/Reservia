@@ -34,7 +34,7 @@ public class AuthService {
         repo.save(client);
 
         String token = jwtService.generateToken(client.getEmail());
-        return new AuthResponse(token);
+        return new AuthResponse(token, client);
     }
 
     public AuthResponse login(AuthRequest request) {
@@ -47,6 +47,6 @@ public class AuthService {
         }
 
         String token = jwtService.generateToken(client.getEmail());
-        return new AuthResponse(token);
+        return new AuthResponse(token, client);
     }
 }

@@ -1,5 +1,6 @@
 package com.reservia.dto;
 
+import com.reservia.entity.Client;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -7,4 +8,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class AuthResponse {
     private String token;
+    private Client user;
 }
