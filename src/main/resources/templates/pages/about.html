@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layouts/layout :: layout">
+
+<div th:fragment="content">
+    <!-- page header -->
+    <div class="rts__section page__hero__height page__hero__bg"  th:style="'background-image: url(' + @{/images/pages/header__bg.webp} + ')'">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-12">
+                    <div class="page__hero__content">
+                        <h1 class="wow fadeInUp">About Us</h1>
+                        <p class="wow fadeInUp font-sm">Welcome to Bokinn, where luxury meets comfort in the heart of canada.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- page header end -->
+    <!-- about us -->
+    <!-- about us -->
+    <div class="rts__section about is__home__four section__padding">
+        <div class="container">
+            <div class="row g-4 align-items-center  ">
+                <div class="col-lg-5">
+                    <div class="about__images">
+                        <div class="image__left wow fadeInUp">
+                            <img height="474" width="450" th:src="@{/images/index-4/about/1.webp}" alt="">
+                        </div>
+                        <div class="image__right wow fadeInLeft">
+                            <img width="365" height="385" th:src="@{/images/index-4/about/2.webp}" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="about__content">
+                        <span class="h6 subtitle__icon__two d-block wow fadeInUp">About Us</span>
+                        <h2 class="font-xl wow fadeInUp">Welcome To Our Moonlit Hotel & Resort</h2>
+                        <p class="font-sm mt-30 wow fadeInUp" data-wow-delay=".3s">
+                            Welcome to Bokinn, where luxury meets comfort in the heart of canada. Since 1999,
+                            we have been dedicated to providing an exceptional stay for our guests, blending
+                            modern amenities with timeless elegance.Our beautifully designed rooms and suites
+                            offer stunning views and plush accommodations, ensuring a restful retreat whether
+                            you're here for business or leisure.
+                        </p>
+                        <div class="hotel__owner__sign mt-40 wow fadeInUp" data-wow-delay=".5s">
+                            <img th:src="@{/images/index-4/about/sign.webp}" alt="sign">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- about us end -->
+
+    <!-- our facility -->
+    <div class="rts__section facility__area is__about has__background has__shape">
+        <div class="section__shape wow fadeInRight" data-wow-delay=".5s">
+            <img th:src="@{/images/pages/about-shape.svg}" alt="">
+        </div>
+        <div class="container">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-6">
+                    <div class="facility__content">
+                        <div class="section__content__left">
+                            <span class="h6 subtitle__icon__two d-block wow fadeInUp">Facilities</span>
+                            <h2 class="content__title h2 lh-1">Hotel Facilities</h2>
+                        </div>
+                        <div class="row mt-20 g-5 wow fadeInUp" data-wow-delay=".5s">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="card rts__card no-border is__home__three">
+                                    <div class="card-body">
+                                        <div class="icon"><img th:src="@{/images/icon/bed.svg}" alt=""></div>
+                                        <a href="#">
+                                            <h6 class="card-title h6 mb-15">Rooms and Suites</h6>
+                                        </a>
+                                        <p class="card-text">Varied types of rooms, from standard to luxury suites, equipped with essentials like beds.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="card rts__card no-border is__home__three">
+                                    <div class="card-body">
+                                        <div class="icon"><img th:src="@{/images/icon/security.svg}" alt=""></div>
+                                        <a href="#">
+                                            <h6 class="card-title h6 mb-15">24-Hour Security</h6>
+                                        </a>
+                                        <p class="card-text">On-site security personnel and best surveillance. from standard to luxury suites,Secure storage for valuables.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="card rts__card no-border is__home__three">
+                                    <div class="card-body">
+                                        <div class="icon"><img th:src="@{/images/icon/gym.svg}" alt=""></div>
+                                        <a href="#">
+                                            <h6 class="card-title h6 mb-15">Fitness Center</h6>
+                                        </a>
+                                        <p class="card-text">Equipped with exercise machines and weights.Offering massages, facials, and other treatments.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="card rts__card no-border is__home__three">
+                                    <div class="card-body">
+                                        <div class="icon"><img th:src="@{/images/icon/swimming-pool.svg}" alt=""></div>
+                                        <a href="#">
+                                            <h6 class="card-title h6 mb-15">Swimming Pool</h6>
+                                        </a>
+                                        <p class="card-text">Indoor or outdoor pools for leisure or exercise.Offering massages, facials, and other treatments</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="facility__image jara-mask-3 jarallax">
+                        <img height="765" width="605" class="jarallax-img" th:src="@{/images/index-3/facility.webp}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- our facility end -->
+
+    <!-- team -->
+    <div class="rts__section section__padding">
+        <div class="container">
+            <div class="row justify-content-center text-center mb-40">
+                <div class="col-lg-6 wow fadeInUp" data-wow-delay=".3s">
+                    <div class="section__topbar">
+                        <span class="h6 subtitle__icon__three mx-auto">Our Team</span>
+                        <h2 class="section__title">Meet The Team</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-30">
+                <div class="col-lg-4 col-md-6">
+                    <div class="team__member">
+                        <a href="#">
+                            <div class="team__member__thumb">
+                                <img th:src="@{/images/pages/team/1.png}" alt="">
+                            </div>
+                        </a>
+                        <div class="team__member__meta">
+                            <a href="#" class="h6">Mariem MOKNI</a>
+                            <span class="designation">Manager</span>
+                            <div class="team__member__social">
+                                <a href="#"><i class="flaticon-facebook"></i></a>
+                                <a href="#"><i class="flaticon-linkedin"></i></a>
+                                <a href="#"><i class="flaticon-whatsapp"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="team__member">
+                        <a href="#">
+                            <div class="team__member__thumb">
+                                <img th:src="@{/images/pages/team/2.png}" alt="">
+                            </div>
+                        </a>
+                        <div class="team__member__meta">
+                            <a href="#" class="h6">Nour GHRAIEB</a>
+                            <span class="designation">Assitant Manager</span>
+                            <div class="team__member__social">
+                                <a href="#"><i class="flaticon-facebook"></i></a>
+                                <a href="#"><i class="flaticon-linkedin"></i></a>
+                                <a href="#"><i class="flaticon-whatsapp"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="team__member">
+                        <a href="#">
+                            <div class="team__member__thumb">
+                                <img th:src="@{/images/pages/team/3.png}" alt="">
+                            </div>
+                        </a>
+                        <div class="team__member__meta">
+                            <a href="#" class="h6">Asma ZAHANI</a>
+                            <span class="designation">General Manager</span>
+                            <div class="team__member__social">
+                                <a href="#"><i class="flaticon-facebook"></i></a>
+                                <a href="#"><i class="flaticon-linkedin"></i></a>
+                                <a href="#"><i class="flaticon-whatsapp"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- team end -->
+
+    <!-- client testimonial  -->
+    <div class="rts__section pb-120">
+        <div class="container">
+            <div class="row mb-40">
+                <div class="d-flex align-items-center justify-content-between position-relative">
+                    <div class="section__content__left">
+                        <span class="h6 subtitle__icon__two d-block wow fadeInUp">Testimonial</span>
+                        <h2 class="content__title h2 lh-1">What Our Client Say</h2>
+                    </div>
+                    <div class="slider__navigation">
+                        <div class="nav__btn button-next">
+                            <img th:src="@{/images/icon/arrow-left-short.svg}" alt="">
+                        </div>
+                        <div class="nav__btn button-prev">
+                            <img th:src="@{/images/icon/arrow-right-short.svg}" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-11">
+                    <div class="testimonial__slider overflow-hidden">
+                        <div class="swiper-wrapper">
+
+                            <div class="swiper-slide">
+                                <div class="testimonial__item__content">
+                                    <div class="author__icon">
+                                        <img th:src="@{/images/author/author-2x.webp}" alt="">
+                                    </div>
+                                    <div class="testimonial__content">
+                                        <div class="single__slider__item ">
+                                            <div class="slider__rating mb-20">
+                                                <i class="flaticon-star"></i>
+                                                <i class="flaticon-star"></i>
+                                                <i class="flaticon-star"></i>
+                                                <i class="flaticon-star"></i>
+                                                <i class="flaticon-star-sharp-half-stroke"></i>
+                                            </div>
+                                            <span class="slider__text d-block">Choosing Bokinn was one of the best decisions we've ever made. They have proven to be a reliable and innovative partner, always ready to tackle new challenges with and expertise.Their commitment to and delivering tailored.</span>
+                                            <div class="slider__author__info">
+                                                <div class="slider__author__info__content">
+                                                    <h6 class="mb-0">Sarah Martinez</h6>
+                                                    <span>COO of Apex Solutions</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="testimonial__item__content">
+                                    <div class="author__icon">
+                                        <img th:src="@{/images/author/author-5.html}" alt="">
+                                    </div>
+                                    <div class="testimonial__content">
+                                        <div class="single__slider__item ">
+                                            <div class="slider__rating mb-20">
+                                                <i class="flaticon-star"></i>
+                                                <i class="flaticon-star"></i>
+                                                <i class="flaticon-star"></i>
+                                                <i class="flaticon-star"></i>
+                                                <i class="flaticon-star-sharp-half-stroke"></i>
+                                            </div>
+                                            <span class="slider__text d-block">Choosing Bokinn was one of the best decisions we've ever made. They have proven to be a reliable and innovative partner, always ready to tackle new challenges with and expertise.Their commitment to and delivering tailored.</span>
+                                            <div class="slider__author__info">
+                                                <div class="slider__author__info__content">
+                                                    <h6 class="mb-0">Emran Hossain</h6>
+                                                    <span>COO of Apex Solutions</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- client testimonial  end -->
+</div>
+
+</html>

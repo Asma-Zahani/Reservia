@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="description" content="Reservia - Online Reservation System">
+    <meta name="keywords" content="hotel, resort, Spa">
+    <!-- for open graph social media -->
+    <meta property="og:title" content="Hotel and Resort">
+    <meta property="og:description" content="Reservia - Online Reservation Systeme">
+    <title>Reservia - Online Reservation System</title>
+
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Gilda+Display&amp;family=Jost:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/fonts/flaticon_bokinn.css}">
+    <link rel="stylesheet" th:href="@{/css/plugins.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:insert="~{fragments/header :: header}"></div>
+
+    <!-- Contenu dynamique ici -->
+    <div th:replace="~{::content}"></div>
+
+    <div th:insert="~{fragments/footer :: footer}"></div>
+
+    <div th:insert="~{fragments/forms :: loginPopup}"></div>
+    <div th:insert="~{fragments/forms :: signupPopup}"></div>
+    <div th:insert="~{fragments/forms :: forgotPasswordPopup}"></div>
+
+    <div th:insert="~{fragments/ui-utils :: back_to_top}"></div>
+    <div th:insert="~{fragments/ui-utils :: preloader}"></div>
+    <div th:insert="~{fragments/ui-utils :: scripts}"></div>
+</body>
+</html>
