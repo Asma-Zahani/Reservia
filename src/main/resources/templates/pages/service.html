@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layouts/layout :: layout">
+
+<div th:fragment="content">
+    <!-- page header -->
+    <div class="rts__section page__hero__height page__hero__bg"  th:style="'background-image: url(' + @{/images/pages/header__bg.webp} + ')'">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-12">
+                    <div class="page__hero__content">
+                        <h1 class="wow fadeInUp">Our Service</h1>
+                        <p class="wow fadeInUp font-sm">At Moonlit we pride ourselves on delivering an exceptional experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- page header end -->
+
+    <!-- service -->
+    <div class="rts__section section__padding">
+        <div class="container">
+            <div class="row">
+                <div class="service__list">
+
+                    <!-- single service item -->
+                    <div class="service__item">
+                        <div class="service__item__icon">
+                            <i class="flaticon-24-hours"></i>
+                        </div>
+                        <a href="#" class="h6">24-Hour Security</a>
+                        <p>A 24-hour security service provides and surveillance,
+                            properties, or sensitive information around the clock.
+                        </p>
+                    </div>
+                    <!-- single service item end -->
+                    <!-- single service item -->
+                    <div class="service__item">
+                        <div class="service__item__icon">
+                            <i class="flaticon-wifi"></i>
+                        </div>
+                        <a href="#" class="h6">Free Wifi</a>
+                        <p>Free Wi-Fi has become an essential service in our increasingly connected world. It by people to access the internet
+                        </p>
+                    </div>
+                    <!-- single service item end -->
+                    <!-- single service item -->
+                    <div class="service__item">
+                        <div class="service__item__icon">
+                            <i class="flaticon-gym"></i>
+                        </div>
+                        <a href="#" class="h6">Fitness Center</a>
+                        <p>A fitness center is a vibrant and dynamic environment designed to promote health and Fitnee Center well-being.
+                        </p>
+                    </div>
+                    <!-- single service item end -->
+                    <!-- single service item -->
+                    <div class="service__item">
+                        <div class="service__item__icon">
+                            <i class="flaticon-plane"></i>
+                        </div>
+                        <a href="#" class="h6">Airport transport</a>
+                        <p>Airport transportation plays a crucial role in travel experiences for passengers. It various services, including taxis, ride-sharing
+                        </p>
+                    </div>
+                    <!-- single service item end -->
+                    <!-- single service item -->
+                    <div class="service__item">
+                        <div class="service__item__icon">
+                            <img th:src="@{/images/icon/desk.svg}" width="40" height="40" alt="">
+                        </div>
+                        <a href="#" class="h6">Work Desk</a>
+                        <p>A well-organized work desk is more than just a place to complete tasks; it's a hub of productivity and creativity.
+                        </p>
+                    </div>
+                    <!-- single service item end -->
+                    <!-- single service item -->
+                    <div class="service__item">
+                        <div class="service__item__icon">
+                            <i class="flaticon-swimming"></i>
+                        </div>
+                        <a href="#" class="h6">Swimming Pool</a>
+                        <p>A swimming pool is a refreshing oasis, offering a place to cool off, relax, and enjoy various water activities.
+                        </p>
+                    </div>
+                    <!-- single service item end -->
+                    <!-- single service item -->
+                    <div class="service__item">
+                        <div class="service__item__icon">
+                            <img th:src="@{/images/icon/bed.svg}" width="40" height="40" alt="">
+                        </div>
+                        <a href="#" class="h6">Rooms and Suites</a>
+                        <p>On-site security personnel and surveillance. from standard to luxury suites, Secure it is storage for valuables.
+                        </p>
+                    </div>
+                    <!-- single service item end -->
+                    <!-- single service item -->
+                    <div class="service__item">
+                        <div class="service__item__icon">
+                            <i class="flaticon-shower"></i>
+                        </div>
+                        <a href="#" class="h6">Shower</a>
+                        <p>The warm water cascaded down, enveloping a soothing as I stood in the shower. Each droplet danced on my skin, washing.
+                        </p>
+                    </div>
+                    <!-- single service item end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- service end -->
+
+    <!-- our service -->
+    <div class="rts__section service is__home__three has__background has__shape">
+        <div class="section__shape wow fadeInRight" data-wow-delay=".5s">
+            <img th:src="@{/images/service/sec-bg.svg}" alt="">
+        </div>
+        <div class="container">
+            <div class="row justify-content-center text-center mb-40">
+                <div class="col-lg-8 wow fadeInUp" data-wow-delay=".3s">
+                    <div class="section__topbar">
+                        <span class="h6 subtitle__icon__three mx-auto">Our Service</span>
+                        <h2 class="section__title">Our Services</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- single service item -->
+                <div class="single__service__item if__is__default">
+                    <div class="service__thumb jarallax">
+                        <img class="jarallax-img" th:src="@{/images/service/1.webp}" width="605" height="535" alt="service image">
+                    </div>
+                    <div class="service__content">
+                        <div class="section__content__left">
+                            <span class="h6 subtitle__icon__two d-block wow fadeInUp">Spa & Wellness</span>
+                            <h2 class="content__title h3 lh-1">Spa & Wellness</h2>
+                        </div>
+                        <p class="font-sm mt-30 wow fadeInUp">At our Fitness & Yoga Services, we are dedicated to helping you achieve your health and wellness goals. Our comprehensive program offers a variety of classes designed to suit all levels, from beginners to advanced practitioners.</p>
+                        <a href="#" class="underline__style wow fadeInUp" data-wow-delay=".4s">Read More</a>
+                    </div>
+                </div>
+                <!-- single service item end -->
+
+                <!-- single service item -->
+                <div class="single__service__item if__is__reverse">
+                    <div class="service__thumb jarallax">
+                        <img class="jarallax-img" th:src="@{/images/service/2.webp}" width="605" height="535" alt="service image">
+                    </div>
+                    <div class="service__content">
+                        <div class="section__content__left">
+                            <span class="h6 subtitle__icon__two d-block wow fadeInUp">Romantic Getaway</span>
+                            <h2 class="content__title h3 lh-1">Romantic Getaway</h2>
+                        </div>
+                        <p class="font-sm mt-30 wow fadeInUp">At our Fitness & Yoga Services, we are dedicated to helping you achieve your health and wellness goals. Our comprehensive program offers a variety of classes designed to suit all levels, from beginners to advanced practitioners.</p>
+                        <a href="#" class="underline__style wow fadeInUp" data-wow-delay=".4s">Read More</a>
+                    </div>
+                </div>
+                <!-- single service item end -->
+            </div>
+        </div>
+    </div>
+    <!-- our service end -->
+
+    <!-- client testimonial  -->
+    <div class="rts__section section__padding">
+        <div class="container">
+            <div class="row mb-40 position-relative">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="section__topbar">
+                        <span class="h6 subtitle__icon__five d-block wow fadeInUp">Testimonial</span>
+                        <h2 class="content__title h2 lh-1 wow fadeInUp">What Our Client Say</h2>
+                    </div>
+                    <div class="slider__navigation">
+                        <div class="nav__btn button-next">
+                            <img th:src="@{/images/icon/arrow-left-short.svg}" alt="">
+                        </div>
+                        <div class="nav__btn button-prev">
+                            <img th:src="@{/images/icon/arrow-right-short.svg}" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-11">
+                    <div class="testimonial__slider overflow-hidden">
+                        <div class="swiper-wrapper">
+
+                            <div class="swiper-slide">
+                                <div class="testimonial__item__content">
+                                    <div class="author__icon">
+                                        <img th:src="@{/images/author/author-2x.webp}" alt="">
+                                    </div>
+                                    <div class="testimonial__content">
+                                        <div class="single__slider__item ">
+                                            <div class="slider__rating mb-20">
+                                                <i class="flaticon-star"></i>
+                                                <i class="flaticon-star"></i>
+                                                <i class="flaticon-star"></i>
+                                                <i class="flaticon-star"></i>
+                                                <i class="flaticon-star-sharp-half-stroke"></i>
+                                            </div>
+                                            <span class="slider__text d-block">Choosing Bokinn was one of the best decisions we've ever made. They have proven to be a reliable and innovative partner, always ready to tackle new challenges with and expertise.Their commitment to and delivering tailored.</span>
+                                            <div class="slider__author__info">
+                                                <div class="slider__author__info__content">
+                                                    <h6 class="mb-0">Sarah Martinez</h6>
+                                                    <span>COO of Apex Solutions</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="testimonial__item__content">
+                                    <div class="author__icon">
+                                        <img th:src="@{/images/author/author-2.webp}" alt="">
+                                    </div>
+                                    <div class="testimonial__content">
+                                        <div class="single__slider__item ">
+                                            <div class="slider__rating mb-20">
+                                                <i class="flaticon-star"></i>
+                                                <i class="flaticon-star"></i>
+                                                <i class="flaticon-star"></i>
+                                                <i class="flaticon-star"></i>
+                                                <i class="flaticon-star-sharp-half-stroke"></i>
+                                            </div>
+                                            <span class="slider__text d-block">Choosing Bokinn was one of the best decisions we've ever made. They have proven to be a reliable and innovative partner, always ready to tackle new challenges with and expertise.Their commitment to and delivering tailored.</span>
+                                            <div class="slider__author__info">
+                                                <div class="slider__author__info__content">
+                                                    <h6 class="mb-0">Al Amin Hossen</h6>
+                                                    <span>COO of Apex Solutions</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- client testimonial  end -->
+</div>
+
+</html>
