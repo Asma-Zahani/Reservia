@@ -24,7 +24,7 @@ public class AuthController {
         AuthResponse res = service.register(request);
 
         session.setAttribute("token", res.getToken());
-        session.setAttribute("user", request.getNom());
+        session.setAttribute("user", res.getUser().getNom());
         return "redirect:/reservia/";
     }
 
@@ -33,7 +33,7 @@ public class AuthController {
         AuthResponse res = service.login(request);
 
         session.setAttribute("token", res.getToken());
-        session.setAttribute("user", request.getNom());
+        session.setAttribute("user", res.getUser().getNom());
 
         return "redirect:/reservia/";
     }

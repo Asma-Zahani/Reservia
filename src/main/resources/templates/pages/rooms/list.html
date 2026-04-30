@@ -2,196 +2,65 @@
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{layouts/layout :: layout}">
 
 <div th:fragment="content">
-    <!-- page header -->
     <div class="rts__section page__hero__height page__hero__bg"  th:style="'background-image: url(' + @{/images/pages/header_bg.webp} + ')'">
         <div class="container">
             <div class="row align-items-center justify-content-center">
                 <div class="col-lg-12">
                     <div class="page__hero__content">
-                        <h1 class="wow fadeInUp">Deluxe Room</h1>
-                        <p class="wow fadeInUp font-sm">A step up from the standard room, often with better views, more space, and additional amenities.</p>
+                        <h1 class="wow fadeInUp">Our Rooms</h1>
+                        <p class="wow fadeInUp font-sm">
+                            Discover our comfortable rooms designed for your perfect stay in Tunisia.
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- page header end -->
 
-    <!-- single rooms -->
     <div class="rts__section section__padding">
         <div class="container">
             <div class="row g-30 main__content sticky-wrap">
                 <div class="col-12">
-                    <!-- row -->
                     <div class="row g-30">
-                        <!-- single room -->
-                        <div class="col-xl-4 col-lg-12 col-md-6">
+                        <div th:each="room : ${rooms}" class="col-xl-4 col-lg-12 col-md-6">
                             <div class="room__card">
                                 <div class="room__card__top">
                                     <div class="room__card__image">
-                                        <div class="position-absolute">$ 256</div>
-                                        <a th:href="@{/rooms/1}">
-                                            <img th:src="@{/images/pages/room/1.webp}" width="420" height="310" alt="room card">
+                                        <a th:href="@{/reservia/rooms/{id}(id=${room.id})}">
+                                            <img th:src="@{${room.image_path}}" width="420" height="310" alt="room card">
                                         </a>
                                     </div>
                                     <div class="room__price__tag">
                                         <div class="room__price">
                                             <div class="eshb-price">
-                                                <span class="eshb-price-amount amount">
-                                                    &#036;269
-                                                </span>
+                                                <span th:text="${room.price} + ' DT'" class="eshb-price-amount amount"></span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="room__card__meta">
-                                    <a th:href="@{/rooms/1}" class="room__card__title h5">Deluxe Room</a>
+                                    <a th:href="@{/reservia/rooms/{id}(id=${room.id})}" th:text="${room.type} + ' Room'" class="room__card__title h5"></a>
                                     <div class="room__card__meta__info">
-                                        <span><i class="flaticon-construction"></i>35 sqm</span>
-                                        <span><i class="flaticon-user"></i>5 Person</span>
+                                        <span><i class="flaticon-construction"></i><span th:text="${room.size} + ' m²'"></span></span>
+                                        <span><i class="flaticon-user"></i><span th:text="${room.capacity} + ' Guests'"></span></span>
                                     </div>
-                                    <p>Room Classic Whether you have questions, need assistance, or simply want to share. $269...</p>
-                                    <a th:href="@{/rooms/1}" class="room__card__link">Discover More</a>
-
+                                    <p th:text="${room.description}" class="room__desc"></p>
+                                    <a th:href="@{/reservia/rooms/{id}(id=${room.id})}" class="room__card__link">Discover More</a>
                                 </div>
                             </div>
                         </div>
-                        <!-- single room end -->
-                        <!-- single room -->
-                        <div class="col-xl-4 col-lg-12 col-md-6">
-                            <div class="room__card">
-                                <div class="room__card__top">
-                                    <div class="room__card__image">
-                                        <a href="room-details-2.html">
-                                            <img th:src="@{/images/pages/room/2.webp}" width="420" height="310" alt="room card">
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="room__card__meta">
-                                    <a href="room-details-2.html" class="room__card__title h5">Single Room</a>
-                                    <div class="room__card__meta__info">
-                                        <span><i class="flaticon-construction"></i>35 sqm</span>
-                                        <span><i class="flaticon-user"></i>5 Person</span>
-                                    </div>
-                                    <div class="room__price__tag">
-                                        <span class="h6 d-block">120$</span>
-                                    </div>
-                                    <a href="room-details-2.html" class="room__card__link">Discover More</a>
-
-                                </div>
-                            </div>
-                        </div>
-                        <!-- single room end -->
-                        <!-- single room -->
-                        <div class="col-xl-4 col-lg-12 col-md-6">
-                            <div class="room__card">
-                                <div class="room__card__top">
-                                    <div class="room__card__image">
-                                        <a href="room-details-2.html">
-                                            <img th:src="@{/images/pages/room/3.webp}" width="420" height="310" alt="room card">
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="room__card__meta">
-                                    <a href="room-details-2.html" class="room__card__title h5">Triple Room</a>
-                                    <div class="room__card__meta__info">
-                                        <span><i class="flaticon-construction"></i>35 sqm</span>
-                                        <span><i class="flaticon-user"></i>5 Person</span>
-                                    </div>
-                                    <div class="room__price__tag">
-                                        <span class="h6 d-block">140$</span>
-                                    </div>
-                                    <a href="room-details-2.html" class="room__card__link">Discover More</a>
-
-                                </div>
-                            </div>
-                        </div>
-                        <!-- single room end -->
-                        <!-- single room -->
-                        <div class="col-xl-4 col-lg-12 col-md-6">
-                            <div class="room__card">
-                                <div class="room__card__top">
-                                    <div class="room__card__image">
-                                        <a href="room-details-2.html">
-                                            <img th:src="@{/images/pages/room/4.webp}" width="420" height="310" alt="room card">
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="room__card__meta">
-                                    <a href="room-details-2.html" class="room__card__title h5">Connecting Rooms</a>
-                                    <div class="room__card__meta__info">
-                                        <span><i class="flaticon-construction"></i>35 sqm</span>
-                                        <span><i class="flaticon-user"></i>5 Person</span>
-                                    </div>
-                                    <div class="room__price__tag">
-                                        <span class="h6 d-block">120$</span>
-                                    </div>
-                                    <a href="room-details-2.html" class="room__card__link">Discover More</a>
-
-                                </div>
-                            </div>
-                        </div>
-                        <!-- single room end -->
-                        <!-- single room -->
-                        <div class="col-xl-4 col-lg-12 col-md-6">
-                            <div class="room__card">
-                                <div class="room__card__top">
-                                    <div class="room__card__image">
-                                        <a href="room-details-2.html">
-                                            <img th:src="@{/images/pages/room/5.webp}" width="420" height="310" alt="room card">
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="room__card__meta">
-                                    <a href="room-details-2.html" class="room__card__title h5">Accessible Room</a>
-                                    <div class="room__card__meta__info">
-                                        <span><i class="flaticon-construction"></i>35 sqm</span>
-                                        <span><i class="flaticon-user"></i>5 Person</span>
-                                    </div>
-                                    <div class="room__price__tag">
-                                        <span class="h6 d-block">120$</span>
-                                    </div>
-                                    <a href="room-details-2.html" class="room__card__link">Discover More</a>
-
-                                </div>
-                            </div>
-                        </div>
-                        <!-- single room end -->
-                        <!-- single room -->
-                        <div class="col-xl-4 col-lg-12 col-md-6">
-                            <div class="room__card">
-                                <div class="room__card__top">
-                                    <div class="room__card__image">
-                                        <a href="room-details-2.html">
-                                            <img th:src="@{/images/pages/room/6.webp}" width="420" height="310" alt="room card">
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="room__card__meta">
-                                    <a href="room-details-2.html" class="room__card__title h5">Double Room</a>
-                                    <div class="room__card__meta__info">
-                                        <span><i class="flaticon-construction"></i>35 sqm</span>
-                                        <span><i class="flaticon-user"></i>5 Person</span>
-                                    </div>
-                                    <div class="room__price__tag">
-                                        <span class="h6 d-block">120$</span>
-                                    </div>
-                                    <a href="room-details-2.html" class="room__card__link">Discover More</a>
-
-                                </div>
-                            </div>
-                        </div>
-                        <!-- single room end -->
                     </div>
-                    <!-- row end -->
-                    <div class="load__more__link">
-                        <a href="#">Load More</a>
-                    </div>
+                    <nav class="eshb-pagination">
+                        <ul class="pagination-list">
+                            <li><span aria-current="page" class="page-numbers current">1</span></li>
+                            <li><a class="page-numbers" href="#">2</a></li>
+                            <li><a class="next page-numbers" href="#">Next &raquo;</a></li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
     </div>
-    <!-- single rooms end -->
 </div>
 
 </html>

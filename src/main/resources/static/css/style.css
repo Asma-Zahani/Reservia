@@ -12875,6 +12875,43 @@ textarea:focus-visible, input:focus-visible {
   gap: 5px;
 }
 
+nav.eshb-pagination {
+  margin-top: 50px;
+}
+
+@media (max-width: 1200px) {
+  nav.eshb-pagination {
+    padding: 0 15px;
+  }
+}
+
+nav.eshb-pagination ul.pagination-list {
+  display: flex;
+  list-style: none;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+}
+
+nav.eshb-pagination ul.pagination-list li a.current, nav.eshb-pagination ul.pagination-list li a:hover, nav.eshb-pagination ul.pagination-list li span.current, nav.eshb-pagination ul.pagination-list li span:hover {
+  background: #181818;
+}
+
+nav.eshb-pagination ul.pagination-list li a, nav.eshb-pagination ul.pagination-list li span {
+  background: #ab8a62;
+  color: #ffffffff;
+  border-radius: 3px;
+  padding: 12px 20px;
+  text-decoration: none;
+}
+
+.room__desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 /*
 if you need custom styles, please add it in this file below
 
