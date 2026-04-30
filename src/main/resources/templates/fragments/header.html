@@ -57,7 +57,7 @@
                     </div>
                     <div class="main__right">
                         <div th:if="${session.user != null}">
-                            Bienvenue <span th:text="${session.user}"></span>
+                                <a th:href="@{/reservia/dashboard}" class="theme-btn btn-style sm-btn border d-none d-lg-block"><span>My account</span></a>
                         </div>
 
                         <div th:if="${session.user == null}">

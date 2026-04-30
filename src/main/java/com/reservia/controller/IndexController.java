@@ -18,6 +18,11 @@ public class IndexController {
 		 return "pages/home";
 	 }
 
+	@GetMapping( "/dashboard")
+	public String dashboard() {
+		return "pages/dashboard";
+	}
+
 	@RequestMapping(value = "/contact", method = RequestMethod.GET)
 	public String contact() {
 		return "pages/contact";
