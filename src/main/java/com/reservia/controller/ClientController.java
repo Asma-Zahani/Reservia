@@ -14,9 +14,5 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    @PostMapping("/register")
-    public Client register(@RequestBody Client client) {
-        return clientService.register(client);
-    }
 
 }
