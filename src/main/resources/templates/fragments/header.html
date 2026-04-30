@@ -1,0 +1,142 @@
+<div th:fragment="header">
+    <div class="header__top">
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-lg-6 col-md-6">
+                    <div class="social__links">
+                        <a class="link__item gap-10" href="callto:#"><i class="flaticon-phone-flip"></i> +12505550199</a>
+                        <a class="link__item gap-10" href="mailto:#"><i class="flaticon-envelope"></i> moonlit@gmail.com</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="location">
+                        <a class="link__item gap-10" href="#"><i class="flaticon-marker"></i>280 Augusta Avenue, M5T 2L9 Toronto, Canada</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <header class="main__header header__function">
+        <div class="container">
+            <div class="row">
+                <div class="main__header__wrapper">
+                    <div class="main__nav">
+                        <div class="navigation d-none d-lg-block">
+                            <nav class="navigation__menu" id="main__menu">
+                                <ul class="list-unstyled">
+                                    <li class="navigation__menu--item">
+                                        <a th:href="@{/}" class="navigation__menu--item__link">Home</a>
+                                    </li>
+
+                                    <li class="navigation__menu--item">
+                                        <a th:href="@{/about}" class="navigation__menu--item__link">About Us</a>
+                                    </li>
+
+                                    <li class="navigation__menu--item">
+                                        <a th:href="@{/service}" class="navigation__menu--item__link">Service</a>
+                                    </li>
+
+                                    <li class="navigation__menu--item has-child has-arrow">
+                                        <a href="#" class="navigation__menu--item__link">Pages</a>
+                                        <ul class="submenu sub__style" role="menu">
+                                            <li role="menuitem"><a href="resturant.html">Restaurant</a></li>
+                                            <li role="menuitem"><a href="activities.html">Activities</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="navigation__menu--item">
+                                        <a th:href="@{/contact}" class="navigation__menu--item__link">Contact Us</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+
+                    </div>
+                    <div class="main__logo">
+                        <a th:href="@{/}" ><img class="logo__class" th:src="@{/images/logo/logo.svg}" alt="moonlit"></a>
+                    </div>
+                    <div class="main__right">
+                        <a href="#" class="theme-btn btn-style sm-btn border d-none d-lg-block" aria-label="Login Button" data-bs-toggle="modal" data-bs-target="#loginModal"><span>Sign In</span></a>
+                        <a href="#" class="theme-btn btn-style sm-btn border d-none d-lg-block" aria-label="Sign Up Button" data-bs-toggle="modal" data-bs-target="#signupModal"><span>Sign Up</span></a>
+                        <a th:href="@{/rooms}" class="theme-btn btn-style sm-btn fill"><span>Book Now</span></a>
+                        <button class="theme-btn btn-style sm-btn fill menu__btn d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                            <span><img th:src="@{/images/icon/menu-icon.svg}" alt=""></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="offcanvas offcanvas-start" id="offcanvasRight">
+        <div class="rts__btstrp__offcanvase">
+            <div class="offcanvase__wrapper">
+                <div class="left__side mobile__menu">
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    <div class="offcanvase__top">
+                        <div class="offcanvase__logo">
+                            <a th:href="@{/}">
+                                <img th:src="@{/images/logo/logo__two.svg}" alt="logo">
+                            </a>
+                        </div>
+                        <p class="description">
+                            Welcome to Moonlit, where luxury meets comfort in the heart of canada. Since 1999, we have been dedicated to providing.
+                        </p>
+                    </div>
+                    <div class="offcanvase__mobile__menu">
+                        <div class="mobile__menu__active"></div>
+                    </div>
+                    <div class="offcanvase__bottom">
+                        <div class="offcanvase__address">
+
+                            <div class="item">
+                                <span class="h6">Phone</span>
+                                <a href="tel:+1234567890"><i class="flaticon-phone-flip"></i> +1234567890</a>
+                            </div>
+                            <div class="item">
+                                <span class="h6">Email</span>
+                                <a href="mailto:info@hostie.com"><i class="flaticon-envelope"></i>info@hostie.com</a>
+                            </div>
+                            <div class="item">
+                                <span class="h6">Address</span>
+                                <a href="#"><i class="flaticon-marker"></i> 280 Augusta Avenue, M5T 2L9 Toronto, Canada</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="right__side desktop__menu">
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    <div class="rts__desktop__menu">
+                        <nav class="desktop__menu offcanvas__menu">
+                            <ul class="list-unstyled">
+                                <li class="slide">
+                                    <a class="slide__menu__item" href="#">Home</a>
+                                </li>
+                                <li class="slide">
+                                    <a class="slide__menu__item" th:href="@{/contact}">About Us</a>
+                                </li>
+                                <li class="slide">
+                                    <a class="slide__menu__item" th:href="@{/contact}">Service</a>
+                                </li>
+                                <li class="slide has__children">
+                                    <a class="slide__menu__item" href="#">Pages
+                                        <span class="toggle"></span>
+                                    </a>
+                                    <ul class="slide__menu">
+                                        <li><a href="resturant.html">Resturant</a></li>
+                                        <li><a href="activities.html">Activities</a></li>
+                                    </ul>
+                                </li>
+                                <li class="slide has__children">
+                                    <a class="slide__menu__item" th:href="@{/contact}">Contact Us
+                                    </a>
+
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
