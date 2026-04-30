@@ -17,7 +17,8 @@ public class ReservationController {
     // 🔹 Créer réservation
     @PostMapping
     public Reservation create(@RequestBody Reservation reservation) {
-        return reservationService.createReservation(reservation);
+        return reservationService
+                .createReservation(reservation);
     }
 
     // 🔹 Annuler réservation
