@@ -25,15 +25,15 @@
                             <nav class="navigation__menu" id="main__menu">
                                 <ul class="list-unstyled">
                                     <li class="navigation__menu--item">
-                                        <a th:href="@{/}" class="navigation__menu--item__link">Home</a>
+                                        <a th:href="@{/reservia/}" class="navigation__menu--item__link">Home</a>
                                     </li>
 
                                     <li class="navigation__menu--item">
-                                        <a th:href="@{/about}" class="navigation__menu--item__link">About Us</a>
+                                        <a th:href="@{/reservia/about}" class="navigation__menu--item__link">About Us</a>
                                     </li>
 
                                     <li class="navigation__menu--item">
-                                        <a th:href="@{/service}" class="navigation__menu--item__link">Service</a>
+                                        <a th:href="@{/reservia/service}" class="navigation__menu--item__link">Service</a>
                                     </li>
 
                                     <li class="navigation__menu--item has-child has-arrow">
@@ -45,7 +45,7 @@
                                     </li>
 
                                     <li class="navigation__menu--item">
-                                        <a th:href="@{/contact}" class="navigation__menu--item__link">Contact Us</a>
+                                        <a th:href="@{/reservia/contact}" class="navigation__menu--item__link">Contact Us</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -53,12 +53,12 @@
 
                     </div>
                     <div class="main__logo">
-                        <a th:href="@{/}" ><img class="logo__class" th:src="@{/images/logo/logo.svg}" alt="moonlit"></a>
+                        <a th:href="@{/reservia/}" ><img class="logo__class" th:src="@{/images/logo/logo.svg}" alt="moonlit"></a>
                     </div>
                     <div class="main__right">
                         <a href="#" class="theme-btn btn-style sm-btn border d-none d-lg-block" aria-label="Login Button" data-bs-toggle="modal" data-bs-target="#loginModal"><span>Sign In</span></a>
                         <a href="#" class="theme-btn btn-style sm-btn border d-none d-lg-block" aria-label="Sign Up Button" data-bs-toggle="modal" data-bs-target="#signupModal"><span>Sign Up</span></a>
-                        <a th:href="@{/rooms}" class="theme-btn btn-style sm-btn fill"><span>Book Now</span></a>
+                        <a th:href="@{/reservia/rooms}" class="theme-btn btn-style sm-btn fill"><span>Book Now</span></a>
                         <button class="theme-btn btn-style sm-btn fill menu__btn d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                             <span><img th:src="@{/images/icon/menu-icon.svg}" alt=""></span>
                         </button>
@@ -74,7 +74,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     <div class="offcanvase__top">
                         <div class="offcanvase__logo">
-                            <a th:href="@{/}">
+                            <a th:href="@{/reservia/}">
                                 <img th:src="@{/images/logo/logo__two.svg}" alt="logo">
                             </a>
                         </div>
@@ -113,10 +113,10 @@
                                     <a class="slide__menu__item" href="#">Home</a>
                                 </li>
                                 <li class="slide">
-                                    <a class="slide__menu__item" th:href="@{/contact}">About Us</a>
+                                    <a class="slide__menu__item" th:href="@{/reservia/contact}">About Us</a>
                                 </li>
                                 <li class="slide">
-                                    <a class="slide__menu__item" th:href="@{/contact}">Service</a>
+                                    <a class="slide__menu__item" th:href="@{/reservia/service}">Service</a>
                                 </li>
                                 <li class="slide has__children">
                                     <a class="slide__menu__item" href="#">Pages
@@ -128,7 +128,7 @@
                                     </ul>
                                 </li>
                                 <li class="slide has__children">
-                                    <a class="slide__menu__item" th:href="@{/contact}">Contact Us
+                                    <a class="slide__menu__item" th:href="@{/reservia/contact}">Contact Us
                                     </a>
 
                                 </li>
