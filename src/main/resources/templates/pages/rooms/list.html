@@ -26,7 +26,7 @@
                             <div class="room__card">
                                 <div class="room__card__top">
                                     <div class="room__card__image">
-                                        <a th:href="@{/reservia/rooms/{id}(id=${room.id})}">
+                                        <a th:href="@{/rooms/{id}(id=${room.id})}">
                                             <img th:src="@{${room.image_path}}" width="420" height="310" alt="room card">
                                         </a>
                                     </div>
@@ -39,13 +39,13 @@
                                     </div>
                                 </div>
                                 <div class="room__card__meta">
-                                    <a th:href="@{/reservia/rooms/{id}(id=${room.id})}" th:text="${room.type} + ' Room'" class="room__card__title h5"></a>
+                                    <a th:href="@{/rooms/{id}(id=${room.id})}" th:text="${room.type} + ' Room'" class="room__card__title h5"></a>
                                     <div class="room__card__meta__info">
                                         <span><i class="flaticon-construction"></i><span th:text="${room.size} + ' m²'"></span></span>
                                         <span><i class="flaticon-user"></i><span th:text="${room.capacity} + ' Guests'"></span></span>
                                     </div>
                                     <p th:text="${room.description}" class="room__desc"></p>
-                                    <a th:href="@{/reservia/rooms/{id}(id=${room.id})}" class="room__card__link">Discover More</a>
+                                    <a th:href="@{/rooms/{id}(id=${room.id})}" class="room__card__link">Discover More</a>
                                 </div>
                             </div>
                         </div>

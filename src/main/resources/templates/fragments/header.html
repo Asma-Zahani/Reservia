@@ -4,7 +4,7 @@
             <div class="row justify-content-between">
                 <div class="col-lg-6 col-md-6">
                     <div class="social__links">
-                        <a class="link__item gap-10" href="callto:#"><i class="flaticon-phone-flip"></i> +12505550199</a>
+                        <a class="link__item gap-10" href="tel:#"><i class="flaticon-phone-flip"></i> +12505550199</a>
                         <a class="link__item gap-10" href="mailto:#"><i class="flaticon-envelope"></i> moonlit@gmail.com</a>
                     </div>
                 </div>
@@ -25,27 +25,19 @@
                             <nav class="navigation__menu" id="main__menu">
                                 <ul class="list-unstyled">
                                     <li class="navigation__menu--item">
-                                        <a th:href="@{/reservia/}" class="navigation__menu--item__link">Home</a>
+                                        <a th:href="@{/}" class="navigation__menu--item__link">Home</a>
                                     </li>
 
                                     <li class="navigation__menu--item">
-                                        <a th:href="@{/reservia/about}" class="navigation__menu--item__link">About Us</a>
+                                        <a th:href="@{/about}" class="navigation__menu--item__link">About Us</a>
                                     </li>
 
                                     <li class="navigation__menu--item">
-                                        <a th:href="@{/reservia/service}" class="navigation__menu--item__link">Service</a>
-                                    </li>
-
-                                    <li class="navigation__menu--item has-child has-arrow">
-                                        <a href="#" class="navigation__menu--item__link">Pages</a>
-                                        <ul class="submenu sub__style" role="menu">
-                                            <li role="menuitem"><a href="resturant.html">Restaurant</a></li>
-                                            <li role="menuitem"><a href="activities.html">Activities</a></li>
-                                        </ul>
+                                        <a th:href="@{/service}" class="navigation__menu--item__link">Service</a>
                                     </li>
 
                                     <li class="navigation__menu--item">
-                                        <a th:href="@{/reservia/contact}" class="navigation__menu--item__link">Contact Us</a>
+                                        <a th:href="@{/contact}" class="navigation__menu--item__link">Contact Us</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -53,17 +45,17 @@
 
                     </div>
                     <div class="main__logo">
-                        <a th:href="@{/reservia/}" ><img class="logo__class" th:src="@{/images/logo/logo.svg}" alt="moonlit"></a>
+                        <a th:href="@{/}" ><img class="logo__class" th:src="@{/images/logo/logo.svg}" alt="moonlit"></a>
                     </div>
                     <div class="main__right">
                         <div th:if="${session.user != null}">
-                                <a th:href="@{/reservia/dashboard}" class="theme-btn btn-style sm-btn border d-none d-lg-block"><span>My account</span></a>
+                                <a th:href="@{/dashboard}" class="theme-btn btn-style sm-btn border d-none d-lg-block"><span>My account</span></a>
                         </div>
 
                         <div th:if="${session.user == null}">
-                            <a href="#" class="theme-btn btn-style sm-btn border d-none d-lg-block" aria-label="Login Button" data-bs-toggle="modal" data-bs-target="#loginModal"><span>Sign In</span></a>
+                            <a href="#" class="theme-btn btn-style sm-btn border d-none d-lg-block" aria-label="Login Button" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal"><span>Sign In</span></a>
                         </div>
-                        <a th:href="@{/reservia/rooms}" class="theme-btn btn-style sm-btn fill"><span>Book Now</span></a>
+                        <a th:href="@{/rooms}" class="theme-btn btn-style sm-btn fill"><span>Book Now</span></a>
                         <button class="theme-btn btn-style sm-btn fill menu__btn d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                             <span><img th:src="@{/images/icon/menu-icon.svg}" alt=""></span>
                         </button>
@@ -79,7 +71,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     <div class="offcanvase__top">
                         <div class="offcanvase__logo">
-                            <a th:href="@{/reservia/}">
+                            <a th:href="@{/}">
                                 <img th:src="@{/images/logo/logo__two.svg}" alt="logo">
                             </a>
                         </div>
@@ -118,24 +110,13 @@
                                     <a class="slide__menu__item" href="#">Home</a>
                                 </li>
                                 <li class="slide">
-                                    <a class="slide__menu__item" th:href="@{/reservia/contact}">About Us</a>
+                                    <a class="slide__menu__item" th:href="@{/contact}">About Us</a>
                                 </li>
                                 <li class="slide">
-                                    <a class="slide__menu__item" th:href="@{/reservia/service}">Service</a>
+                                    <a class="slide__menu__item" th:href="@{/service}">Service</a>
                                 </li>
                                 <li class="slide has__children">
-                                    <a class="slide__menu__item" href="#">Pages
-                                        <span class="toggle"></span>
-                                    </a>
-                                    <ul class="slide__menu">
-                                        <li><a href="resturant.html">Resturant</a></li>
-                                        <li><a href="activities.html">Activities</a></li>
-                                    </ul>
-                                </li>
-                                <li class="slide has__children">
-                                    <a class="slide__menu__item" th:href="@{/reservia/contact}">Contact Us
-                                    </a>
-
+                                    <a class="slide__menu__item" th:href="@{/contact}">Contact Us</a>
                                 </li>
                             </ul>
                         </nav>

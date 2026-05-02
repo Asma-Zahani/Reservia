@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layouts/layout :: layout}" th:fragment="dashboard_layout">
+
+<div th:fragment="content">
+    <!-- page header -->
+    <div class="rts__section page__hero__height page__hero__bg"  th:style="'background-image: url(' + @{/images/pages/header___bg.webp} + ')'">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-12">
+                    <div class="page__hero__content">
+                        <h1 class="wow fadeInUp">My account</h1>
+                        <p class="wow fadeInUp font-sm">Whether you have questions, need assistance, or simply want to share.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- page header end -->
+
+    <div class="rts__section section__padding">
+        <div class="container">
+            <div class="row g-4 main__content sticky-wrap">
+                <!-- SIDEBAR -->
+                <div class="col-12 col-md-4">
+                    <div class="account-sidebar p-4">
+                        <ul class="list-unstyled m-0 px-3">
+                            <li th:classappend="${activePage == 'dashboard'} ? 'active'">
+                                <a th:href="@{/dashboard}"><i class="fa fa-dashboard me-2"></i>Dashboard</a>
+                            </li>
+                            <li th:classappend="${activePage == 'account'} ? 'active'">
+                                <a th:href="@{/dashboard/account}"><i class="fa fa-file-alt me-2"></i>Account Details</a>
+                            </li>
+                            <li th:classappend="${activePage == 'password'} ? 'active'">
+                                <a th:href="@{/dashboard/change-password}"><i class="fa fa-lock me-2"></i>Change Password</a>
+                            </li>
+                            <li th:classappend="${activePage == 'reservations'} ? 'active'">
+                                <a th:href="@{/dashboard/reservations}"><i class="fa fa-calendar me-2"></i>My Reservations</a>
+                            </li>
+                            <li th:classappend="${activePage == 'history'} ? 'active'">
+                                <a th:href="@{/dashboard/history}"><i class="fa fa-history me-2"></i>History</a>
+                            </li>
+                        </ul>
+
+                        <hr>
+
+                        <!--th:action="@{/logout}" method="post" -->
+                        <div class="my-3" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                            <button type="button" class="theme-btn btn-style sm-btn border w-100"><span>Log Out</span></button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- CONTENT -->
+                <div class="col-12 col-md-8 py-4">
+                    <div th:insert="~{::content_dashboard}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</html>
