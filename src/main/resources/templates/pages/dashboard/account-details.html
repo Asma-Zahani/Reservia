@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/dashboard_layout :: dashboard_layout}">
+
+<div th:fragment="content_dashboard">
+    <div class="account-form">
+
+        <h4>Account Details</h4>
+        <p class="form-subtitle">Update your personal information below.</p>
+
+        <form th:action="@{/dashboard/account/update}" method="post">
+
+            <!-- Name -->
+            <div class="custom-field">
+                <i class="fa fa-user"></i>
+                <input type="text" name="nom" placeholder="Your Name" required>
+            </div>
+
+            <!-- Email -->
+            <div class="custom-field">
+                <i class="fa fa-envelope"></i>
+                <input type="email" name="email" placeholder="Your Email" required>
+            </div>
+
+            <!-- Submit -->
+            <div class="form-actions">
+                <button type="submit" class="theme-btn btn-style fill">
+                    <span>Update Account</span>
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+</html>

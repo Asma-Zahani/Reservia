@@ -1,6 +1,6 @@
 package com.reservia.entity;
 
 public enum Role {
-    ADMIN,
-    CLIENT
+    ROLE_ADMIN,
+    ROLE_CLIENT
 }

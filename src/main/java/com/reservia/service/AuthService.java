@@ -1,17 +1,21 @@
 package com.reservia.service;
 
 import com.reservia.entity.Client;
+import com.reservia.entity.Role;
 import com.reservia.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.reservia.config.JwtService;
 import com.reservia.dto.AuthRequest;
 import com.reservia.dto.AuthResponse;
-import com.reservia.entity.Role;
-import com.reservia.entity.User;
-import com.reservia.repository.UserRepository;
 
 @Service
 public class AuthService {
@@ -24,29 +28,53 @@ public class AuthService {
 
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
-    public AuthResponse register(AuthRequest request) {
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
+    public void register(AuthRequest request) {
         Client client = new Client();
         client.setEmail(request.getEmail());
-        client.setPassword(encoder.encode(request.getPassword()));
         client.setNom(request.getNom());
-        repo.save(client);
+        client.setPassword(passwordEncoder.encode(request.getPassword()));
+        client.setRole(Role.valueOf("ROLE_CLIENT"));
 
-        String token = jwtService.generateToken(client.getEmail());
-        return new AuthResponse(token, client);
+        repo.save(client);
     }
 
-    public AuthResponse login(AuthRequest request) {
+    public void login(AuthRequest request) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
 
-        Client client = repo.findByEmail(request.getEmail())
-                .orElseThrow();
+    public Client getCurrentClient() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if (!encoder.matches(request.getPassword(), client.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
+        if (principal instanceof UserDetails userDetails) {
+            return repo.findByEmail(userDetails.getUsername())
+                    .orElseThrow(() -> new RuntimeException("Client not found"));
         }
 
-        String token = jwtService.generateToken(client.getEmail());
-        return new AuthResponse(token, client);
+        throw new RuntimeException("User not authenticated");
+    }
+
+    public boolean changePassword(String currentPassword, String newPassword) {
+        Client client = getCurrentClient();
+
+        if (!passwordEncoder.matches(currentPassword, client.getPassword())) {
+            return false; // ancien mot de passe incorrect
+        }
+
+        client.setPassword(passwordEncoder.encode(newPassword));
+        repo.save(client);
+
+        return true;
     }
 }

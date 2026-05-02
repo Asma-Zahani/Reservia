@@ -1,7 +1,9 @@
 package com.reservia.controller;
 
+import com.reservia.service.CustomUserDetailsService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,22 +21,28 @@ public class AuthController {
     @Autowired
     private AuthService service;
 
-    @PostMapping("/register")
-    public String register(AuthRequest request, HttpSession session) {
-        AuthResponse res = service.register(request);
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
 
-        session.setAttribute("token", res.getToken());
-        session.setAttribute("user", res.getUser().getNom());
-        return "redirect:/reservia/";
+    @PostMapping("/register")
+    public String register(AuthRequest request) {
+        service.register(request);
+
+        return "redirect:/";
     }
 
     @PostMapping("/login")
     public String login(AuthRequest request, HttpSession session) {
-        AuthResponse res = service.login(request);
+        service.login(request);
 
-        session.setAttribute("token", res.getToken());
-        session.setAttribute("user", res.getUser().getNom());
+        var userDetails = userDetailsService.loadUserByUsername(request.getEmail());
 
-        return "redirect:/reservia/";
+        session.setAttribute("user", request.getEmail());
+        session.setAttribute(
+                "SPRING_SECURITY_CONTEXT",
+                SecurityContextHolder.getContext()
+        );
+
+        return "redirect:/dashboard";
     }
 }

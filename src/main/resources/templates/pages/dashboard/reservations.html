@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/dashboard_layout :: dashboard_layout}">
+
+<div th:fragment="content_dashboard">
+    <h4>My Reservations</h4>
+    <p class="form-subtitle">
+        Here you can view all your reservations, check their details, and manage them easily.
+    </p>
+
+    <!-- Message si aucune réservation -->
+    <div th:if="${#lists.isEmpty(reservations)}">
+        <p>No reservations found.</p>
+    </div>
+
+    <!-- Table des réservations -->
+    <table class="table" th:if="${!#lists.isEmpty(reservations)}">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Reservation Date</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="r : ${reservations}">
+                <td th:text="${r.id}"></td>
+                <td th:text="${r.dateDebut}"></td>
+                <td th:text="${r.dateFin}"></td>
+                <td th:text="${r.dateReservation}"></td>
+                <td th:text="${r.totalPrix} + ' TND'"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</html>

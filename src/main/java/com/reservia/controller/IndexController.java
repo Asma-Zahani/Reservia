@@ -11,17 +11,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
 
 @Controller
-@RequestMapping("/reservia")
 public class IndexController {
 	@GetMapping( "/")
-	public String home() {
+	public String index() {
 		 return "pages/home";
 	 }
-
-	@GetMapping( "/dashboard")
-	public String dashboard() {
-		return "pages/dashboard";
-	}
 
 	@RequestMapping(value = "/contact", method = RequestMethod.GET)
 	public String contact() {
@@ -58,5 +52,10 @@ public class IndexController {
 		//Room room = roomService.findById(id);
 		model.addAttribute("room", "room");
 		return "pages/rooms/details";
+	}
+
+	@GetMapping("/404")
+	public String notFound() {
+		return "error/404";
 	}
 }
