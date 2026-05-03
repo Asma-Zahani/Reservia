@@ -33,13 +33,13 @@
                                     <div class="room__price__tag">
                                         <div class="room__price">
                                             <div class="eshb-price">
-                                                <span th:text="${room.price} + ' DT'" class="eshb-price-amount amount"></span>
+                                                <span th:text="${room.price} + ' TND'" class="eshb-price-amount amount"></span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="room__card__meta">
-                                    <a th:href="@{/rooms/{id}(id=${room.id})}" th:text="${room.type} + ' Room'" class="room__card__title h5"></a>
+                                    <a th:href="@{/rooms/{id}(id=${room.id})}" th:text="${room.type}" class="room__card__title h5"></a>
                                     <div class="room__card__meta__info">
                                         <span><i class="flaticon-construction"></i><span th:text="${room.size} + ' m²'"></span></span>
                                         <span><i class="flaticon-user"></i><span th:text="${room.capacity} + ' Guests'"></span></span>
@@ -52,9 +52,28 @@
                     </div>
                     <nav class="eshb-pagination">
                         <ul class="pagination-list">
-                            <li><span aria-current="page" class="page-numbers current">1</span></li>
-                            <li><a class="page-numbers" href="#">2</a></li>
-                            <li><a class="next page-numbers" href="#">Next &raquo;</a></li>
+
+                            <!-- Previous -->
+                            <li th:if="${currentPage > 0}">
+                                <a th:href="@{/rooms(page=${currentPage - 1})}">&laquo; Prev</a>
+                            </li>
+
+                            <!-- Pages -->
+                            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                                <span th:if="${i == currentPage}" class="page-numbers current" th:text="${i + 1}"></span>
+                                <a th:if="${i != currentPage}"
+                                   class="page-numbers"
+                                   th:href="@{/rooms(page=${i})}"
+                                   th:text="${i + 1}"></a>
+                            </li>
+
+                            <!-- Next -->
+                            <li th:if="${currentPage < totalPages - 1}">
+                                <a th:href="@{/rooms(page=${currentPage + 1})}">
+                                    Next &raquo;
+                                </a>
+                            </li>
+
                         </ul>
                     </nav>
                 </div>
