@@ -519,5 +519,27 @@
     rtsJs.m(); 
 
   
-  })(jQuery, window)  
+  })(jQuery, window)
 
+
+$(function() {
+  let picker = $('#calendar').daterangepicker({
+    autoUpdateInput: false,
+    minDate: moment(),
+    autoApply: false,
+    parentEl: '#calendar',
+    locale: {
+      cancelLabel: 'Cancel',
+      applyLabel: 'Apply',
+      format: 'YYYY-MM-DD'
+    }
+  }).data('daterangepicker');
+  picker.show();
+
+  $('#calendar').on('apply.daterangepicker', function(ev, picker) {
+    console.log("Start:", picker.startDate.format('YYYY-MM-DD'));
+    console.log("End:", picker.endDate.format('YYYY-MM-DD'));
+
+    // 👉 ici tu peux envoyer au backend ou afficher ailleurs
+  });
+});

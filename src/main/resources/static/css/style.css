@@ -13031,6 +13031,34 @@ nav.eshb-pagination ul.pagination-list li a, nav.eshb-pagination ul.pagination-l
   border: none !important;
 }
 
+#calendar .daterangepicker {
+  position: relative !important;
+  top: 0 !important;
+  left: 0 !important;
+  display: block !important;
+  margin: 0 auto;
+  z-index: 1 !important;
+}
+
+.calendar-container {
+  width: 45%;
+  max-width: 500px;
+}
+
+.daterangepicker .applyBtn {
+  background-color: #8B6B4A !important;
+  border-color: #8B6B4A !important;
+}
+
+.daterangepicker td.active,
+.daterangepicker td.active:hover {
+  background-color: #8B6B4A !important;
+}
+
+.daterangepicker td.in-range {
+  background-color: #d6c2a8 !important;
+}
+
 /*
 if you need custom styles, please add it in this file below
 
