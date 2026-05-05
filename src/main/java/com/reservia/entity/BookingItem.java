@@ -1,4 +1,4 @@
-package com.reservia.entities;
+package com.reservia.entity;
 
 import jakarta.persistence.*;
 

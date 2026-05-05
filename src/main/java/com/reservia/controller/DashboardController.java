@@ -1,6 +1,5 @@
 package com.reservia.controller;
 
-import com.reservia.entity.Reservation;
 import com.reservia.service.AuthService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,10 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 @Controller
 @RequestMapping("/dashboard")
 public class DashboardController {
@@ -30,19 +25,19 @@ public class DashboardController {
 	@GetMapping
 	public String dashboard(Model model) {
 		model.addAttribute("activePage", "dashboard");
-		model.addAttribute("client", service.getCurrentClient());
+		model.addAttribute("user", service.getCurrentUser());
 		return "pages/dashboard/dashboard";
 	}
 
 	@GetMapping("/account")
 	public String account(Model model) {
 		model.addAttribute("activePage", "account");
-		model.addAttribute("client", service.getCurrentClient());
+		model.addAttribute("user", service.getCurrentUser());
 		return "pages/dashboard/account-details";
 	}
 
 	@PostMapping("/account/update")
-public String updateAccount(@RequestParam String nom,
+	public String updateAccount(@RequestParam String nom,
                             @RequestParam String email,
                             HttpServletRequest request,
                             HttpServletResponse response,
@@ -63,7 +58,7 @@ public String updateAccount(@RequestParam String nom,
 	}
 
 
-@GetMapping("/change-password")
+	@GetMapping("/change-password")
     public String changePasswordPage(Model model) {
         model.addAttribute("activePage", "change-password");
         return "pages/dashboard/change-password";
@@ -100,26 +95,26 @@ public String updateAccount(@RequestParam String nom,
 	public String reservations(Model model) {
 		model.addAttribute("activePage", "reservations");
 
-		List<Reservation> reservations = new ArrayList<>();
-
-		Reservation r1 = new Reservation();
-		r1.setId(1L);
-		r1.setDateDebut(LocalDate.of(2026, 5, 10));
-		r1.setDateFin(LocalDate.of(2026, 5, 15));
-		r1.setDateReservation(LocalDate.now());
-		r1.setTotalPrix(250.0);
-
-		Reservation r2 = new Reservation();
-		r2.setId(2L);
-		r2.setDateDebut(LocalDate.of(2026, 6, 1));
-		r2.setDateFin(LocalDate.of(2026, 6, 5));
-		r2.setDateReservation(LocalDate.now());
-		r2.setTotalPrix(180.0);
-
-		reservations.add(r1);
-		reservations.add(r2);
-
-		model.addAttribute("reservations", reservations);
+//		List<Reservation> reservations = new ArrayList<>();
+//
+//		Reservation r1 = new Reservation();
+//		r1.setId(1L);
+//		r1.setDateDebut(LocalDate.of(2026, 5, 10));
+//		r1.setDateFin(LocalDate.of(2026, 5, 15));
+//		r1.setDateReservation(LocalDate.now());
+//		r1.setTotalPrix(250.0);
+//
+//		Reservation r2 = new Reservation();
+//		r2.setId(2L);
+//		r2.setDateDebut(LocalDate.of(2026, 6, 1));
+//		r2.setDateFin(LocalDate.of(2026, 6, 5));
+//		r2.setDateReservation(LocalDate.now());
+//		r2.setTotalPrix(180.0);
+//
+//		reservations.add(r1);
+//		reservations.add(r2);
+//
+//		model.addAttribute("reservations", reservations);
 
 		return "pages/dashboard/reservations";
 	}

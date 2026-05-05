@@ -26,7 +26,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/", "/about", "/service", "/contact", "/rooms/**").permitAll()
                         .requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**").permitAll()
-                        .requestMatchers("/dashboard").hasRole("CLIENT")
+                        .requestMatchers("/dashboard").hasRole("USER")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

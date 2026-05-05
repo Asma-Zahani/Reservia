@@ -1,6 +1,6 @@
 package com.reservia.service;
 
-import com.reservia.entities.Room;
+import com.reservia.entity.Room;
 import com.reservia.repository.RoomRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

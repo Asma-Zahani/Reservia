@@ -6,12 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.reservia.dto.AuthRequest;
-import com.reservia.dto.AuthResponse;
 import com.reservia.service.AuthService;
 
 @Controller
@@ -35,7 +32,7 @@ public class AuthController {
     public String login(AuthRequest request, HttpSession session) {
         service.login(request);
 
-        var userDetails = userDetailsService.loadUserByUsername(request.getEmail());
+        userDetailsService.loadUserByUsername(request.getEmail());
 
         session.setAttribute("user", request.getEmail());
         session.setAttribute(

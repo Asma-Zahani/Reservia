@@ -1,7 +1,10 @@
-package com.reservia.entities;
+package com.reservia.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -23,4 +26,8 @@ public class Room {
     @Lob
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<BookingItem> items;
 }
