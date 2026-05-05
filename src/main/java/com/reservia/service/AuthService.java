@@ -1,8 +1,8 @@
 package com.reservia.service;
 
-import com.reservia.entity.Client;
 import com.reservia.entity.Role;
-import com.reservia.repository.ClientRepository;
+import com.reservia.entity.User;
+import com.reservia.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,13 +15,12 @@ import org.springframework.stereotype.Service;
 
 import com.reservia.config.JwtService;
 import com.reservia.dto.AuthRequest;
-import com.reservia.dto.AuthResponse;
 
 @Service
 public class AuthService {
 
     @Autowired
-    private ClientRepository repo;
+    private UserRepository repo;
 
     @Autowired
     private PasswordEncoder encoder;
@@ -35,13 +34,13 @@ public class AuthService {
     private AuthenticationManager authenticationManager;
 
     public void register(AuthRequest request) {
-        Client client = new Client();
-        client.setEmail(request.getEmail());
-        client.setNom(request.getNom());
-        client.setPassword(passwordEncoder.encode(request.getPassword()));
-        client.setRole(Role.valueOf("ROLE_CLIENT"));
+        User user = new User();
+        user.setEmail(request.getEmail());
+        user.setName(request.getNom());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(Role.valueOf("ROLE_USER"));
 
-        repo.save(client);
+        repo.save(user);
     }
 
     public void login(AuthRequest request) {
@@ -54,12 +53,12 @@ public class AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
-    public Client getCurrentClient() {
+    public User getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof UserDetails userDetails) {
             return repo.findByEmail(userDetails.getUsername())
-                    .orElseThrow(() -> new RuntimeException("Client not found"));
+                    .orElseThrow(() -> new RuntimeException("User not found"));
         }
 
         throw new RuntimeException("User not authenticated");
@@ -67,12 +66,12 @@ public class AuthService {
 
 
     public boolean changePassword(String currentPassword, String newPassword) {
-    Client client = getCurrentClient();
-    if (!passwordEncoder.matches(currentPassword, client.getPassword())) {
+    User user = getCurrentUser();
+    if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
         return false;
     }
-    client.setPassword(passwordEncoder.encode(newPassword));
-    repo.save(client);
+    user.setPassword(passwordEncoder.encode(newPassword));
+    repo.save(user);
 
     return true;
 }
@@ -80,29 +79,27 @@ public class AuthService {
 
 
     public boolean updateAccount(String nom, String email) {
-        Client client = getCurrentClient();
-        if (!client.getEmail().equals(email) && repo.existsByEmail(email)) {
+        User user = getCurrentUser();
+        if (!user.getEmail().equals(email) && repo.existsByEmail(email)) {
             return false; 
         }
-        client.setNom(nom);
-        client.setEmail(email);
-        repo.save(client);
+        user.setName(nom);
+        user.setEmail(email);
+        repo.save(user);
         return true;
     }
 
     public boolean isEmailChanged(String newEmail) {
-    Client current = getCurrentClient();
-    return !current.getEmail().equals(newEmail);
-}
-
-
+        User current = getCurrentUser();
+        return !current.getEmail().equals(newEmail);
+    }
 
     public void reAuthenticate(String newPassword) {
-    Client client = getCurrentClient();
+    User user = getCurrentUser();
 
     Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
-                    client.getEmail(),
+                    user.getEmail(),
                     newPassword
             )
     );

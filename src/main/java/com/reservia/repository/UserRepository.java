@@ -1,11 +1,11 @@
 package com.reservia.repository;
 
+import com.reservia.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.reservia.entity.Client;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<Client, Long> {
-    Optional<Client> findByEmail(String email);
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByEmail(String email);
+    boolean existsByEmail(String email);
 }

@@ -1,10 +1,8 @@
 package com.reservia.service;
 
-import com.reservia.entity.Trajet;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
-public class TrajetService {
+public class BookingService {
 
 }

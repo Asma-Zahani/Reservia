@@ -13,14 +13,14 @@
             <!-- Name -->
             <div class="custom-field">
                 <i class="fa fa-user"></i>
-                <input type="text"  name="nom" placeholder="Your Name" required th:value="${client.nom}">
+                <input type="text"  name="nom" placeholder="Your Name" required th:value="${user.name}">
             </div>
 
             <!-- Email -->
             <div class="custom-field">
             <i class="fa fa-envelope"></i>
             <input type="email" id="email" name="email"
-                th:value="${client.email}" required>
+                th:value="${user.email}" required>
             </div>
 
             <div id="emailWarning" class="alert-warning-custom" style="display:none;">
@@ -42,7 +42,7 @@
 </html>
 
 <script th:inline="javascript">
-    const originalEmail = /*[[${client.email}]]*/ "";
+    const originalEmail = "";
     const emailInput = document.getElementById("email");
     const warning = document.getElementById("emailWarning");
 

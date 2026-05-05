@@ -1,6 +1,6 @@
 package com.reservia.repository;
 
-import com.reservia.entities.Room;
+import com.reservia.entity.Room;
 
 import java.time.LocalDate;
 import java.util.List;
