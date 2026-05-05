@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -48,4 +49,15 @@ public class RoomController {
 
 		return "pages/rooms/details";
 	}
+
+	@GetMapping("/rooms/available")
+    public List<Room> getAvailableRooms(
+            @RequestParam String startDate,
+            @RequestParam String endDate) {
+
+        return roomService.getAvailableRooms(
+                LocalDate.parse(startDate),
+                LocalDate.parse(endDate)
+        );
+    }
 }
