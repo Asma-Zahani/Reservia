@@ -2,7 +2,12 @@ package com.reservia.controller;
 
 import com.reservia.entity.Reservation;
 import com.reservia.service.AuthService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,20 +42,59 @@ public class DashboardController {
 	}
 
 	@PostMapping("/account/update")
-	public String update_account() {
-		return null;
+public String updateAccount(@RequestParam String nom,
+                            @RequestParam String email,
+                            HttpServletRequest request,
+                            HttpServletResponse response,
+                            RedirectAttributes redirectAttributes) {
+		boolean emailChanged = service.isEmailChanged(email);
+		boolean success = service.updateAccount(nom, email);
+		if (success) {
+			if (emailChanged) {
+				SecurityContextHolder.clearContext();
+				request.getSession().invalidate();
+				return "redirect:/";
+			}
+			redirectAttributes.addFlashAttribute("successMessage", "Account updated successfully.");
+		} else {
+			redirectAttributes.addFlashAttribute("errorMessage", "Failed to update account.");
+		}
+		return "redirect:/";
 	}
 
-	@GetMapping("/change-password")
-	public String changePasswordPage(Model model) {
-		model.addAttribute("activePage", "password");
-		return "pages/dashboard/change-password";
-	}
 
-	@PostMapping("/change-password")
-	public String changePassword() {
-		return null;
-	}
+@GetMapping("/change-password")
+    public String changePasswordPage(Model model) {
+        model.addAttribute("activePage", "change-password");
+        return "pages/dashboard/change-password";
+    }
+
+    // 2. Traite le formulaire (POST)
+    @PostMapping("/change-password")
+    public String handleChangePassword(
+            @RequestParam("currentPassword") String currentPassword,
+            @RequestParam("newPassword") String newPassword,
+            @RequestParam("confirmPassword") String confirmPassword,
+            RedirectAttributes redirectAttributes) {
+
+        if (!newPassword.equals(confirmPassword)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Les mots de passe ne correspondent pas.");
+            return "redirect:/dashboard/change-password"; // Redirige vers le GET
+        }
+
+        boolean success = service.changePassword(currentPassword, newPassword);
+        
+        if (success) {
+            redirectAttributes.addFlashAttribute("successMessage", "Mot de passe mis à jour !");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Ancien mot de passe incorrect.");
+        }
+
+        return "redirect:/dashboard/change-password"; // Redirige vers le GET
+    }
+
+
+	
 
 	@GetMapping("/reservations")
 	public String reservations(Model model) {

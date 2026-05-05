@@ -65,16 +65,48 @@ public class AuthService {
         throw new RuntimeException("User not authenticated");
     }
 
+
     public boolean changePassword(String currentPassword, String newPassword) {
+    Client client = getCurrentClient();
+    if (!passwordEncoder.matches(currentPassword, client.getPassword())) {
+        return false;
+    }
+    client.setPassword(passwordEncoder.encode(newPassword));
+    repo.save(client);
+
+    return true;
+}
+
+
+
+    public boolean updateAccount(String nom, String email) {
         Client client = getCurrentClient();
-
-        if (!passwordEncoder.matches(currentPassword, client.getPassword())) {
-            return false; // ancien mot de passe incorrect
+        if (!client.getEmail().equals(email) && repo.existsByEmail(email)) {
+            return false; 
         }
-
-        client.setPassword(passwordEncoder.encode(newPassword));
+        client.setNom(nom);
+        client.setEmail(email);
         repo.save(client);
-
         return true;
     }
+
+    public boolean isEmailChanged(String newEmail) {
+    Client current = getCurrentClient();
+    return !current.getEmail().equals(newEmail);
+}
+
+
+
+    public void reAuthenticate(String newPassword) {
+    Client client = getCurrentClient();
+
+    Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                    client.getEmail(),
+                    newPassword
+            )
+    );
+
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+}
 }
