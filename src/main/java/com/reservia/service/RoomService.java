@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -34,5 +35,9 @@ public class RoomService {
                 .filter(r -> r.getType().equals(type))
                 .limit(3)
                 .toList();
+    }
+
+    public List<Room> getAvailableRooms(LocalDate start, LocalDate end) {
+    return roomRepository.findAvailableRooms(start, end);
     }
 }

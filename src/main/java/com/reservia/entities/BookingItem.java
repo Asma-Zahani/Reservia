@@ -20,4 +20,10 @@ public class BookingItem {
     private LocalDate endDate;
     private Integer quantity;
     private Double price;
+
+    @ManyToOne
+    private Booking booking;
+
+    @ManyToOne
+    private Room room;
 }
