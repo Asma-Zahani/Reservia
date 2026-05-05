@@ -18,8 +18,13 @@
 
             <!-- Email -->
             <div class="custom-field">
-                <i class="fa fa-envelope"></i>
-                <input type="email" name="email" placeholder="Your Email" required th:value="${client.email}">
+            <i class="fa fa-envelope"></i>
+            <input type="email" id="email" name="email"
+                th:value="${client.email}" required>
+            </div>
+
+            <div id="emailWarning" class="alert-warning-custom" style="display:none;">
+                ⚠️ Modifier votre email entraînera une déconnexion automatique.
             </div>
 
             <!-- Submit -->
@@ -35,3 +40,19 @@
 </div>
 
 </html>
+
+<script th:inline="javascript">
+    const originalEmail = /*[[${client.email}]]*/ "";
+    const emailInput = document.getElementById("email");
+    const warning = document.getElementById("emailWarning");
+
+    if (emailInput) {
+        emailInput.addEventListener("input", function () {
+            if (emailInput.value !== originalEmail) {
+                warning.style.display = "block";
+            } else {
+                warning.style.display = "none";
+            }
+        });
+    }
+</script>
