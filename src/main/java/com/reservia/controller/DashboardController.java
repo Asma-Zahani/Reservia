@@ -59,7 +59,7 @@ public String updateAccount(@RequestParam String nom,
 		} else {
 			redirectAttributes.addFlashAttribute("errorMessage", "Failed to update account.");
 		}
-		return "redirect:/";
+		return "redirect:/dashboard/account";
 	}
 
 
