@@ -537,9 +537,10 @@ $(function() {
   picker.show();
 
   $('#calendar').on('apply.daterangepicker', function(ev, picker) {
-    console.log("Start:", picker.startDate.format('YYYY-MM-DD'));
-    console.log("End:", picker.endDate.format('YYYY-MM-DD'));
+    let start = picker.startDate.format('YYYY-MM-DD');
+    let end = picker.endDate.format('YYYY-MM-DD');
 
-    // 👉 ici tu peux envoyer au backend ou afficher ailleurs
+    console.log("Start:", start);
+    console.log("End:", end);
   });
 });
