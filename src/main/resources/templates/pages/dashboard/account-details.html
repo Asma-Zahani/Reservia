@@ -13,13 +13,13 @@
             <!-- Name -->
             <div class="custom-field">
                 <i class="fa fa-user"></i>
-                <input type="text" name="nom" placeholder="Your Name" required>
+                <input type="text"  name="nom" placeholder="Your Name" required th:value="${client.nom}">
             </div>
 
             <!-- Email -->
             <div class="custom-field">
                 <i class="fa fa-envelope"></i>
-                <input type="email" name="email" placeholder="Your Email" required>
+                <input type="email" name="email" placeholder="Your Email" required th:value="${client.email}">
             </div>
 
             <!-- Submit -->

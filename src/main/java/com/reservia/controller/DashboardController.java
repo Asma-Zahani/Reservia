@@ -32,6 +32,7 @@ public class DashboardController {
 	@GetMapping("/account")
 	public String account(Model model) {
 		model.addAttribute("activePage", "account");
+		model.addAttribute("client", service.getCurrentClient());
 		return "pages/dashboard/account-details";
 	}
 
