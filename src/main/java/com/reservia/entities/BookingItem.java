@@ -1,7 +1,10 @@
 package com.reservia.entities;
 
 import jakarta.persistence.*;
+
 import lombok.*;
+
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -9,18 +12,12 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Room {
+public class BookingItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String image_path;
-    private String type;
-    private int size;
-    private int capacity;
-    private int price;
-
-    @Lob
-    @Column(columnDefinition = "TEXT")
-    private String description;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private Integer quantity;
+    private Double price;
 }

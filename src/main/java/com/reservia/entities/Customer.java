@@ -9,18 +9,17 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Room {
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String name;
 
-    private String image_path;
-    private String type;
-    private int size;
-    private int capacity;
-    private int price;
+    @Column(unique = true)
+    private String email;
+    private String password;
 
-    @Lob
-    @Column(columnDefinition = "TEXT")
-    private String description;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
 }
