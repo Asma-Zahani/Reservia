@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -42,22 +43,25 @@ public class RoomController {
 		}
 
 		model.addAttribute("room", room);
-
 		List<Room> similarRooms = roomService.findSimilarRooms(room.getType(), id);
-
 		model.addAttribute("similar_rooms", similarRooms);
 
 		return "pages/rooms/details";
 	}
 
 	@GetMapping("/rooms/available")
-    public List<Room> getAvailableRooms(
-            @RequestParam String startDate,
-            @RequestParam String endDate) {
+	public String getAvailableRooms(@RequestParam String startDate, @RequestParam String endDate, Model model) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		LocalDate start = LocalDate.parse(startDate, formatter);
+		LocalDate end = LocalDate.parse(endDate, formatter);
 
-        return roomService.getAvailableRooms(
-                LocalDate.parse(startDate),
-                LocalDate.parse(endDate)
-        );
-    }
+		List<Room> rooms = roomService.getAvailableRooms(start, end);
+
+		model.addAttribute("rooms", rooms);
+		model.addAttribute("startDate", startDate);
+		model.addAttribute("endDate", endDate);
+
+		return "pages/booking/booking"; // ou une page dédiée
+	}
+
 }

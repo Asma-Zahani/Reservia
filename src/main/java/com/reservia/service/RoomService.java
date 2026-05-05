@@ -38,6 +38,6 @@ public class RoomService {
     }
 
     public List<Room> getAvailableRooms(LocalDate start, LocalDate end) {
-    return roomRepository.findAvailableRooms(start, end);
+        return roomRepository.findAvailableRooms(start, end);
     }
 }
