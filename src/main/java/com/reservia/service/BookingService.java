@@ -41,11 +41,6 @@ public class BookingService {
     }
 
     @Transactional
-    public void deleteBooking(Long id) {
-        bookingRepository.deleteById(id);
-    }
-
-    @Transactional
     public void createBooking(BookingRequest request, Map<String,String> allParams) {
         Booking booking = new Booking();
         booking.setBookingDate(LocalDate.now());
@@ -84,5 +79,12 @@ public class BookingService {
 
     public List<Booking> getBookingsByUser(User user) {
         return bookingRepository.findByUser(user);
+    }
+
+    public void cancelBooking(Long id) {
+        Booking booking = bookingRepository.findById(id).orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        booking.setStatus(BookingStatus.CANCELLED);
+        bookingRepository.save(booking);
     }
 }
