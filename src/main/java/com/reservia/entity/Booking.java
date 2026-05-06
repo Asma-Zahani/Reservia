@@ -25,6 +25,14 @@ public class Booking {
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
     private List<BookingItem> items;
 
+    @ManyToMany
+    @JoinTable(
+            name = "booking_extras",
+            joinColumns = @JoinColumn(name = "booking_id"),
+            inverseJoinColumns = @JoinColumn(name = "extra_service_id")
+    )
+    private List<ExtraService> extras;
+
     @ManyToOne
     private User user;
 }

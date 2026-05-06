@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/dashboard_layout :: dashboard_layout}">
+
+<div th:fragment="content_dashboard">
+
+    <div class="mb-4">
+        <h4 class="fw-bold text-primary">Booking History</h4>
+        <p class="text-muted">
+            Here you can view all your bookings and check their details.
+        </p>
+    </div>
+
+    <!-- Empty -->
+    <div th:if="${#lists.isEmpty(bookings)}" class="alert alert-info">
+        No booking history found.
+    </div>
+
+    <!-- Table -->
+    <div class="table-responsive" th:if="${!#lists.isEmpty(bookings)}">
+
+        <table class="table table-hover align-middle shadow-sm">
+
+            <thead class="table-primary text-white">
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr th:each="booking, iterStat : ${bookings}">
+
+                <td class="fw-bold text-primary" th:text="${booking.id}"></td>
+
+                <td th:text="${booking.bookingDate}"></td>
+
+                <!-- STATUS COLOR FIX -->
+                <td>
+                    <span class="badge rounded-pill px-3 py-2"
+                          th:classappend="${booking.status == 'PAID'} ? 'bg-success' :
+                                          (booking.status == 'PENDING' ? 'bg-warning text-dark' : 'bg-danger')"
+                          th:text="${booking.status}">
+                    </span>
+                </td>
+
+                <td class="fw-semibold text-dark">
+                    <span th:text="${booking.totalPrice}"></span> TND
+                </td>
+
+                <td>
+                    <button class="btn btn-sm btn-outline-primary rounded-pill"
+                            data-bs-toggle="modal"
+                            th:data-bs-target="'#bookingModal' + ${iterStat.index}">
+                        View Details
+                    </button>
+                </td>
+
+                <div class="modal fade" th:id="'bookingModal' + ${iterStat.index}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content border rounded-3">
+
+                            <!-- HEADER -->
+                            <div class="modal-header bg-primary text-white border-0">
+                                <h5 class="modal-title">
+                                    Booking #<span th:text="${booking.id}"></span>
+                                </h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <!-- BODY -->
+                            <div class="modal-body">
+
+                                <!-- TOP INFO -->
+                                <div class="row mb-3">
+
+                                    <div class="col-md-6">
+                                        <div class="p-3 bg-light rounded">
+                                            <p class="mb-1">
+                                                <strong class="text-primary">Date:</strong>
+                                                <span th:text="${booking.bookingDate}"></span>
+                                            </p>
+
+                                            <p class="mb-0">
+                                                <strong class="text-primary">Status:</strong>
+                                                <span class="badge" th:classappend="${booking.status == 'CONFIRMED'} ? 'bg-success' : 'bg-warning text-dark'" th:text="${booking.status}"></span>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="p-3 bg-light rounded text-end">
+                                            <p class="mb-1">
+                                                <strong class="text-primary">Period:</strong>
+                                                <span th:text="${booking.items[0].startDate + ' → ' + booking.items[0].endDate}"></span>
+                                            </p>
+
+                                            <p class="mb-0">
+                                                <strong class="text-primary">Total:</strong>
+                                                <span th:text="${booking.totalPrice}"></span> TND
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- DIVIDER -->
+                                <hr class="my-4">
+
+                                <!-- TABLE -->
+                                <h6 class="fw-bold text-primary mb-3">Booking Details</h6>
+
+                                <table class="table table-hover bg-white">
+
+                                    <thead class="table-light">
+                                    <tr>
+                                        <th>Room</th>
+                                        <th>Night(s)</th>
+                                        <th>Quantity</th>
+                                        <th>Unit Price</th>
+                                        <th>Total</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr th:each="item : ${booking.items}">
+                                        <td class="fw-semibold" th:text="${item.room.type}" th:href="@{/rooms/{id}(id=${item.room.id})}"></td>
+                                        <td th:text="${item.duration}"></td>
+                                        <td th:text="${item.quantity}"></td>
+                                        <td th:text="${item.room.price + ' TND'}"></td>
+                                        <td class="fw-bold text-primary" th:text="${item.price + ' TND'}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <h6 th:if="${booking.extras != null and !#lists.isEmpty(booking.extras)}" class="fw-bold text-primary mb-3">Extra Services</h6>
+
+                                <table th:if="${booking.extras != null and !#lists.isEmpty(booking.extras)}" class="table table-hover bg-white">
+                                    <thead class="table-light">
+                                    <tr>
+                                        <th>Service</th>
+                                        <th>Unit Price</th>
+                                        <th>Total</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr th:each="extra : ${booking.extras}">
+                                        <td class="fw-semibold" th:text="${extra.name}"></td>
+                                        <td th:text="${extra.perNight ? extra.price + ' / Night' : 'Free'}"></td>
+                                        <td class="fw-bold text-primary" th:text="${extra.price * booking.items[0].duration + ' TND'}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                            <!-- FOOTER -->
+                            <div class="modal-footer border-0 gap-2">
+
+                                <button type="button" class="theme-btn btn-style border" data-bs-dismiss="modal">
+                                    <span>Close</span>
+                                </button>
+
+                                <button type="button" class="theme-btn btn-style fill">
+                                    <span>Print</span>
+                                </button>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+</html>

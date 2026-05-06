@@ -1,6 +1,7 @@
 package com.reservia.controller;
 
 import com.reservia.entity.Room;
+import com.reservia.service.ExtraServiceService;
 import com.reservia.service.RoomService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -14,9 +15,11 @@ import java.util.List;
 @Controller
 public class RoomController {
 	private final RoomService roomService;
+	private final ExtraServiceService extraServiceService;
 
-	public RoomController(RoomService roomService) {
+	public RoomController(RoomService roomService, ExtraServiceService extraServiceService) {
 		this.roomService = roomService;
+		this.extraServiceService = extraServiceService;
 	}
 
 	@RequestMapping("/rooms")
@@ -60,6 +63,7 @@ public class RoomController {
 		model.addAttribute("rooms", rooms);
 		model.addAttribute("startDate", startDate);
 		model.addAttribute("endDate", endDate);
+		model.addAttribute("extraServices", extraServiceService.getAll());
 
 		return "pages/rooms/booking";
 	}

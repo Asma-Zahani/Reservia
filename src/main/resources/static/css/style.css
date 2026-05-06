@@ -13122,6 +13122,10 @@ input[type="number"] {
 .query__input.checkbox:has(input:disabled) * {
   cursor: not-allowed;
 }
+
+.text-primary {
+  color: #ab8a62 !important;
+}
 /*
 if you need custom styles, please add it in this file below
 

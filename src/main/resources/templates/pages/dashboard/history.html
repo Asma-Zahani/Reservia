@@ -7,12 +7,10 @@
         Here you can view all your booking history and check their details.
     </p>
 
-    <!-- Message si aucune réservation -->
     <div th:if="${#lists.isEmpty(bookings)}">
         <p>No history found.</p>
     </div>
 
-    <!-- Table des réservations -->
     <table class="table table-striped" th:if="${!#lists.isEmpty(bookings)}">
         <thead>
         <tr>
@@ -27,80 +25,153 @@
         <tr th:each="booking, iterStat : ${bookings}">
             <td th:text="${booking.id}"></td>
             <td th:text="${booking.bookingDate}"></td>
-            <td th:text="${booking.status}"></td>
+            <td>
+                <span class="badge px-3 py-1" th:classappend="${booking.status.name() == 'CONFIRMED'} ? 'bg-success' :
+                    (${booking.status.name() == 'PENDING'} ? 'bg-warning text-dark' :
+                    (${booking.status.name() == 'CANCELLED'} ? 'bg-danger' : 'bg-secondary'))"
+                    th:text="${booking.status}">
+                </span>
+            </td>
             <td th:text="${booking.totalPrice}"></td>
             <td class="px-4">
                 <a href="#" data-bs-toggle="modal" th:data-bs-target="'#bookingModal' + ${iterStat.index}" title="View Details">
                     <i class="fas fa-eye"></i>
                 </a>
 
-                <div class="modal fade" th:id="'bookingModal' + ${iterStat.index}" tabindex="-1" aria-hidden="true">
+                <div class="modal fade" th:id="'bookingModal' + ${iterStat.index}" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Booking Details #<span th:text="${booking.id}"></span></h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div class="modal-content border-0 rounded-3" th:id="'printArea' + ${iterStat.index}">
+
+                            <!-- HEADER -->
+                            <div class="modal-header border-0" style="background-color:#f8f6f3;">
+                                <h4 class="modal-title fw-semibold" style="color:#2c2c2c;">
+                                    Booking #<span th:text="${booking.id}"></span>
+                                </h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
 
-                            <div class="modal-body">
+                            <!-- BODY -->
+                            <div class="modal-body" style="color:#2c2c2c;">
 
-                                <div class="d-flex justify-content-between mb-3">
-                                    <div>
-                                        <p class="mb-1">
-                                            <strong>Date:</strong>
-                                            <span th:text="${booking.bookingDate}"></span>
-                                        </p>
-                                        <p class="mb-1">
-                                            <strong>Status:</strong>
-                                            <span class="badge"
-                                                  th:classappend="${booking.status == 'PAID'} ? 'bg-success' : 'bg-warning text-dark'"
-                                                  th:text="${booking.status}">
-                                            </span>
-                                        </p>
+                                <!-- TOP INFO -->
+                                <div class="row g-3 mb-3">
+
+                                    <div class="col-md-6">
+                                        <div class="p-3 rounded" style="background:#f8f6f3;">
+                                            <p class="mb-1">
+                                                <strong style="color:#9c7b53;">Date:</strong>
+                                                <span th:text="${booking.bookingDate}"></span>
+                                            </p>
+
+                                            <p class="mb-0">
+                                                <strong style="color:#9c7b53;">Status:</strong>
+                                                <span class="badge px-3 py-1"
+                                                      th:classappend="${booking.status.name() == 'CONFIRMED'} ? 'bg-success' :
+                                                        (${booking.status.name() == 'PENDING'} ? 'bg-warning text-dark' :
+                                                        (${booking.status.name() == 'CANCELLED'} ? 'bg-danger' : 'bg-secondary'))"
+                                                      th:text="${booking.status}">
+                                                </span>
+                                            </p>
+                                        </div>
                                     </div>
 
-                                    <div class="text-end">
-                                        <p class="mb-1">
-                                            <strong>Total:</strong>
-                                            <span th:text="${booking.totalPrice}"></span> DT
-                                        </p>
-                                        <p class="mb-1">
-                                            <strong>Items:</strong>
-                                            <span th:text="${#lists.size(booking.items)}"></span>
-                                        </p>
+                                    <div class="col-md-6">
+                                        <div class="p-3 rounded text-end" style="background:#f8f6f3;">
+                                            <p class="mb-1">
+                                                <strong style="color:#9c7b53;">Period:</strong>
+                                                <span th:text="${booking.items[0].startDate + ' → ' + booking.items[0].endDate}"></span>
+                                            </p>
+
+                                            <p class="mb-0">
+                                                <strong style="color:#9c7b53;">Total:</strong>
+                                                <span th:text="${booking.totalPrice}"></span> TND
+                                            </p>
+                                        </div>
                                     </div>
+
                                 </div>
 
-                                <h6 class="mb-3">Booking Details</h6>
+                                <!-- DIVIDER -->
+                                <hr style="border-color:#e5e0d8;">
 
-                                <table class="table table-bordered">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Room</th>
-                                            <th>Period</th>
-                                            <th>Qty</th>
-                                            <th>Unit Price</th>
-                                            <th>Total</th>
-                                        </tr>
+                                <!-- BOOKING DETAILS -->
+                                <h5 class="fw-semibold mb-3" style="color:#9c7b53;">Booking Details</h5>
+
+                                <table class="table" style="background:white;">
+
+                                    <thead style="background:#f8f6f3;">
+                                    <tr style="color:#2c2c2c;">
+                                        <th>Room</th>
+                                        <th>Night(s)</th>
+                                        <th>Quantity</th>
+                                        <th>Unit Price</th>
+                                        <th>Total</th>
+                                    </tr>
                                     </thead>
 
                                     <tbody>
-                                        <tr th:each="item : ${booking.items}">
-                                            <td th:text="${item.room.type}"></td>
-                                            <td th:text="${item.duration + ' Night(s) - ' + item.startDate + ' - ' + item.endDate}"></td>
-                                            <td th:text="${item.quantity}"></td>
-                                            <td th:text="${item.room.price}"></td>
-                                            <td th:text="${item.room.price * item.quantity * item.duration}"></td>
-                                        </tr>
+                                    <tr th:each="item : ${booking.items}">
+                                        <td class="fw-semibold" th:text="${item.room.type}"></td>
+                                        <td th:text="${item.duration}"></td>
+                                        <td th:text="${item.quantity}"></td>
+                                        <td th:text="${item.room.price + ' TND'}"></td>
+                                        <td class="fw-bold" style="color:#9c7b53;" th:text="${item.price + ' TND'}"></td>
+                                    </tr>
                                     </tbody>
                                 </table>
 
+                                <!-- EXTRA SERVICES -->
+                                <h5 th:if="${booking.extras != null and !#lists.isEmpty(booking.extras)}" class="fw-semibold mt-4 mb-3" style="color:#9c7b53;">Extra Services</h5>
 
+                                <table th:if="${booking.extras != null and !#lists.isEmpty(booking.extras)}" class="table" style="background:white;">
+
+                                    <thead style="background:#f8f6f3;">
+                                    <tr>
+                                        <th>Service</th>
+                                        <th>Unit Price</th>
+                                        <th>Total</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr th:each="extra : ${booking.extras}">
+                                        <td class="fw-semibold" th:text="${extra.name}"></td>
+
+                                        <td th:text="${extra.perNight ? extra.price + ' / Night' : 'Free'}"></td>
+
+                                        <td class="fw-bold" style="color:#9c7b53;"
+                                            th:text="${extra.price * booking.items[0].duration + ' TND'}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <!-- GRAND TOTAL -->
+                                <div class="grand-total d-flex justify-content-end mt-4">
+
+                                    <div class="px-4 py-3" style="min-width:280px; background:#f8f6f3; border-radius:10px;">
+
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span style="color:#666;">Grand Total</span>
+                                            <span class="fw-bold fs-5" style="color:#9c7b53;"
+                                                  th:text="${booking.totalPrice + ' TND'}"></span>
+                                        </div>
+
+                                    </div>
+
+                                </div>
 
                             </div>
 
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <!-- FOOTER -->
+                            <div class="modal-footer border-0 gap-2">
+                                <button type="button" class="theme-btn btn-style border" data-bs-dismiss="modal">
+                                    <span>Close</span>
+                                </button>
+
+                                <button type="button" class="theme-btn btn-style fill" th:onclick="'printBooking(' + ${iterStat.index} + ')'">
+                                    <span>Print</span>
+                                </button>
+
                             </div>
 
                         </div>
@@ -110,6 +181,46 @@
         </tr>
         </tbody>
     </table>
+
+    <script>
+        function printBooking(index) {
+            const content = document.getElementById('printArea' + index).innerHTML;
+            const printWindow = window.open('', '_blank', 'width=900,height=700');
+
+            printWindow.document.open();
+            printWindow.document.write(`
+        <html>
+        <head>
+            <title>Print Booking</title>
+            <style>
+                body { font-family: Arial, sans-serif; padding: 20px; }
+                table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                th { background: #f5f5f5; }
+                .badge { padding: 5px 10px; border-radius: 5px; }
+                h5 { font-size: 18px; margin-top: 20px; }
+                button, .grand-total { visibility: hidden; }
+            </style>
+        </head>
+        <body>
+            ${content}
+        </body>
+        </html>
+    `);
+            printWindow.document.close();
+
+            // Attendre que le contenu soit chargé avant d'imprimer
+            printWindow.onload = function () {
+                printWindow.focus();
+                printWindow.print();
+
+                // Fermer automatiquement après impression (optionnel)
+                printWindow.onafterprint = function () {
+                    printWindow.close();
+                };
+            };
+        }
+    </script>
 </div>
 
 </html>
