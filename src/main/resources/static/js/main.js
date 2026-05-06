@@ -319,18 +319,6 @@
           }
         });
 
-        // VIDEO TEXT SLIDER
-        let videoText = new Swiper(".video__text__slider", {
-          slidesPerView: 1,
-          spaceBetween: 0,
-          loop: true,
-          speed: 1000,
-          autoplay: true,
-          autoplay: {
-            delay: 5000,
-          }
-        });
-
         // Initialize the main slider (model__hero__top)
         var mainSlider = new Swiper('.testimonial__author', {
             slidesPerView: 1,
@@ -522,26 +510,64 @@
   })(jQuery, window)
 
 
-$(function() {
-  let picker = $('#calendar').daterangepicker({
-    autoUpdateInput: false,
-    minDate: moment(),
-    autoApply: false,
-    parentEl: '#calendar',
-    locale: {
-      cancelLabel: 'Cancel',
-      applyLabel: 'Apply',
-      format: 'YYYY-MM-DD'
-    }
-  }).data('daterangepicker');
-  picker.show();
+document.addEventListener('DOMContentLoaded', function() {
+  const roomId = document.getElementById('roomId').value;
 
-  $('#calendar').on('apply.daterangepicker', function(ev, picker) {
-    let start = picker.startDate.format('YYYY-MM-DD');
-    let end = picker.endDate.format('YYYY-MM-DD');
+  fetch(`/rooms/${roomId}/disabledDates`)
+      .then(response => response.json())
+      .then(disabledDates => {
 
-    console.log("Start:", start);
-    console.log("End:", end);
-  });
+        // Créer un input temporaire invisible dans le div
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.style.display = 'none';
+        document.getElementById('calendar').appendChild(input);
+
+        // Initialiser daterangepicker sur cet input
+        $(input).daterangepicker({
+          autoUpdateInput: false,
+          minDate: moment(),
+          autoApply: false,
+          locale: {
+            cancelLabel: 'Cancel',
+            applyLabel: 'Apply',
+            format: 'YYYY-MM-DD'
+          },
+          parentEl: '#calendar', // le calendrier sera affiché dans le div
+          isInvalidDate: function(date) {
+            return disabledDates.includes(date.format('YYYY-MM-DD'));
+          }
+        });
+
+        const picker = $(input).data('daterangepicker');
+
+        // Gestion de la sélection
+        $(input).on('apply.daterangepicker', function(ev, picker) {
+          let start = picker.startDate.clone();
+          let end = picker.endDate.clone();
+          let current = start.clone();
+          let invalid = false;
+
+          while (current <= end) {
+            if (disabledDates.includes(current.format('YYYY-MM-DD'))) {
+              invalid = true;
+              break;
+            }
+            current.add(1, 'day');
+          }
+
+          if (invalid) {
+            alert("Selected range contains unavailable dates. Please choose another period.");
+            return;
+          }
+
+          const startStr = start.format('DD-MM-YYYY');
+          const endStr = end.format('DD-MM-YYYY');
+          window.location.href = `/rooms/available?startDate=${startStr}&endDate=${endStr}`;
+        });
+
+        // Afficher le calendrier automatiquement
+        picker.show();
+      })
+      .catch(err => console.error("Erreur lors de la récupération des dates :", err));
 });
-
