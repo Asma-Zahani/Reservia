@@ -10,23 +10,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.reservia.config.JwtService;
 import com.reservia.dto.AuthRequest;
 
 @Service
 public class AuthService {
 
     @Autowired
-    private UserRepository repo;
+    private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder encoder;
-
-    @Autowired
-    private JwtService jwtService;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
@@ -40,7 +33,7 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.valueOf("ROLE_USER"));
 
-        repo.save(user);
+        userRepository.save(user);
     }
 
     public void login(AuthRequest request) {
@@ -57,7 +50,7 @@ public class AuthService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof UserDetails userDetails) {
-            return repo.findByEmail(userDetails.getUsername())
+            return userRepository.findByEmail(userDetails.getUsername())
                     .orElseThrow(() -> new RuntimeException("User not found"));
         }
 
@@ -71,7 +64,7 @@ public class AuthService {
         return false;
     }
     user.setPassword(passwordEncoder.encode(newPassword));
-    repo.save(user);
+    userRepository.save(user);
 
     return true;
 }
@@ -80,12 +73,12 @@ public class AuthService {
 
     public boolean updateAccount(String nom, String email) {
         User user = getCurrentUser();
-        if (!user.getEmail().equals(email) && repo.existsByEmail(email)) {
+        if (!user.getEmail().equals(email) && userRepository.existsByEmail(email)) {
             return false; 
         }
         user.setName(nom);
         user.setEmail(email);
-        repo.save(user);
+        userRepository.save(user);
         return true;
     }
 

@@ -1,12 +1,13 @@
 package com.reservia.config;
 
 import java.io.IOException;
+
+import com.reservia.service.UserService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.security.core.context.SecurityContextHolder;
-import com.reservia.service.CustomUserDetailsService;
 
 
 public class JwtFilter extends OncePerRequestFilter {
@@ -15,7 +16,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private JwtService jwtService;
 
     @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private UserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -32,7 +33,7 @@ public class JwtFilter extends OncePerRequestFilter {
             if (jwtService.isValid(token)) {
                 String username = jwtService.extractUsername(token);
 
-                var userDetails = userDetailsService.loadUserByUsername(username);
+                var userDetails = userService.loadUserByUsername(username);
 
                 var authToken = new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
                         userDetails,

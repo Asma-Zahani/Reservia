@@ -19,8 +19,8 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Version
-//    private Integer version;
+    @Version
+    private Integer version;
 
     private LocalDate bookingDate;
     private Double totalPrice;

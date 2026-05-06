@@ -14,21 +14,18 @@ import com.reservia.repository.UserRepository;
 
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class UserService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository repo;
+    private final UserRepository userRepository;
 
-      @Override
-    public UserDetails loadUserByUsername(String email) {
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
-        User user = repo.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                List.of(new SimpleGrantedAuthority("" + user.getRole()))
-        );
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur introuvable"));
     }
 }
+

@@ -127,7 +127,8 @@
                                 <h5 class="p-0 mt-20">Extra Services</h5>
 
                                 <div class="query__input checkbox wow fadeInUp" th:each="extraService : ${extraServices}">
-                                    <input type="checkbox" th:id="${extraService.name}" th:name="${extraService.name}" th:value="${extraService.price}" onchange="updateTotal()" disabled>
+                                    <input type="checkbox" th:id="${extraService.name}" name="extraServiceIds" th:value="${extraService.id}"
+                                           onchange="updateTotal()" th:data-price="${extraService.price}" th:data-per-night="${extraService.perNight}" disabled>
                                     <label th:for="${extraService.name}" th:text="${extraService.name}"></label>
                                     <span th:if="${extraService.perNight}" th:text="${extraService.price} + ' TND / Night'"></span>
                                     <span th:if="${!extraService.perNight}">Free</span>

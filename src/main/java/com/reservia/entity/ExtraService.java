@@ -2,6 +2,8 @@ package com.reservia.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Data
@@ -9,6 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
+//@Cache(usage = CacheConcurrencyStrategy.READ_ONLY) // Ne change jamais
 public class ExtraService {
 
     @Id

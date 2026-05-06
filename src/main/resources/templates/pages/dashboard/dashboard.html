@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+<html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layouts/dashboard_layout :: dashboard_layout}">
 
 <div th:fragment="content_dashboard">
     <h4>
-        Welcome back, <span sec:authentication="principal.name">User</span>
+        Welcome back, <span th:text="${user.name}">User</span>!
     </h4>
 
     <p>
