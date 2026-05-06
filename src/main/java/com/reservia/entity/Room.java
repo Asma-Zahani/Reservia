@@ -24,7 +24,7 @@ public class Room {
     private String type;
     private int size;
     private int capacity;
-    private int price;
+    private Double price;
 
     @Lob
     @Column(columnDefinition = "TEXT")
