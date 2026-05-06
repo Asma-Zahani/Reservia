@@ -42,11 +42,7 @@ public class DashboardController {
 	}
 
 	@PostMapping("/account/update")
-	public String updateAccount(@RequestParam String nom,
-                            @RequestParam String email,
-                            HttpServletRequest request,
-                            HttpServletResponse response,
-                            RedirectAttributes redirectAttributes) {
+	public String updateAccount(@RequestParam String nom, @RequestParam String email, HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		boolean emailChanged = authService.isEmailChanged(email);
 		boolean success = authService.updateAccount(nom, email);
 		if (success) {
@@ -62,14 +58,12 @@ public class DashboardController {
 		return "redirect:/dashboard/account";
 	}
 
-
 	@GetMapping("/change-password")
     public String changePasswordPage(Model model) {
         model.addAttribute("activePage", "change-password");
         return "pages/dashboard/change-password";
     }
 
-    // 2. Traite le formulaire (POST)
     @PostMapping("/change-password")
     public String handleChangePassword(
             @RequestParam("currentPassword") String currentPassword,
@@ -79,7 +73,7 @@ public class DashboardController {
 
         if (!newPassword.equals(confirmPassword)) {
             redirectAttributes.addFlashAttribute("errorMessage", "Les mots de passe ne correspondent pas.");
-            return "redirect:/dashboard/change-password"; // Redirige vers le GET
+            return "redirect:/dashboard/change-password";
         }
 
         boolean success = authService.changePassword(currentPassword, newPassword);
@@ -90,11 +84,8 @@ public class DashboardController {
             redirectAttributes.addFlashAttribute("errorMessage", "Ancien mot de passe incorrect.");
         }
 
-        return "redirect:/dashboard/change-password"; // Redirige vers le GET
+        return "redirect:/dashboard/change-password";
     }
-
-
-	
 
 	@GetMapping("/bookings")
 	public String bookings(Model model) {
@@ -105,25 +96,6 @@ public class DashboardController {
 		model.addAttribute("bookings", bookings);
 
 		return "pages/dashboard/bookings";
-	}
-
-	@GetMapping("/bookings/edit/{id}")
-	public String editBooking(@PathVariable Long id, Model model) {
-		Booking booking = bookingService.getBookingById(id);
-		model.addAttribute("booking", booking);
-		return "";
-	}
-
-	@PostMapping("/bookings/edit/{id}")
-	public String updateBooking(@PathVariable Long id, @ModelAttribute BookingRequest bookingRequest, @RequestParam Map<String,String> allParams) {
-		bookingService.updateBooking(id, bookingRequest, allParams);
-		return "redirect:/dashboard/bookings";
-	}
-
-	@PostMapping("/bookings/delete/{id}")
-	public String deleteBooking(@PathVariable Long id) {
-		bookingService.deleteBooking(id);
-		return "redirect:/dashboard/bookings";
 	}
 
 	@GetMapping("/history")

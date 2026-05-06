@@ -41,13 +41,9 @@
                 <a href="#" title="Edit" style="margin-right:5px;">
                     <i class="fas fa-edit"></i>
                 </a>
-                <form th:action="@{/dashboard/booking/delete/{id}(id=${booking.id})}" method="post" th:object="${booking}" style="display:inline;">
-                    <input type="hidden" name="_method" value="delete"/>
-                    <button type="submit" title="Delete" style="background:none;border:none;color:red;cursor:pointer;"
-                            onclick="return confirm('Are you sure?')">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </form>
+                <a href="#" title="Delete" style="color:red;" data-bs-toggle="modal" th:data-bs-target="'#deleteModal' + ${booking.id}">
+                    <i class="fas fa-trash"></i>
+                </a>
 
                 <div class="modal fade" th:id="'bookingModal' + ${iterStat.index}" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -183,6 +179,38 @@
                                     <span>Print</span>
                                 </button>
 
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" th:id="'deleteModal' + ${booking.id}" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title">Booking Action</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body">
+                                <p>
+                                    Do you really want to cancel booking #<strong th:text="${booking.id}"></strong>?<br>
+                                    Once canceled, this action cannot be reversed.
+                                </p>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="theme-btn btn-style border" data-bs-dismiss="modal">
+                                    <span>Cancel</span>
+                                </button>
+
+                                <form th:action="@{/booking/cancel/{id}(id=${booking.id})}" method="post">
+                                    <button type="submit" class="theme-btn btn-style fill">
+                                        <span>Cancel booking</span>
+                                    </button>
+                                </form>
                             </div>
 
                         </div>
