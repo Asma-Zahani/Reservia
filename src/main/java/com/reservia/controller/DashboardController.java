@@ -90,7 +90,8 @@ public class DashboardController {
 	@GetMapping("/bookings")
 	public String bookings(Model model) {
 		var user = authService.getCurrentUser();
-		List<Booking> bookings = bookingService.getBookingsByUser(user);
+
+		List<Booking> bookings = bookingService.getActiveBookings(user);
 
 		model.addAttribute("activePage", "bookings");
 		model.addAttribute("bookings", bookings);
@@ -101,7 +102,8 @@ public class DashboardController {
 	@GetMapping("/history")
 	public String history(Model model) {
 		var user = authService.getCurrentUser();
-		List<Booking> bookings = bookingService.getBookingsByUser(user);
+
+		List<Booking> bookings = bookingService.getHistoryBookings(user);
 
 		model.addAttribute("activePage", "history");
 		model.addAttribute("bookings", bookings);
