@@ -121,13 +121,16 @@ window.updateTotal = function() {
     });
 
     document.querySelectorAll('input[type="checkbox"]:checked').forEach(el => {
-        let price = parseInt(el.value || 0);
 
-        if (el.id === "transport") {
-            total += price;
-        } else {
+        let price = parseInt(el.dataset.price || 0);
+        let perNight = el.dataset.perNight === "true";
+
+        if (perNight) {
             total += price * nights;
+        } else {
+            total += price;
         }
+
     });
 
     document.getElementById("totalPrice").innerText = total;

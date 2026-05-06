@@ -18,12 +18,10 @@ import java.util.List;
 public class RoomController {
 	private final RoomService roomService;
 	private final ExtraServiceService extraServiceService;
-	private final BookingService bookingService;
 
-	public RoomController(RoomService roomService, ExtraServiceService extraServiceService, BookingService bookingService) {
+	public RoomController(RoomService roomService, ExtraServiceService extraServiceService) {
 		this.roomService = roomService;
 		this.extraServiceService = extraServiceService;
-		this.bookingService = bookingService;
 	}
 
 	@GetMapping

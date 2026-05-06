@@ -221,6 +221,25 @@
         </tbody>
     </table>
 
+
+    <nav class="simple-pagination" th:if="${totalPages > 1}">
+        <a th:if="${currentPage > 0}"
+           th:href="@{/dashboard/history(page=${currentPage - 1})}">
+            ←
+        </a>
+
+        <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+           th:href="@{/dashboard/history(page=${i})}"
+           th:text="${i + 1}"
+           th:classappend="${i == currentPage} ? 'active' : ''">
+        </a>
+
+        <a th:if="${currentPage < totalPages - 1}"
+           th:href="@{/dashboard/history(page=${currentPage + 1})}">
+            →
+        </a>
+    </nav>
+
     <script>
         function printBooking(index) {
             const content = document.getElementById('printArea' + index).innerHTML;

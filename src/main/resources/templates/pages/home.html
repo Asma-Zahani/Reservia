@@ -99,29 +99,25 @@
             <div class="row">
                 <form action="/rooms/available" method="get" class="advance__search">
                     <div class="advance__search__wrapper wow fadeInUp">
-                        <!-- single input -->
                         <div class="query__input">
                             <label for="check__in" class="query__label">Check In</label>
-                            <input type="text" id="check__in" name="startDate" placeholder="15-06-2026" required>
+                            <input type="text" id="check__in" name="startDate" th:value="${startDate}" placeholder="15 Jun 2024" required>
                             <div class="query__input__icon">
                                 <i class="flaticon-calendar"></i>
                             </div>
                         </div>
-                        <!-- single input end -->
 
                         <div class="query__input">
                             <label for="check__out" class="query__label">Check Out</label>
-                            <input type="text" id="check__out" name="endDate" placeholder="30-06-2026" required>
+                            <input type="text" id="check__out" name="endDate" th:value="${endDate}" placeholder="15 May 2024" required>
                             <div class="query__input__icon">
                                 <i class="flaticon-calendar"></i>
                             </div>
                         </div>
 
-                        <!-- submit button -->
                         <button class="theme-btn btn-style fill no-border search__btn">
-                            <span>Check Now</span>
+                            <span><i class="flaticon-search-1"></i> Search</span>
                         </button>
-                        <!-- submit button end -->
                     </div>
                 </form>
             </div>

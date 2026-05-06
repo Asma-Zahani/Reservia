@@ -2,8 +2,15 @@ package com.reservia.service;
 
 import com.reservia.dto.BookingRequest;
 import com.reservia.entity.*;
+import com.reservia.exception.RoomNotAvailableException;
 import com.reservia.repository.BookingRepository;
+import com.reservia.repository.ExtraServiceRepository;
 import com.reservia.repository.RoomRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,25 +22,87 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Transactional
 public class BookingService {
 
     private final BookingRepository bookingRepository;
     private final AuthService authService;
-    private final RoomService roomService;
+    private final RoomRepository roomRepository;
+    private final ExtraServiceRepository extraServiceRepository;
 
-    public BookingService(BookingRepository bookingRepository, 
-                          AuthService authService, 
-                          RoomService roomService) {
+    public BookingService(BookingRepository bookingRepository, AuthService authService,
+                          RoomRepository roomRepository, ExtraServiceRepository extraServiceRepository) {
         this.bookingRepository = bookingRepository;
         this.authService = authService;
-        this.roomService = roomService;
+        this.roomRepository = roomRepository;
+        this.extraServiceRepository = extraServiceRepository;
     }
 
     public Booking getBookingById(Long id) {
         return bookingRepository.findById(id).orElseThrow(() -> new RuntimeException("Booking not found"));
     }
 
-    @Transactional
+    // Rollback sur exception metier personnalisee
+    @Transactional(rollbackFor = RoomNotAvailableException.class)
+    public void createBooking(BookingRequest request, Map<String,String> allParams) {
+        LocalDate startDate = LocalDate.parse(request.getStartDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        LocalDate endDate = LocalDate.parse(request.getEndDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
+        // Step 1: Check room availability (WITHIN the transaction)
+        List<Room> available = roomRepository.findAvailableRooms(startDate, endDate);
+        List<Room> selectedRooms = available.stream()
+                .filter(r -> request.getRoomIds().contains(r.getId()))
+                .toList();
+
+        // Ensure all requested rooms are available
+        if (selectedRooms.size() != request.getRoomIds().size()) {
+            throw new RoomNotAvailableException("One or more rooms are not available for the selected dates");
+        }
+
+        // Step 2: Calculate the number of nights
+        long nights = ChronoUnit.DAYS.between(startDate, endDate);
+
+        // Step 3: Calculate the total price of extra services
+        List<ExtraService> extras = extraServiceRepository.findAllById(request.getExtraServiceIds());
+        double extrasPrice = extras.stream()
+                .mapToDouble(e -> e.isPerNight() ? e.getPrice() * nights : e.getPrice())
+                .sum();
+
+        // Step 4: Create booking entities
+        Booking booking = new Booking();
+        booking.setBookingDate(LocalDate.now());
+        booking.setStatus(BookingStatus.valueOf("PENDING"));
+        booking.setUser(authService.getCurrentUser());
+        booking.setExtraServices(extras);
+
+        double totalPrice = 0;
+
+        // Create booking items for each selected room
+        for (Room room : selectedRooms) {
+            int qty = allParams.get("room_" + room.getId() + "_qty") != null
+                    ? Integer.parseInt(allParams.get("room_" + room.getId() + "_qty"))
+                    : 1;
+
+            BookingItem item = new BookingItem();
+            item.setStartDate(startDate);
+            item.setEndDate(endDate);
+            item.setQuantity(qty);
+            item.setPrice(room.getPrice() * qty * nights);
+            item.setRoom(room);
+            item.setBooking(booking);
+
+            booking.getItems().add(item);
+
+            totalPrice += item.getPrice();
+        }
+
+        // Set the final total price including extras
+        booking.setTotalPrice(totalPrice + extrasPrice);
+
+        // Persist booking (atomic transaction)
+        bookingRepository.save(booking);
+    }
+
     public void updateBooking(Long id, BookingRequest request, Map<String,String> allParams) {
         Booking booking = getBookingById(id);
         // Exemple simple : mise à jour du status et totalPrice
@@ -42,66 +111,31 @@ public class BookingService {
         bookingRepository.save(booking);
     }
 
-    @Transactional
-    public void createBooking(BookingRequest request, Map<String,String> allParams) {
-        Booking booking = new Booking();
-        booking.setBookingDate(LocalDate.now());
-        booking.setTotalPrice(Double.valueOf(request.getTotalPrice()));
-        booking.setStatus(BookingStatus.valueOf("PENDING"));
-        booking.setUser(authService.getCurrentUser());
-
-        long nights = ChronoUnit.DAYS.between(
-                LocalDate.parse(request.getStartDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")),
-                LocalDate.parse(request.getEndDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy"))
-        );
-
-        List<BookingItem> items = new ArrayList<>();
-
-        if (request.getRoomIds() != null) {
-            for (Integer roomId : request.getRoomIds()) {
-                int qty = allParams.get("room_" + roomId + "_qty") != null ? Integer.parseInt(allParams.get("room_" + roomId + "_qty")) : 1;
-
-                Room room = roomService.findById(Long.valueOf(roomId));
-
-                BookingItem item = new BookingItem();
-                item.setStartDate(LocalDate.parse(request.getStartDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-                item.setEndDate(LocalDate.parse(request.getEndDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-                item.setQuantity(qty);
-                item.setPrice((double) (room.getPrice() * qty * nights));
-                item.setBooking(booking);
-                item.setRoom(room);
-
-                items.add(item);
-            }
-        }
-        booking.setItems(items);
-
-        bookingRepository.save(booking);
-    }
-
-    public List<Booking> getBookingsByUser(User user) {
-        return bookingRepository.findByUser(user);
-    }
-
+    @Transactional  // Commit si tout OK, Rollback automatique si exception -> Hibernate detecte le changement et fait UPDATE
     public void cancelBooking(Long id) {
         Booking booking = bookingRepository.findById(id).orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        if (!booking.getUser().getId().equals(authService.getCurrentUser().getId())) {
+            throw new AccessDeniedException("You are not the owner of this booking");
+        }
+
+        if (booking.getStatus() == BookingStatus.CANCELLED) {
+            throw new IllegalStateException("This booking has already been cancelled");
+        }
 
         booking.setStatus(BookingStatus.CANCELLED);
         bookingRepository.save(booking);
     }
 
 
-    public List<Booking> getActiveBookings(User user) {
-    return bookingRepository.findByUserAndStatuses(
-        user,
-        List.of(BookingStatus.PENDING, BookingStatus.CONFIRMED)
-    );
-}
+    public Page<Booking> getActiveBookings(User user, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return bookingRepository.findByUserAndStatuses(user, List.of(BookingStatus.PENDING, BookingStatus.CONFIRMED), pageable);
+    }
 
-public List<Booking> getHistoryBookings(User user) {
-    return bookingRepository.findByUserAndStatuses(
-        user,
-        List.of(BookingStatus.CANCELLED, BookingStatus.COMPLETED)
-    );
-}
+
+    public Page<Booking> getHistoryBookings(User user, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return bookingRepository.findByUserAndStatuses(user, List.of(BookingStatus.CANCELLED, BookingStatus.COMPLETED), pageable);
+    }
 }

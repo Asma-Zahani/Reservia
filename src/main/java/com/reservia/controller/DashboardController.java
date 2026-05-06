@@ -2,6 +2,7 @@ package com.reservia.controller;
 
 import com.reservia.dto.BookingRequest;
 import com.reservia.entity.Booking;
+import com.reservia.entity.Room;
 import com.reservia.service.AuthService;
 
 import com.reservia.service.BookingService;
@@ -9,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -88,25 +90,29 @@ public class DashboardController {
     }
 
 	@GetMapping("/bookings")
-	public String bookings(Model model) {
+	public String bookings(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size, Model model) {
 		var user = authService.getCurrentUser();
 
-		List<Booking> bookings = bookingService.getActiveBookings(user);
+		Page<Booking> bookingPage = bookingService.getActiveBookings(user, page, size);
 
 		model.addAttribute("activePage", "bookings");
-		model.addAttribute("bookings", bookings);
+		model.addAttribute("bookings", bookingPage.getContent());
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", bookingPage.getTotalPages());
 
 		return "pages/dashboard/bookings";
 	}
 
 	@GetMapping("/history")
-	public String history(Model model) {
+	public String history(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size, Model model) {
 		var user = authService.getCurrentUser();
 
-		List<Booking> bookings = bookingService.getHistoryBookings(user);
+		Page<Booking> bookingPage = bookingService.getHistoryBookings(user, page, size);
 
 		model.addAttribute("activePage", "history");
-		model.addAttribute("bookings", bookings);
+		model.addAttribute("bookings", bookingPage.getContent());
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", bookingPage.getTotalPages());
 
 		return "pages/dashboard/history";
 	}

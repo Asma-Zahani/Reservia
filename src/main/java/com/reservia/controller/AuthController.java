@@ -1,6 +1,6 @@
 package com.reservia.controller;
 
-import com.reservia.service.CustomUserDetailsService;
+import com.reservia.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,7 +19,7 @@ public class AuthController {
     private AuthService service;
 
     @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private UserService userService;
 
     @PostMapping("/register")
     public String register(AuthRequest request) {
@@ -32,7 +32,7 @@ public class AuthController {
     public String login(AuthRequest request, HttpSession session) {
         service.login(request);
 
-        userDetailsService.loadUserByUsername(request.getEmail());
+        userService.loadUserByUsername(request.getEmail());
 
         session.setAttribute("user", request.getEmail());
         session.setAttribute(
