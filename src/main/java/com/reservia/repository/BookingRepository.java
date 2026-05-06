@@ -1,10 +1,11 @@
 package com.reservia.repository;
 
 import com.reservia.entity.Booking;
+import com.reservia.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
-    List<Booking> findByUserId(Long customerId);
+    List<Booking> findByUser(User user);
 }

@@ -26,13 +26,16 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/", "/about", "/service", "/contact", "/rooms/**").permitAll()
                         .requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**").permitAll()
-                        .requestMatchers("/dashboard").hasRole("USER")
+                        .requestMatchers("/dashboard", "/booking/**").hasRole("USER")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
                             response.sendRedirect("/404");
+                        })
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.sendRedirect("/");
                         })
                 )
                 .logout(logout -> logout

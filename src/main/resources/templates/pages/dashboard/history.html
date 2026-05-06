@@ -2,6 +2,43 @@
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{layouts/dashboard_layout :: dashboard_layout}">
 
 <div th:fragment="content_dashboard">
-    content history
+    <h4>Booking History</h4>
+    <p class="form-subtitle">
+        Here you can view all your booking history and check their details.
+    </p>
+
+    <!-- Message si aucune réservation -->
+    <div th:if="${#lists.isEmpty(bookings)}">
+        <p>No history found.</p>
+    </div>
+
+    <!-- Table des réservations -->
+    <table class="table table-striped" th:if="${!#lists.isEmpty(bookings)}">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Total</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="booking : ${bookings}">
+            <td th:text="${booking.id}"></td>
+            <td th:text="${booking.bookingDate}"></td>
+            <td th:text="${booking.status}"></td>
+            <td th:text="${booking.totalPrice}"></td>
+            <td>
+                <!-- View details -->
+                <a th:href="@{/dashboard/booking/view/{id}(id=${booking.id})}"
+                   title="View Details" style="margin-right:5px;">
+                    <i class="fas fa-eye"></i>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
+
 </html>
