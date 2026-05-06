@@ -3,6 +3,8 @@ package com.reservia.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -22,4 +24,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @OneToMany(mappedBy = "user")
+    private List<Booking> bookings;
 }

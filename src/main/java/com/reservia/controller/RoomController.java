@@ -1,6 +1,7 @@
 package com.reservia.controller;
 
 import com.reservia.entity.Room;
+import com.reservia.service.BookingService;
 import com.reservia.service.ExtraServiceService;
 import com.reservia.service.RoomService;
 import org.springframework.data.domain.Page;
@@ -13,16 +14,19 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
+@RequestMapping("/rooms")
 public class RoomController {
 	private final RoomService roomService;
 	private final ExtraServiceService extraServiceService;
+	private final BookingService bookingService;
 
-	public RoomController(RoomService roomService, ExtraServiceService extraServiceService) {
+	public RoomController(RoomService roomService, ExtraServiceService extraServiceService, BookingService bookingService) {
 		this.roomService = roomService;
 		this.extraServiceService = extraServiceService;
+		this.bookingService = bookingService;
 	}
 
-	@RequestMapping("/rooms")
+	@GetMapping
 	public String rooms(Model model,
 						@RequestParam(defaultValue = "0") int page,
 						@RequestParam(defaultValue = "6") int size) {
@@ -36,7 +40,7 @@ public class RoomController {
 		return "pages/rooms/list";
 	}
 
-	@GetMapping("/rooms/{id}")
+	@GetMapping("/{id}")
 	public String roomDetails(@PathVariable Long id, Model model) {
 
 		Room room = roomService.findById(id);
@@ -52,7 +56,7 @@ public class RoomController {
 		return "pages/rooms/details";
 	}
 
-	@GetMapping("/rooms/available")
+	@GetMapping("/available")
 	public String getAvailableRooms(@RequestParam String startDate, @RequestParam String endDate, Model model) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		LocalDate start = LocalDate.parse(startDate, formatter);
@@ -66,6 +70,19 @@ public class RoomController {
 		model.addAttribute("extraServices", extraServiceService.getAll());
 
 		return "pages/rooms/booking";
+	}
+
+	@GetMapping("/{id}/disabledDates")
+	@ResponseBody
+	public List<String> getDisabledDates(@PathVariable Long id) {
+		//return bookingService.getDisabledDatesForRoom(id);
+
+		return List.of(
+				"2026-05-10",
+				"2026-05-11",
+				"2026-05-15",
+				"2026-05-18"
+		);
 	}
 
 }
