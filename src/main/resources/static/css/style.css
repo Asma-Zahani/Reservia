@@ -11078,7 +11078,8 @@ textarea:focus-visible, input:focus-visible {
 .single__post {
   display: flex;
   gap: 20px;
-  align-items: center;
+  align-items: start;
+  text-align: left;
 }
 .single__post__thumb img {
   min-width: 110px;
@@ -13059,6 +13060,68 @@ nav.eshb-pagination ul.pagination-list li a, nav.eshb-pagination ul.pagination-l
   background-color: #d6c2a8 !important;
 }
 
+.quantity-box {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  width: 115px;
+}
+
+.quantity-box button {
+  width: 35px;
+  height: 35px;
+  border: none;
+  background: #f5f5f5;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.quantity-box button:hover {
+  background: #eaeaea;
+}
+
+.quantity-box input {
+  width: 45px;
+  height: 35px;
+  border: none;
+  text-align: center;
+  font-size: 15px;
+  outline: none;
+}
+
+/* Chrome, Safari, Edge */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+#selectionContainer .latest__post {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.query__input.checkbox:has(input:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.query__input.checkbox:has(input:disabled) * {
+  cursor: not-allowed;
+}
 /*
 if you need custom styles, please add it in this file below
 

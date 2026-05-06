@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layouts/layout :: layout}">
+
+<div th:fragment="content">
+    <!-- page header -->
+    <div class="rts__section page__hero__height page__hero__bg if__has__search" th:style="'background-image: url(' + @{/images/pages/header__bg.webp} + ')'">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-12">
+                    <div class="page__hero__content">
+                        <h1 class="wow fadeInUp">Rooms Available</h1>
+                        <p class="wow fadeInUp font-sm">
+                            Explore our selection of available rooms and choose the perfect stay for your trip in Tunisia.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-60 text-start">
+                <form action="/rooms/available" method="get" class="advance__search">
+                    <div class="advance__search__wrapper wow fadeInUp">
+                        <!-- single input -->
+                        <div class="query__input">
+                            <label for="check__in" class="query__label">Check In</label>
+                            <input type="text" id="check__in" name="startDate" th:value="${startDate}" placeholder="15 Jun 2024" required>
+                            <div class="query__input__icon">
+                                <i class="flaticon-calendar"></i>
+                            </div>
+                        </div>
+                        <!-- single input end -->
+
+                        <!-- single input -->
+                        <div class="query__input">
+                            <label for="check__out" class="query__label">Check Out</label>
+                            <input type="text" id="check__out" name="endDate" th:value="${endDate}" placeholder="15 May 2024" required>
+                            <div class="query__input__icon">
+                                <i class="flaticon-calendar"></i>
+                            </div>
+                        </div>
+                        <!-- single input end -->
+
+                        <!-- submit button -->
+                        <button class="theme-btn btn-style fill no-border search__btn">
+                            <span><i class="flaticon-search-1"></i> Search</span>
+                        </button>
+                        <!-- submit button end -->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- page header end -->
+
+    <div class="rts__section section__padding">
+        <div class="container">
+            <div class="row g-30 main__content sticky-wrap">
+                <div class="col-lg-7 col-xl-8">
+                    <div class="row g-30">
+                        <div th:each="room : ${rooms}" class="col-xl-6 col-lg-12 col-md-6">
+                            <div class="room__card">
+                                <div class="room__card__top">
+                                    <div class="room__card__image">
+                                        <a th:href="@{/rooms/{id}(id=${room.id})}">
+                                            <img th:src="@{${room.image_path}}" width="420" height="310" alt="room card">
+                                        </a>
+                                    </div>
+                                    <div class="room__price__tag">
+                                        <div class="room__price">
+                                            <div class="eshb-price">
+                                                <span th:text="${room.price} + ' TND'" class="eshb-price-amount amount"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="room__card__meta">
+                                    <a th:href="@{/rooms/{id}(id=${room.id})}" th:text="${room.type}" class="room__card__title h5"></a>
+                                    <div class="room__card__meta__info">
+                                        <span><i class="flaticon-construction"></i><span th:text="${room.size} + ' m²'"></span></span>
+                                        <span><i class="flaticon-user"></i><span th:text="${room.capacity} + ' Guests'"></span></span>
+                                    </div>
+                                    <p th:text="${room.description}" class="room__desc"></p>
+
+                                    <div class="form-actions">
+                                        <button type="button" class="theme-btn btn-style fill"
+                                                th:attr="onclick=|addToBooking(${room.id}, '${#strings.escapeJavaScript(room.type)}', ${room.price}, '${room.image_path}')|">
+                                            <span>Add to Booking</span>
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-5 sticky-item">
+                    <div class="rts__booking__form has__background is__room__details">
+                        <form th:action="@{/booking/add}" method="post" class="advance__search">
+                            <h5 class="pt-0">Book Your Stay</h5>
+                            <div class="advance__search__wrapper">
+                                <!-- single input -->
+                                <div class="query__input wow fadeInUp">
+                                    <label for="check__in_2" class="query__label">Check In</label>
+                                    <div class="query__input__position">
+                                        <input type="text" id="check__in_2" name="startDate" th:value="${startDate}" placeholder="15 Jun 2026" required>
+                                        <div class="query__input__icon">
+                                            <i class="flaticon-calendar"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- single input end -->
+
+                                <!-- single input -->
+                                <div class="query__input wow fadeInUp" data-wow-delay=".3s">
+                                    <label for="check__out_2" class="query__label">Check Out</label>
+                                    <div class="query__input__position">
+                                        <input type="text" id="check__out_2" name="endDate" th:value="${endDate}" placeholder="15 May 2026" required>
+                                        <div class="query__input__icon">
+                                            <i class="flaticon-calendar"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- single input end -->
+
+                                <h5 id="selectionTitle" class="p-0 mt-20" style="display:none;">Your Selection</h5>
+
+                                <div id="selectionContainer"></div>
+
+                                <h5 class="p-0 mt-20">Extra Services</h5>
+
+                                <div class="query__input checkbox wow fadeInUp">
+                                    <input type="checkbox" name="clean" id="clean" value="10" onchange="updateTotal()" disabled>
+                                    <label for="clean">Room Clean</label>
+                                    <span>10 TND / Night</span>
+                                </div>
+
+                                <div class="query__input checkbox wow fadeInUp">
+                                    <input type="checkbox" name="parking" id="parking" value="0" onchange="updateTotal()" disabled>
+                                    <label for="parking">Parking</label>
+                                    <span>Free</span>
+                                </div>
+
+<!--                                <div class="query__input checkbox wow fadeInUp">-->
+<!--                                    <input type="checkbox" name="transport" id="transport" value="40" onchange="updateTotal()" disabled>-->
+<!--                                    <label for="transport">Airport transport</label>-->
+<!--                                    <span>40 TND / Trip</span>-->
+<!--                                </div>-->
+
+                                <div class="query__input checkbox wow fadeInUp">
+                                    <input type="checkbox" name="pet" id="pet" value="20" onchange="updateTotal()" disabled>
+                                    <label for="pet">Pet-Friendly</label>
+                                    <span>20 TND / Night</span>
+                                </div>
+
+                                <!-- calculation -->
+                                <div class="total__price">
+                                    <span class="total h6 mb-0">Total Price</span>
+                                    <span class="price h6 m-0">
+                                        <input type="hidden" name="totalPrice" id="totalPriceInput" value="0">
+                                        <span id="totalPrice">0</span> TND</span>
+                                </div>
+                                <!-- calculation end -->
+                                <!-- submit button -->
+                                <button class="theme-btn btn-style fill no-border search__btn wow fadeInUp" data-wow-delay=".6s">
+                                    <span>Book Your Room</span>
+                                </button>
+                                <!-- submit button end -->
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/booking.js}"></script>
+</div>
+
+</html>

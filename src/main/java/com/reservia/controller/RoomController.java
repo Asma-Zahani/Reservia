@@ -61,7 +61,7 @@ public class RoomController {
 		model.addAttribute("startDate", startDate);
 		model.addAttribute("endDate", endDate);
 
-		return "pages/booking/booking"; // ou une page dédiée
+		return "pages/rooms/booking";
 	}
 
 }

@@ -17,6 +17,9 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
+    private String roomNumber;
+
     private String image_path;
     private String type;
     private int size;

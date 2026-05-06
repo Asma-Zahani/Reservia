@@ -18,7 +18,9 @@ public class Booking {
     private Long id;
     private LocalDate bookingDate;
     private Double totalPrice;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    private BookingStatus status;
 
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
     private List<BookingItem> items;
