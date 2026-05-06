@@ -21,7 +21,9 @@ public class BookingService {
     private final AuthService authService;
     private final RoomService roomService;
 
-    public BookingService(BookingRepository bookingRepository, RoomRepository roomRepository, AuthService authService, RoomService roomService) {
+    public BookingService(BookingRepository bookingRepository, 
+                          AuthService authService, 
+                          RoomService roomService) {
         this.bookingRepository = bookingRepository;
         this.authService = authService;
         this.roomService = roomService;
@@ -87,4 +89,19 @@ public class BookingService {
         booking.setStatus(BookingStatus.CANCELLED);
         bookingRepository.save(booking);
     }
+
+
+    public List<Booking> getActiveBookings(User user) {
+    return bookingRepository.findByUserAndStatuses(
+        user,
+        List.of(BookingStatus.PENDING, BookingStatus.CONFIRMED)
+    );
+}
+
+public List<Booking> getHistoryBookings(User user) {
+    return bookingRepository.findByUserAndStatuses(
+        user,
+        List.of(BookingStatus.CANCELLED, BookingStatus.COMPLETED)
+    );
+}
 }
