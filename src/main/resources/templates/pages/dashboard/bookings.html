@@ -128,9 +128,9 @@
                                 </table>
 
                                 <!-- EXTRA SERVICES -->
-                                <h5 th:if="${booking.extras != null and !#lists.isEmpty(booking.extras)}" class="fw-semibold mt-4 mb-3" style="color:#9c7b53;">Extra Services</h5>
+                                <h5 th:if="${booking.extraServices != null and !#lists.isEmpty(booking.extraServices)}" class="fw-semibold mt-4 mb-3" style="color:#9c7b53;">Extra Services</h5>
 
-                                <table th:if="${booking.extras != null and !#lists.isEmpty(booking.extras)}" class="table" style="background:white;">
+                                <table th:if="${booking.extraServices != null and !#lists.isEmpty(booking.extraServices)}" class="table" style="background:white;">
 
                                     <thead style="background:#f8f6f3;">
                                     <tr>
@@ -141,7 +141,7 @@
                                     </thead>
 
                                     <tbody>
-                                    <tr th:each="extra : ${booking.extras}">
+                                    <tr th:each="extra : ${booking.extraServices}">
                                         <td class="fw-semibold" th:text="${extra.name}"></td>
 
                                         <td th:text="${extra.perNight ? extra.price + ' / Night' : 'Free'}"></td>
