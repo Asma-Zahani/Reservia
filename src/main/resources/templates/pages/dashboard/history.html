@@ -24,17 +24,88 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="booking : ${bookings}">
+        <tr th:each="booking, iterStat : ${bookings}">
             <td th:text="${booking.id}"></td>
             <td th:text="${booking.bookingDate}"></td>
             <td th:text="${booking.status}"></td>
             <td th:text="${booking.totalPrice}"></td>
-            <td>
-                <!-- View details -->
-                <a th:href="@{/dashboard/booking/view/{id}(id=${booking.id})}"
-                   title="View Details" style="margin-right:5px;">
+            <td class="px-4">
+                <a href="#" data-bs-toggle="modal" th:data-bs-target="'#bookingModal' + ${iterStat.index}" title="View Details">
                     <i class="fas fa-eye"></i>
                 </a>
+
+                <div class="modal fade" th:id="'bookingModal' + ${iterStat.index}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Booking Details #<span th:text="${booking.id}"></span></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+
+                            <div class="modal-body">
+
+                                <div class="d-flex justify-content-between mb-3">
+                                    <div>
+                                        <p class="mb-1">
+                                            <strong>Date:</strong>
+                                            <span th:text="${booking.bookingDate}"></span>
+                                        </p>
+                                        <p class="mb-1">
+                                            <strong>Status:</strong>
+                                            <span class="badge"
+                                                  th:classappend="${booking.status == 'PAID'} ? 'bg-success' : 'bg-warning text-dark'"
+                                                  th:text="${booking.status}">
+                                            </span>
+                                        </p>
+                                    </div>
+
+                                    <div class="text-end">
+                                        <p class="mb-1">
+                                            <strong>Total:</strong>
+                                            <span th:text="${booking.totalPrice}"></span> DT
+                                        </p>
+                                        <p class="mb-1">
+                                            <strong>Items:</strong>
+                                            <span th:text="${#lists.size(booking.items)}"></span>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <h6 class="mb-3">Booking Details</h6>
+
+                                <table class="table table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Room</th>
+                                            <th>Period</th>
+                                            <th>Qty</th>
+                                            <th>Unit Price</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr th:each="item : ${booking.items}">
+                                            <td th:text="${item.room.type}"></td>
+                                            <td th:text="${item.duration + ' Night(s) - ' + item.startDate + ' - ' + item.endDate}"></td>
+                                            <td th:text="${item.quantity}"></td>
+                                            <td th:text="${item.room.price}"></td>
+                                            <td th:text="${item.room.price * item.quantity * item.duration}"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </td>
         </tr>
         </tbody>

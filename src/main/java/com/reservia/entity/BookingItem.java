@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @Data
@@ -26,4 +27,14 @@ public class BookingItem {
 
     @ManyToOne
     private Room room;
+
+    @Transient
+    private Long duration;
+
+    public Long getDuration() {
+        if (startDate != null && endDate != null) {
+            return ChronoUnit.DAYS.between(startDate, endDate);
+        }
+        return 0L;
+    }
 }
