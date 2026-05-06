@@ -126,16 +126,11 @@
 
                                 <h5 class="p-0 mt-20">Extra Services</h5>
 
-                                <div class="query__input checkbox wow fadeInUp">
-                                    <input type="checkbox" name="clean" id="clean" value="10" onchange="updateTotal()" disabled>
-                                    <label for="clean">Room Clean</label>
-                                    <span>10 TND / Night</span>
-                                </div>
-
-                                <div class="query__input checkbox wow fadeInUp">
-                                    <input type="checkbox" name="parking" id="parking" value="0" onchange="updateTotal()" disabled>
-                                    <label for="parking">Parking</label>
-                                    <span>Free</span>
+                                <div class="query__input checkbox wow fadeInUp" th:each="extraService : ${extraServices}">
+                                    <input type="checkbox" th:id="${extraService.name}" th:name="${extraService.name}" th:value="${extraService.price}" onchange="updateTotal()" disabled>
+                                    <label th:for="${extraService.name}" th:text="${extraService.name}"></label>
+                                    <span th:if="${extraService.perNight}" th:text="${extraService.price} + ' TND / Night'"></span>
+                                    <span th:if="${!extraService.perNight}">Free</span>
                                 </div>
 
 <!--                                <div class="query__input checkbox wow fadeInUp">-->
@@ -143,12 +138,6 @@
 <!--                                    <label for="transport">Airport transport</label>-->
 <!--                                    <span>40 TND / Trip</span>-->
 <!--                                </div>-->
-
-                                <div class="query__input checkbox wow fadeInUp">
-                                    <input type="checkbox" name="pet" id="pet" value="20" onchange="updateTotal()" disabled>
-                                    <label for="pet">Pet-Friendly</label>
-                                    <span>20 TND / Night</span>
-                                </div>
 
                                 <!-- calculation -->
                                 <div class="total__price">
