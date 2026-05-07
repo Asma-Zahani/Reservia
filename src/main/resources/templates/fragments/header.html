@@ -1,4 +1,4 @@
-<div th:fragment="header">
+<div th:fragment="header" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <div class="header__top">
         <div class="container">
             <div class="row justify-content-between">
@@ -48,8 +48,16 @@
                         <a th:href="@{/}" ><img class="logo__class" th:src="@{/images/logo/logo.svg}" alt="moonlit"></a>
                     </div>
                     <div class="main__right">
-                        <div th:if="${session.user != null}">
-                                <a th:href="@{/dashboard}" class="theme-btn btn-style sm-btn border d-none d-lg-block"><span>My account</span></a>
+                        <div sec:authorize="hasRole('ADMIN')">
+                            <a th:href="@{/admin/dashboard}" class="theme-btn btn-style sm-btn border d-none d-lg-block">
+                                <span>My account</span>
+                            </a>
+                        </div>
+
+                        <div sec:authorize="hasRole('USER')">
+                            <a th:href="@{/dashboard}" class="theme-btn btn-style sm-btn border d-none d-lg-block">
+                                <span>My account</span>
+                            </a>
                         </div>
 
                         <div th:if="${session.user == null}">

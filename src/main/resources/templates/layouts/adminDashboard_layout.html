@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layouts/layout :: layout}" th:fragment="dashboard_layout">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layouts/layout :: layout}" th:fragment="adminDashboard_layout">
 
 <div th:fragment="content">
     <!-- page header -->
@@ -36,9 +36,6 @@
                             <li th:classappend="${activePage == 'bookings'} ? 'active'">
                                 <a th:href="@{/dashboard/bookings}"><i class="fa fa-calendar me-2"></i>My Bookings</a>
                             </li>
-                            <li th:classappend="${activePage == 'history'} ? 'active'">
-                                <a th:href="@{/dashboard/history}"><i class="fa fa-history me-2"></i>History</a>
-                            </li>
                         </ul>
 
                         <hr>
@@ -53,7 +50,7 @@
 
                 <!-- CONTENT -->
                 <div class="col-12 col-md-8 py-4">
-                    <div th:insert="~{::content_dashboard}"></div>
+                    <div th:insert="~{::content_adminDashboard}"></div>
                 </div>
             </div>
         </div>

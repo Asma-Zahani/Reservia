@@ -23,11 +23,10 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/", "/about", "/service", "/contact", "/rooms/**").permitAll()
-                        .requestMatchers("/css/**", "/fonts/**", "/images/**", "/js/**").permitAll()
-                        .requestMatchers("/dashboard", "/booking/**").hasRole("USER")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/dashboard", "/booking/**").hasAnyRole("USER","ADMIN")
+                        .requestMatchers("/auth/**", "/", "/about", "/service", "/contact", "/rooms/**",
+                                "/css/**", "/fonts/**", "/images/**", "/js/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex
