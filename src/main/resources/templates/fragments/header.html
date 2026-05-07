@@ -60,8 +60,12 @@
                             </a>
                         </div>
 
-                        <div th:if="${session.user == null}">
-                            <a href="#" class="theme-btn btn-style sm-btn border d-none d-lg-block" aria-label="Login Button" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal"><span>Sign In</span></a>
+                        <div sec:authorize="isAnonymous()">
+                            <a href="#" class="theme-btn btn-style sm-btn border d-none d-lg-block"
+                               aria-label="Login Button"
+                               data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">
+                                <span>Sign In</span>
+                            </a>
                         </div>
                         <a th:href="@{/rooms}" class="theme-btn btn-style sm-btn fill"><span>Book Now</span></a>
                         <button class="theme-btn btn-style sm-btn fill menu__btn d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">

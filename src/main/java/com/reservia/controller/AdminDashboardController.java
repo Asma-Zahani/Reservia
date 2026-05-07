@@ -24,7 +24,6 @@ public class AdminDashboardController {
 	@GetMapping("/dashboard")
 	public String dashboard(Model model) {
 		model.addAttribute("activePage", "dashboard");
-		model.addAttribute("user", authService.getCurrentUser());
 
 		LocalDate today = LocalDate.now();
 
