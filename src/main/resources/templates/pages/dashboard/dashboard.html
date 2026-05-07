@@ -4,7 +4,7 @@
 
 <div th:fragment="content_dashboard">
     <h4>
-        Welcome back, <span th:text="${user.name}">User</span>!
+        Welcome back, <span th:text="${#authentication.principal.name}">User</span>!
     </h4>
 
     <p>

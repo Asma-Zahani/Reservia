@@ -6,7 +6,6 @@ import com.reservia.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +35,6 @@ public class AuthController {
         service.login(request);
 
         User user = (User) userService.loadUserByUsername(request.getEmail());
-        session.setAttribute("user", user);
 
         session.setAttribute(
                 "SPRING_SECURITY_CONTEXT",
