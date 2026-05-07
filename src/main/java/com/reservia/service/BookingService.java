@@ -57,11 +57,13 @@ public class BookingService {
             throw new RoomNotAvailableException("No rooms selected for booking");
         }
 
-        // Step 1: Check room availability (WITHIN the transaction)
-        List<Room> available = roomRepository.findAvailableRooms(startDate, endDate);
-        List<Room> selectedRooms = available.stream()
-                .filter(r -> request.getRoomIds().contains(r.getId()))
-                .toList();
+        // Step 1: Check room availability WITH database lock
+        List<Room> selectedRooms =
+        roomRepository.findAvailableRoomsForBooking(
+                request.getRoomIds(),
+                startDate,
+                endDate
+        );
 
         // Ensure all requested rooms are available
         if (selectedRooms.size() != request.getRoomIds().size()) {
