@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/adminDashboard_layout :: adminDashboard_layout}">
+
+<div th:fragment="content_adminDashboard" class="container mt-4">
+
+    <h4 class="mb-4">Welcome back, <span th:text="${user.name}">Admin</span>!</h4>
+
+    <!-- Statistiques principales -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-center bg-primary text-white">
+                <div class="card-body">
+                    <h6 class="card-title">Today's Bookings</h6>
+                    <h3 class="card-text" th:text="${todayBookings}">0</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center bg-success text-white">
+                <div class="card-body">
+                    <h6 class="card-title">Month Revenue</h6>
+                    <h3 class="card-text" th:text="${monthRevenue}">$0.00</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center bg-warning text-dark">
+                <div class="card-body">
+                    <h6 class="card-title">Occupied Rooms</h6>
+                    <h3 class="card-text" th:text="${occupiedRooms}">0</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center bg-info text-white">
+                <div class="card-body">
+                    <h6 class="card-title">Total Rooms</h6>
+                    <h3 class="card-text" th:text="${totalRooms}">0</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Récentes réservations -->
+    <h5>Recent Bookings</h5>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+            <tr>
+                <th>Booking ID</th>
+                <th>Guest</th>
+                <th>Room</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="booking : ${recentBookings}">
+                <td th:text="${booking.id}">1</td>
+                <td th:text="${booking.user.name}">John Doe</td>
+                <td th:text="${booking.room.name}">Room 101</td>
+                <td th:text="${booking.bookingDate}">2026-05-07</td>
+                <td th:text="${booking.status}">Confirmed</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</html>
