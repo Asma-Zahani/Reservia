@@ -48,17 +48,10 @@
                         <a th:href="@{/}" ><img class="logo__class" th:src="@{/images/logo/logo.svg}" alt="moonlit"></a>
                     </div>
                     <div class="main__right">
-                        <div sec:authorize="hasRole('ADMIN')">
-                            <a th:href="@{/admin/dashboard}" class="theme-btn btn-style sm-btn border d-none d-lg-block">
-                                <span>My account</span>
-                            </a>
-                        </div>
-
-                        <div sec:authorize="hasRole('USER')">
-                            <a th:href="@{/dashboard}" class="theme-btn btn-style sm-btn border d-none d-lg-block">
-                                <span>My account</span>
-                            </a>
-                        </div>
+                        <a th:href="${#authorization.expression('hasRole(''ADMIN'')') ? '/admin/dashboard' : '/dashboard'}"
+                           class="theme-btn btn-style sm-btn border d-none d-lg-block">
+                            <span th:text="${#authorization.expression('hasRole(''ADMIN'')') ? 'Dashboard' : 'My Account'}"></span>
+                        </a>
 
                         <div sec:authorize="isAnonymous()">
                             <a href="#" class="theme-btn btn-style sm-btn border d-none d-lg-block"
