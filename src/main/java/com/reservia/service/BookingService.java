@@ -3,6 +3,7 @@ package com.reservia.service;
 import com.reservia.dto.BookingRequest;
 import com.reservia.entity.*;
 import com.reservia.exception.RoomNotAvailableException;
+import com.reservia.repository.BookingItemRepository;
 import com.reservia.repository.BookingRepository;
 import com.reservia.repository.ExtraServiceRepository;
 import com.reservia.repository.RoomRepository;
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -29,13 +31,15 @@ public class BookingService {
     private final AuthService authService;
     private final RoomRepository roomRepository;
     private final ExtraServiceRepository extraServiceRepository;
+    private final BookingItemRepository bookingItemRepository;
 
     public BookingService(BookingRepository bookingRepository, AuthService authService,
-                          RoomRepository roomRepository, ExtraServiceRepository extraServiceRepository) {
+                          RoomRepository roomRepository, ExtraServiceRepository extraServiceRepository, BookingItemRepository bookingItemRepository) {
         this.bookingRepository = bookingRepository;
         this.authService = authService;
         this.roomRepository = roomRepository;
         this.extraServiceRepository = extraServiceRepository;
+        this.bookingItemRepository = bookingItemRepository;
     }
 
     public Booking getBookingById(Long id) {
@@ -47,6 +51,11 @@ public class BookingService {
     public void createBooking(BookingRequest request, Map<String,String> allParams) {
         LocalDate startDate = LocalDate.parse(request.getStartDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         LocalDate endDate = LocalDate.parse(request.getEndDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
+        // Step 0: Ensure some rooms are selected
+        if (request.getRoomIds() == null || request.getRoomIds().isEmpty()) {
+            throw new RoomNotAvailableException("No rooms selected for booking");
+        }
 
         // Step 1: Check room availability (WITHIN the transaction)
         List<Room> available = roomRepository.findAvailableRooms(startDate, endDate);
@@ -63,7 +72,9 @@ public class BookingService {
         long nights = ChronoUnit.DAYS.between(startDate, endDate);
 
         // Step 3: Calculate the total price of extra services
-        List<ExtraService> extras = extraServiceRepository.findAllById(request.getExtraServiceIds());
+        List<Long> extraIds = request.getExtraServiceIds() != null ? request.getExtraServiceIds() : Collections.emptyList();
+        List<ExtraService> extras = extraServiceRepository.findAllById(extraIds);
+
         double extrasPrice = extras.stream()
                 .mapToDouble(e -> e.isPerNight() ? e.getPrice() * nights : e.getPrice())
                 .sum();
@@ -127,6 +138,21 @@ public class BookingService {
         bookingRepository.save(booking);
     }
 
+    public List<String> getDisabledDatesForRoom(Long roomId) {
+        List<BookingItem> items = bookingItemRepository.findActiveBookingItemsByRoom(roomId);
+        List<String> disabledDates = new ArrayList<>();
+
+        for (var item : items) {
+            LocalDate start = item.getStartDate();
+            LocalDate end = item.getEndDate();
+
+            for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(1)) {
+                disabledDates.add(date.toString()); // format ISO yyyy-MM-dd
+            }
+        }
+
+        return disabledDates;
+    }
 
     public Page<Booking> getActiveBookings(User user, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);

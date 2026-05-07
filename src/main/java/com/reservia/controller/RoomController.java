@@ -18,10 +18,12 @@ import java.util.List;
 public class RoomController {
 	private final RoomService roomService;
 	private final ExtraServiceService extraServiceService;
+	private final BookingService bookingService;
 
-	public RoomController(RoomService roomService, ExtraServiceService extraServiceService) {
+	public RoomController(RoomService roomService, ExtraServiceService extraServiceService, BookingService bookingService) {
 		this.roomService = roomService;
 		this.extraServiceService = extraServiceService;
+		this.bookingService = bookingService;
 	}
 
 	@GetMapping
@@ -73,14 +75,6 @@ public class RoomController {
 	@GetMapping("/{id}/disabledDates")
 	@ResponseBody
 	public List<String> getDisabledDates(@PathVariable Long id) {
-		//return bookingService.getDisabledDatesForRoom(id);
-
-		return List.of(
-				"2026-05-10",
-				"2026-05-11",
-				"2026-05-15",
-				"2026-05-18"
-		);
+		return bookingService.getDisabledDatesForRoom(id);
 	}
-
 }
