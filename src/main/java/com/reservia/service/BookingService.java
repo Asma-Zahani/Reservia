@@ -58,12 +58,8 @@ public class BookingService {
         }
 
         // Step 1: Check room availability WITH database lock
-        List<Room> selectedRooms =
-        roomRepository.findAvailableRoomsForBooking(
-                request.getRoomIds(),
-                startDate,
-                endDate
-        );
+        List<Room> selectedRooms = roomRepository.findAvailableRoomsForBooking(
+                request.getRoomIds(), startDate, endDate);
 
         // Ensure all requested rooms are available
         if (selectedRooms.size() != request.getRoomIds().size()) {
