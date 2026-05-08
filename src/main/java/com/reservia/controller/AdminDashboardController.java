@@ -1,8 +1,11 @@
 package com.reservia.controller;
 
+import com.reservia.entity.Booking;
+import com.reservia.entity.BookingStatus;
 import com.reservia.entity.User;
 import com.reservia.repository.BookingRepository;
 import com.reservia.service.AuthService;
+import com.reservia.service.BookingService;
 import com.reservia.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,9 @@ public class AdminDashboardController {
 	private BookingRepository bookingRepository;
     @Autowired
     private UserService userService;
+
+	@Autowired
+	private BookingService bookingService;
 
 
 	/*
@@ -91,13 +97,31 @@ public class AdminDashboardController {
 	 * BOOKINGS
 	 * =========================
 	 */
-	@GetMapping("/bookings")
-	public String bookings(Model model) {
+		@GetMapping("/bookings")
+		public String bookings(
+				@RequestParam(defaultValue = "0") int page,
+				@RequestParam(defaultValue = "5") int size,
+				Model model) {
 
-		model.addAttribute("activePage", "bookings");
+			Page<Booking> bookingPage = bookingService.getAllBookings(page, size);
 
-		return "pages/adminDashboard/bookings";
-	}
+			model.addAttribute("bookings", bookingPage.getContent());
+			model.addAttribute("currentPage", page);
+			model.addAttribute("totalPages", bookingPage.getTotalPages());
+			model.addAttribute("activePage", "bookings");
+
+			return "pages/adminDashboard/bookings";
+		}
+
+		@PostMapping("/bookings/update-status/{id}")
+			public String updateBookingStatus(
+					@PathVariable Long id,
+					@RequestParam BookingStatus status) {
+
+				bookingService.updateBookingStatus(id, status);
+
+				return "redirect:/admin/bookings";
+			}
 
 
 	/*
