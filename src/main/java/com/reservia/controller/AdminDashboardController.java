@@ -2,11 +2,13 @@ package com.reservia.controller;
 
 import com.reservia.entity.Booking;
 import com.reservia.entity.BookingStatus;
+import com.reservia.entity.Room;
 import com.reservia.entity.Settings;
 import com.reservia.entity.User;
 import com.reservia.repository.BookingRepository;
 import com.reservia.service.AuthService;
 import com.reservia.service.BookingService;
+import com.reservia.service.RoomService;
 import com.reservia.service.SettingsService;
 import com.reservia.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,6 +38,8 @@ public class AdminDashboardController {
 	@Autowired
 	private SettingsService settingsService;
 
+	@Autowired
+	private RoomService roomService;
 
 	/*
 	 * =========================
@@ -134,12 +138,22 @@ public class AdminDashboardController {
 	 * ROOMS
 	 * =========================
 	 */
-	@GetMapping("/rooms")
-	public String rooms(Model model) {
+@GetMapping("/rooms")
+	public String rooms(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
+		Page<Room> roomPage = roomService.getRooms(page, size);
 
+		model.addAttribute("rooms", roomPage.getContent());
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", roomPage.getTotalPages());
 		model.addAttribute("activePage", "rooms");
 
 		return "pages/adminDashboard/rooms";
+	}
+
+	@PostMapping("/rooms/delete/{id}")
+	public String deleteRoom(@PathVariable Long id) {
+		roomService.deleteRoom(id);
+		return "redirect:/admin/rooms";
 	}
 
 
