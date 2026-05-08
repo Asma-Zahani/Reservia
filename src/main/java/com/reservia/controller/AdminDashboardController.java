@@ -2,10 +2,12 @@ package com.reservia.controller;
 
 import com.reservia.entity.Booking;
 import com.reservia.entity.BookingStatus;
+import com.reservia.entity.Settings;
 import com.reservia.entity.User;
 import com.reservia.repository.BookingRepository;
 import com.reservia.service.AuthService;
 import com.reservia.service.BookingService;
+import com.reservia.service.SettingsService;
 import com.reservia.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class AdminDashboardController {
 
 	@Autowired
 	private BookingService bookingService;
+
+	@Autowired
+	private SettingsService settingsService;
 
 
 	/*
@@ -146,9 +151,20 @@ public class AdminDashboardController {
 	@GetMapping("/settings")
 	public String settings(Model model) {
 
+		model.addAttribute("settings",
+				settingsService.getSettings());
+
 		model.addAttribute("activePage", "settings");
 
 		return "pages/adminDashboard/settings";
+	}
+
+	@PostMapping("/settings")
+	public String saveSettings(@ModelAttribute Settings settings) {
+
+		settingsService.save(settings);
+
+		return "redirect:/admin/settings";
 	}
 
 }
