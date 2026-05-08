@@ -15,7 +15,7 @@
         <thead>
         <tr>
             <th>ID</th>
-            <th>Date</th>
+            <th>Booking Date</th>
             <th>Status</th>
             <th>Total</th>
             <th>Actions</th>
@@ -23,7 +23,7 @@
         </thead>
         <tbody>
         <tr th:each="booking, iterStat : ${bookings}">
-            <td th:text="${booking.id}"></td>
+            <td th:text="${'#' + booking.id}"></td>
             <td th:text="${booking.bookingDate}"></td>
             <td>
                 <span class="badge px-3 py-1" th:classappend="${booking.status.name() == 'CONFIRMED'} ? 'bg-success' :
