@@ -38,12 +38,6 @@
                 <a href="#" data-bs-toggle="modal" th:data-bs-target="'#bookingModal' + ${iterStat.index}" title="View Details">
                     <i class="fas fa-eye"></i>
                 </a>
-                <a href="#" title="Edit" style="margin-right:5px;">
-                    <i class="fas fa-edit"></i>
-                </a>
-                <a href="#" title="Delete" style="color:red;" data-bs-toggle="modal" th:data-bs-target="'#deleteModal' + ${booking.id}">
-                    <i class="fas fa-trash"></i>
-                </a>
 
                 <div class="modal fade" th:id="'bookingModal' + ${iterStat.index}" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -185,6 +179,78 @@
                     </div>
                 </div>
 
+<!--                <a href="#" title="Edit" style="margin-right:5px;" data-bs-toggle="modal" th:data-bs-target="'#editModal' + ${booking.id}">-->
+<!--                    <i class="fas fa-edit"></i>-->
+<!--                </a>-->
+
+<!--                <div class="modal fade" th:id="'editModal' + ${booking.id}" tabindex="-1">-->
+<!--                    <div class="modal-dialog modal-dialog-centered modal-lg">-->
+<!--                        <div class="modal-content border-0 rounded-3">-->
+
+<!--                            <div class="modal-header border-0" style="background-color:#f8f6f3;">-->
+<!--                                <h4 class="modal-title fw-semibold" style="color:#2c2c2c;">-->
+<!--                                    Edit Booking #<span th:text="${booking.id}"></span>-->
+<!--                                </h4>-->
+<!--                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>-->
+<!--                            </div>-->
+
+<!--                            <div class="modal-body" style="color:#2c2c2c;">-->
+
+<!--                                &lt;!&ndash; Date picker pour changer la période &ndash;&gt;-->
+<!--                                <div class="mb-3">-->
+<!--                                    <label class="form-label">Period</label>-->
+<!--                                    <div class="row g-2">-->
+<!--                                        <div class="col-md-6">-->
+<!--                                            <input type="date" class="form-control" name="startDate" th:value="${booking.items[0].startDate}" />-->
+<!--                                        </div>-->
+<!--                                        <div class="col-md-6">-->
+<!--                                            <input type="date" class="form-control" name="endDate" th:value="${booking.items[0].endDate}" />-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="form-actions mt-2">-->
+<!--                                        <button type="button" class="theme-btn btn-style border"-->
+<!--                                                th:onclick="'fetchAvailableRooms(' + ${booking.id} + ', this)'">-->
+<!--                                            <span>Check Available Rooms</span>-->
+<!--                                        </button>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+<!--                                <div th:id="'availableRooms' + ${booking.id}"></div>-->
+
+<!--                                &lt;!&ndash; Extra services &ndash;&gt;-->
+<!--                                <h5 class="fw-semibold mt-4 mb-3" style="color:#9c7b53;">Extra Services</h5>-->
+<!--                                <div th:each="extra : ${allExtraServices}">-->
+<!--                                    <input type="checkbox" th:id="'extra' + ${booking.id} + '_' + ${extra.id}"-->
+<!--                                           th:name="'extraServices'"-->
+<!--                                           th:value="${extra.id}"-->
+<!--                                           th:checked="${booking.extraServices.contains(extra)}">-->
+<!--                                    <label th:for="'extra' + ${booking.id} + '_' + ${extra.id}" th:text="${extra.name}"></label>-->
+<!--                                </div>-->
+
+<!--                            </div>-->
+
+<!--                            <div class="modal-footer border-0 gap-2">-->
+<!--                                <button type="button" class="theme-btn btn-style border" data-bs-dismiss="modal">-->
+<!--                                    <span>Close</span>-->
+<!--                                </button>-->
+
+<!--                                &lt;!&ndash; Formulaire de validation &ndash;&gt;-->
+<!--                                <form th:action="@{/booking/updateRoomsAndExtras/{id}(id=${booking.id})}" method="post">-->
+<!--                                    <input type="hidden" name="selectedRooms" th:id="'selectedRoomsInput' + ${booking.id}" />-->
+<!--                                    <button type="submit" class="theme-btn btn-style fill">-->
+<!--                                        <span>Update Booking</span>-->
+<!--                                    </button>-->
+<!--                                </form>-->
+<!--                            </div>-->
+
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+                <a href="#" title="Delete" style="color:red;" data-bs-toggle="modal" th:data-bs-target="'#deleteModal' + ${booking.id}">
+                    <i class="fas fa-trash"></i>
+                </a>
+
                 <div class="modal fade" th:id="'deleteModal' + ${booking.id}" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
@@ -280,5 +346,47 @@
         }
     </script>
 </div>
+
+<script>
+    function fetchAvailableRooms(bookingId, button) {
+        const modal = button.closest('.modal'); // récupère la modal parente
+        const startDate = modal.querySelector('input[name="startDate"]').value;
+        const endDate = modal.querySelector('input[name="endDate"]').value;
+
+        const container = modal.querySelector('#availableRooms' + bookingId);
+
+        fetch(`/rooms/availableRooms?startDate=${startDate}&endDate=${endDate}`)
+            .then(res => res.json())
+            .then(data => {
+                container.innerHTML = '';
+                if(data.length === 0){
+                    container.innerHTML = '<p>No rooms available for selected dates.</p>';
+                    return;
+                }
+
+                data.forEach(room => {
+                    const div = document.createElement('div');
+                    div.innerHTML = `
+                    <input type="checkbox" value="${room.id}" name="rooms" id="room${bookingId}_${room.id}">
+                    <label for="room${bookingId}_${room.id}">${room.type} - ${room.price} TND</label>
+                `;
+                    container.appendChild(div);
+                });
+
+                // Mettre à jour l'input caché lors du submit
+                const form = modal.querySelector('form');
+                if(!form.dataset.listenerAdded) {
+                    form.addEventListener('submit', function(e) {
+                        const selected = Array.from(container.querySelectorAll('input[name="rooms"]:checked'))
+                            .map(el => el.value)
+                            .join(',');
+                        modal.querySelector('#selectedRoomsInput' + bookingId).value = selected;
+                    });
+                    form.dataset.listenerAdded = true;
+                }
+            })
+            .catch(err => alert('Error fetching rooms: ' + err));
+    }
+</script>
 
 </html>
