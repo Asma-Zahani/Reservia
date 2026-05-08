@@ -1,13 +1,15 @@
 package com.reservia.controller;
 
+import com.reservia.entity.User;
 import com.reservia.repository.BookingRepository;
 import com.reservia.service.AuthService;
+import com.reservia.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
@@ -20,6 +22,8 @@ public class AdminDashboardController {
 
 	@Autowired
 	private BookingRepository bookingRepository;
+    @Autowired
+    private UserService userService;
 
 
 	/*
@@ -64,11 +68,21 @@ public class AdminDashboardController {
 	 * =========================
 	 */
 	@GetMapping("/users")
-	public String users(Model model) {
+	public String users(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size, Model model) {
+		Page<User> usersPage = userService.getUsers(page, size);
 
+		model.addAttribute("users", usersPage.getContent());
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", usersPage.getTotalPages());
 		model.addAttribute("activePage", "users");
 
 		return "pages/adminDashboard/users";
+	}
+
+	@PostMapping("/users/delete/{id}")
+	public String deleteUser(@PathVariable Long id) {
+		userService.deleteUser(id);
+		return "redirect:/admin/users";
 	}
 
 
