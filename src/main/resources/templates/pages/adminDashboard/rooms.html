@@ -64,7 +64,7 @@
                                     <div class="modal-body">
                                         <!-- FORMULAIRE D'UPDATE -->
                                         <form th:action="@{/admin/rooms/update/{id}(id=${room.id})}" method="post" enctype="multipart/form-data" class="row g-3 text-start">
-                                            
+
                                             <div class="col-12">
                                                 <label class="form-label">Room Image (Leave empty to keep current)</label>
                                                 <input type="file" name="image" class="form-control" accept="image/*">
@@ -238,13 +238,13 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Room Number</label>
-                            <input type="text" 
-                                name="roomNumber" 
-                                class="form-control" 
+                            <input type="text"
+                                name="roomNumber"
+                                class="form-control"
                                 placeholder="e.g. A-101" required>
                         </div>
                         <!-- SIZE -->
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label">Size (m²)</label>
                             <input type="number"
                                    name="size"
@@ -253,7 +253,7 @@
                         </div>
 
                         <!-- CAPACITY -->
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label">Capacity</label>
                             <input type="number"
                                    name="capacity"
@@ -262,7 +262,7 @@
                         </div>
 
                         <!-- PRICE -->
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label">Price (TND)</label>
                             <input type="number"
                                    step="0.01"

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,6 +26,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
@@ -75,8 +77,7 @@ public class AdminDashboardController {
 				bookingRepository.count());
 
 		// Recent bookings
-		// model.addAttribute("recentBookings",
-		//      bookingRepository.findTop10ByOrderByBookingDateDesc());
+		 model.addAttribute("recentBookings", bookingRepository.findTop5ByOrderByBookingDateDesc());
 
 		return "pages/adminDashboard/dashboard";
 	}
@@ -88,7 +89,7 @@ public class AdminDashboardController {
 	 * =========================
 	 */
 	@GetMapping("/users")
-	public String users(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size, Model model) {
+	public String users(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, Model model) {
 		Page<User> usersPage = userService.getUsers(page, size);
 
 		model.addAttribute("users", usersPage.getContent());
@@ -105,6 +106,16 @@ public class AdminDashboardController {
 		return "redirect:/admin/users";
 	}
 
+	@PostMapping("/users/update/{id}")
+	public String updateUser(@PathVariable Long id, @RequestParam String name, @RequestParam String email) {
+		userService.getUserById(id).ifPresent(user -> {
+			user.setName(name);
+			user.setEmail(email);
+			userService.saveUser(user);
+		});
+
+		return "redirect:/admin/users";
+	}
 
 	/*
 	 * =========================
@@ -157,28 +168,23 @@ public class AdminDashboardController {
 
 	@PostMapping("/rooms/add")
 	public String addRoom( @RequestParam("image") MultipartFile image, @RequestParam String roomNumber, @RequestParam String type, @RequestParam int size, @RequestParam int capacity, @RequestParam double price, @RequestParam String description) throws IOException{
-    Room room = new Room();
-    // dossier images
-    String uploadDir = "src/main/resources/static/images/room/";
-    // nom image
-    String fileName = image.getOriginalFilename();
-    // chemin complet
-    Path path = Paths.get(uploadDir + fileName);
-    // copier image dans le dossier
-    Files.copy(
-            image.getInputStream(),
-            path,
-            StandardCopyOption.REPLACE_EXISTING
-    );
-    // sauver le nom dans DB
-	room.setImage_path("/images/room/" + fileName);
-	room.setRoomNumber(roomNumber);
-    room.setType(type);
-    room.setSize(size);
-    room.setCapacity(capacity);
-    room.setPrice(price);
-    room.setDescription(description);
-    roomService.saveRoom(room);
+		Room room = new Room();
+		String uploadDir = "src/main/resources/static/images/room/";
+		String fileName = image.getOriginalFilename();
+		Path path = Paths.get(uploadDir + fileName);
+		Files.copy(
+				image.getInputStream(),
+				path,
+				StandardCopyOption.REPLACE_EXISTING
+		);
+		room.setImage_path("/images/room/" + fileName);
+		room.setRoomNumber(roomNumber);
+		room.setType(type);
+		room.setSize(size);
+		room.setCapacity(capacity);
+		room.setPrice(price);
+		room.setDescription(description);
+		roomService.saveRoom(room);
     return "redirect:/admin/rooms";
 }
 
