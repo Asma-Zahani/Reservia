@@ -50,10 +50,70 @@
                 <td><span th:text="${room.capacity + ' Guests'}"></span></td>
                 <td th:text="${room.price + ' TND'}"></td>
                 <td class="px-4 gap-3">
-                    <a href="#" style="margin-right:5px;">
+                    <a href="#" style="margin-right:5px;" data-bs-toggle="modal" th:data-bs-target="'#editRoomModal' + ${room.id}">
                         <i class="fas fa-edit"></i>
                     </a>
+                    <!-- EDIT MODAL -->
+                        <div class="modal fade" th:id="'editRoomModal' + ${room.id}" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Update Room: <span th:text="${room.roomNumber}"></span></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- FORMULAIRE D'UPDATE -->
+                                        <form th:action="@{/admin/rooms/update/{id}(id=${room.id})}" method="post" enctype="multipart/form-data" class="row g-3 text-start">
+                                            
+                                            <div class="col-12">
+                                                <label class="form-label">Room Image (Leave empty to keep current)</label>
+                                                <input type="file" name="image" class="form-control" accept="image/*">
+                                                <div class="mt-2">
+                                                    <small>Current:</small>
+                                                    <img th:src="@{${room.image_path}}" style="width: 50px; border-radius: 4px;">
+                                                </div>
+                                            </div>
 
+                                            <div class="col-md-6">
+                                                <label class="form-label">Type</label>
+                                                <input type="text" name="type" th:value="${room.type}" class="form-control" required>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label class="form-label">Room Number</label>
+                                                <input type="text" name="roomNumber" th:value="${room.roomNumber}" class="form-control" required>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="form-label">Size (m²)</label>
+                                                <input type="number" name="size" th:value="${room.size}" class="form-control" min="1">
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="form-label">Capacity</label>
+                                                <input type="number" name="capacity" th:value="${room.capacity}" class="form-control" min="1">
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="form-label">Price (TND)</label>
+                                                <input type="number" step="0.01" name="price" th:value="${room.price}" class="form-control" min="0">
+                                            </div>
+
+                                            <div class="col-12">
+                                                <label class="form-label">Description</label>
+                                                <textarea name="description" class="form-control" rows="4" th:text="${room.description}"></textarea>
+                                            </div>
+
+                                            <div class="col-12 mt-4">
+                                                <button type="submit" class="theme-btn btn-style fill w-100">
+                                                    <span>Update Room</span>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     <a href="#" style="color:red;" data-bs-toggle="modal" th:data-bs-target="'#deleteModal' + ${room.id}">
                         <i class="fas fa-trash"></i>
                     </a>
@@ -155,7 +215,7 @@
                 <!-- BODY -->
                 <div class="modal-body">
 
-                    <form th:action="@{/admin/rooms/add}" method="post" class="row g-3">
+                    <form th:action="@{/admin/rooms/add}" method="post" enctype="multipart/form-data" class="row g-3">
                         <div class="col-12">
                             <label class="form-label">Room Image</label>
                             <input type="file" name="image" class="form-control" accept="image/*" onchange="previewImage(event)">
@@ -176,7 +236,13 @@
                                    class="form-control"
                                    placeholder="e.g. Deluxe, Suite">
                         </div>
-
+                        <div class="col-md-6">
+                            <label class="form-label">Room Number</label>
+                            <input type="text" 
+                                name="roomNumber" 
+                                class="form-control" 
+                                placeholder="e.g. A-101" required>
+                        </div>
                         <!-- SIZE -->
                         <div class="col-md-6">
                             <label class="form-label">Size (m²)</label>
