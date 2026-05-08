@@ -8,8 +8,8 @@
             <div class="row align-items-center justify-content-center">
                 <div class="col-lg-12">
                     <div class="page__hero__content">
-                        <h1 class="wow fadeInUp">My account</h1>
-                        <p class="wow fadeInUp font-sm">Whether you have questions, need assistance, or simply want to share.</p>
+                        <h1 class="wow fadeInUp">Admin Dashboard</h1>
+                        <p class="wow fadeInUp font-sm">Manage users, bookings, rooms and platform settings.</p>
                     </div>
                 </div>
             </div>
@@ -25,25 +25,35 @@
                     <div class="account-sidebar p-4">
                         <ul class="list-unstyled m-0 px-3">
                             <li th:classappend="${activePage == 'dashboard'} ? 'active'">
-                                <a th:href="@{/dashboard}"><i class="fa fa-dashboard me-2"></i>Dashboard</a>
+                                <a th:href="@{/admin/dashboard}"><i class="fa fa-dashboard me-2"></i>Dashboard</a>
                             </li>
-                            <li th:classappend="${activePage == 'account'} ? 'active'">
-                                <a th:href="@{/dashboard/account}"><i class="fa fa-file-alt me-2"></i>Account Details</a>
-                            </li>
-                            <li th:classappend="${activePage == 'change-password'} ? 'active'">
-                                <a th:href="@{/dashboard/change-password}"><i class="fa fa-lock me-2"></i>Change Password</a>
+                            <li th:classappend="${activePage == 'users'} ? 'active'">
+                                <a th:href="@{/admin/users}"><i class="fa fa-users me-2"></i>Users</a>
                             </li>
                             <li th:classappend="${activePage == 'bookings'} ? 'active'">
-                                <a th:href="@{/dashboard/bookings}"><i class="fa fa-calendar me-2"></i>My Bookings</a>
+                                <a th:href="@{/admin/bookings}"><i class="fa fa-calendar me-2"></i>Bookings</a>
+                            </li>
+                            <li th:classappend="${activePage == 'rooms'} ? 'active'">
+                                <a th:href="@{/admin/rooms}"><i class="fa fa-bed me-2"></i>Rooms</a>
+                            </li>
+                            <li th:classappend="${activePage == 'settings'} ? 'active'">
+                                <a th:href="@{/admin/settings}"><i class="fa fa-cog me-2"></i>Settings</a>
                             </li>
                         </ul>
 
                         <hr>
 
-                        <!--th:action="@{/logout}" method="post" -->
-                        <div class="my-3" data-bs-toggle="modal" data-bs-target="#logoutModal">
-                            <button type="button" class="theme-btn btn-style sm-btn border w-100"><span>Log Out</span></button>
+                        <div class="d-grid">
+                            <a th:href="@{/dashboard}" class="theme-btn btn-style sm-btn border text-center">
+                                <span><i class="fa fa-user me-2"></i>My Account</span>
+                            </a>
+                            <div class="my-3" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                                <button type="button" class="theme-btn btn-style sm-btn border w-100">
+                                    <span><i class="fa fa-sign-out me-2"></i>Log Out</span>
+                                </button>
+                            </div>
                         </div>
+
                     </div>
 
                 </div>
