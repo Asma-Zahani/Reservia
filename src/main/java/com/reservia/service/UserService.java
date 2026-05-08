@@ -1,14 +1,12 @@
 package com.reservia.service;
 
-import java.util.List;
+import java.util.Optional;
 
 import com.reservia.entity.Role;
 import com.reservia.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,9 +31,17 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur introuvable"));
     }
 
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
+    }
+
     public Page<User> getUsers(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return userRepository.findByRole(Role.valueOf("ROLE_USER"), pageable);
+    }
+
+    public void saveUser(User user) {
+        userRepository.save(user);
     }
 
     @Transactional

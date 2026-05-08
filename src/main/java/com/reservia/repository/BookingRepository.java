@@ -45,4 +45,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
         AND bi.booking.status = 'CONFIRMED'
     """)
     long countOccupiedRoomsToday(@Param("today") LocalDate today);
+
+    List<Booking> findTop5ByOrderByBookingDateDesc();
 }

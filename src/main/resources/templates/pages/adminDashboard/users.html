@@ -35,9 +35,54 @@
                 </td>
 
                 <td class="px-4 gap-3">
-                    <a href="#" title="Edit" style="margin-right:5px;">
+                    <!-- EDIT BUTTON -->
+                    <a href="#" title="Edit" style="margin-right:5px;" data-bs-toggle="modal" th:data-bs-target="'#editUserModal' + ${user.id}">
                         <i class="fas fa-edit"></i>
                     </a>
+
+                    <!-- EDIT MODAL (à placer dans le th:each de chaque utilisateur) -->
+                    <div class="modal fade" th:id="'editUserModal' + ${user.id}" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Edit User: <span th:text="${user.name}"></span></h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <form th:action="@{/admin/users/update/{id}(id=${user.id})}" method="post" class="row g-3">
+
+                                        <div class="col-12">
+                                            <label class="form-label">Name</label>
+                                            <input type="text" name="name" th:value="${user.name}" class="form-control" required>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label class="form-label">Email</label>
+                                            <input type="email" name="email" th:value="${user.email}" class="form-control" required>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label class="form-label">Enabled</label>
+                                            <select name="enabled" class="form-select">
+                                                <option th:value="true" th:selected="${user.enabled}">Active</option>
+                                                <option th:value="false" th:selected="${!user.enabled}">Disabled</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-12 mt-3">
+                                            <button type="submit" class="theme-btn btn-style fill w-100">
+                                                <span>Update User</span>
+                                            </button>
+                                        </div>
+
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- DELETE -->
                     <a href="#" title="Delete" style="color:red;" data-bs-toggle="modal" th:data-bs-target="'#deleteModal' + ${user.id}">
