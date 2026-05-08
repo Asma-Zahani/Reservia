@@ -39,6 +39,7 @@ public class DashboardController {
 	@GetMapping("/account")
 	public String account(Model model) {
 		model.addAttribute("activePage", "account");
+		model.addAttribute("user", authService.getCurrentUser());
 		return "pages/dashboard/account-details";
 	}
 
