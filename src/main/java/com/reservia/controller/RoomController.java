@@ -72,6 +72,13 @@ public class RoomController {
 		return "pages/rooms/booking";
 	}
 
+	@GetMapping("/availableRooms")
+	@ResponseBody
+	public List<Room> getAvailableRooms(@RequestParam LocalDate startDate,
+										@RequestParam LocalDate endDate) {
+		return roomService.getAvailableRooms(startDate, endDate);
+	}
+
 	@GetMapping("/{id}/disabledDates")
 	@ResponseBody
 	public List<String> getDisabledDates(@PathVariable Long id) {
