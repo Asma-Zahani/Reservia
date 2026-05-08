@@ -162,4 +162,27 @@ public class BookingService {
         Pageable pageable = PageRequest.of(page, size);
         return bookingRepository.findByUserAndStatuses(user, List.of(BookingStatus.CANCELLED, BookingStatus.COMPLETED), pageable);
     }
+
+
+    public Page<Booking> getAllBookings(int page, int size) {
+
+    Pageable pageable = PageRequest.of(
+            page,
+            size,
+            Sort.by("bookingDate").descending()
+    );
+
+    return bookingRepository.findAll(pageable);
+}
+
+    public void updateBookingStatus(Long id, BookingStatus status) {
+
+    Booking booking = bookingRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+    booking.setStatus(status);
+
+    bookingRepository.save(booking);
+}
+
 }

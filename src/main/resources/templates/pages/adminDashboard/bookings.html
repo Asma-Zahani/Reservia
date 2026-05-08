@@ -4,7 +4,148 @@
 
 <div th:fragment="content_adminDashboard">
 
-    <h3>Bookings Management</h3>
+    <h4>Bookings Management</h4>
+
+    <p class="form-subtitle">
+        Manage all reservations and monitor booking status.
+    </p>
+
+    <div th:if="${#lists.isEmpty(bookings)}">
+        <p>No bookings found.</p>
+    </div>
+
+    <table class="table table-striped"
+           th:if="${!#lists.isEmpty(bookings)}">
+
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Rooms</th>
+            <th>Status</th>
+            <th>Booking Date</th>
+            <th>Total Price</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr th:each="booking : ${bookings}">
+
+            <td th:text="${booking.id}"></td>
+
+            <td th:text="${booking.user.name}"></td>
+
+            <td>
+                <span th:each="item, iterStat : ${booking.items}">
+
+                    <span th:text="${item.room.type}"></span>
+
+                    <span th:if="${!iterStat.last}">
+                        ,
+                    </span>
+
+                </span>
+            </td>
+
+            <td>
+
+                <span class="badge bg-warning"
+                      th:if="${booking.status.name() == 'PENDING'}">
+                    Pending
+                </span>
+
+                <span class="badge bg-success"
+                      th:if="${booking.status.name() == 'CONFIRMED'}">
+                    Confirmed
+                </span>
+
+                <span class="badge bg-danger"
+                      th:if="${booking.status.name() == 'CANCELLED'}">
+                    Cancelled
+                </span>
+
+                <span class="badge bg-primary"
+                      th:if="${booking.status.name() == 'COMPLETED'}">
+                    Completed
+                </span>
+
+            </td>
+
+            <td th:text="${booking.bookingDate}"></td>
+
+            <td th:text="${booking.totalPrice + ' DT'}"></td>
+
+            <td>
+
+                <form th:action="@{/admin/bookings/update-status/{id}(id=${booking.id})}"
+                      method="post"
+                      class="d-flex gap-2">
+
+                    <select name="status"
+                            class="form-select">
+
+                        <option value="PENDING"
+                                th:selected="${booking.status.name() == 'PENDING'}">
+                            Pending
+                        </option>
+
+                        <option value="CONFIRMED"
+                                th:selected="${booking.status.name() == 'CONFIRMED'}">
+                            Confirmed
+                        </option>
+
+                        <option value="CANCELLED"
+                                th:selected="${booking.status.name() == 'CANCELLED'}">
+                            Cancelled
+                        </option>
+
+                        <option value="COMPLETED"
+                                th:selected="${booking.status.name() == 'COMPLETED'}">
+                            Completed
+                        </option>
+
+                    </select>
+
+                    <button type="submit"
+                            class="theme-btn btn-style fill">
+
+                        <span>Update</span>
+
+                    </button>
+
+                </form>
+
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+    <!-- PAGINATION -->
+    <nav class="simple-pagination"
+         th:if="${totalPages > 1}">
+
+        <a th:if="${currentPage > 0}"
+           th:href="@{/admin/bookings(page=${currentPage - 1})}">
+            ←
+        </a>
+
+        <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+           th:href="@{/admin/bookings(page=${i})}"
+           th:text="${i + 1}"
+           th:classappend="${i == currentPage} ? 'active' : ''">
+        </a>
+
+        <a th:if="${currentPage < totalPages - 1}"
+           th:href="@{/admin/bookings(page=${currentPage + 1})}">
+            →
+        </a>
+
+    </nav>
 
 </div>
 
