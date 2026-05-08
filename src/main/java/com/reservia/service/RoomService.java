@@ -38,7 +38,15 @@ public class RoomService {
                 .toList();
     }
 
-    // Transaction en lecture seule (optimisation : pas de dirty checking)
+        public void saveRoom(Room room) {
+            roomRepository.save(room);
+        }
+
+        public Room getRoomById(Long id) {
+        return roomRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Room not found with id: " + id));
+    }
+
     @Transactional(readOnly = true)
     public List<Room> getAvailableRooms(LocalDate start, LocalDate end) {
         return roomRepository.findAvailableRooms(start, end);

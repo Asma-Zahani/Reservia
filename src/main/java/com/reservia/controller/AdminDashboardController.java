@@ -17,7 +17,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 
 @Controller
@@ -53,7 +59,6 @@ public class AdminDashboardController {
 
 		LocalDate today = LocalDate.now();
 
-		// Dashboard stats
 		model.addAttribute("todayBookings",
 				bookingRepository.countTodayBookings(today));
 
@@ -138,7 +143,7 @@ public class AdminDashboardController {
 	 * ROOMS
 	 * =========================
 	 */
-@GetMapping("/rooms")
+	@GetMapping("/rooms")
 	public String rooms(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
 		Page<Room> roomPage = roomService.getRooms(page, size);
 
@@ -150,12 +155,67 @@ public class AdminDashboardController {
 		return "pages/adminDashboard/rooms";
 	}
 
+	@PostMapping("/rooms/add")
+	public String addRoom( @RequestParam("image") MultipartFile image, @RequestParam String roomNumber, @RequestParam String type, @RequestParam int size, @RequestParam int capacity, @RequestParam double price, @RequestParam String description) throws IOException{
+    Room room = new Room();
+    // dossier images
+    String uploadDir = "src/main/resources/static/images/room/";
+    // nom image
+    String fileName = image.getOriginalFilename();
+    // chemin complet
+    Path path = Paths.get(uploadDir + fileName);
+    // copier image dans le dossier
+    Files.copy(
+            image.getInputStream(),
+            path,
+            StandardCopyOption.REPLACE_EXISTING
+    );
+    // sauver le nom dans DB
+	room.setImage_path("/images/room/" + fileName);
+	room.setRoomNumber(roomNumber);
+    room.setType(type);
+    room.setSize(size);
+    room.setCapacity(capacity);
+    room.setPrice(price);
+    room.setDescription(description);
+    roomService.saveRoom(room);
+    return "redirect:/admin/rooms";
+}
+
 	@PostMapping("/rooms/delete/{id}")
 	public String deleteRoom(@PathVariable Long id) {
 		roomService.deleteRoom(id);
 		return "redirect:/admin/rooms";
 	}
 
+	@PostMapping("/rooms/update/{id}")
+	public String updateRoom(@PathVariable Long id,
+							@RequestParam(value = "image", required = false) MultipartFile image,
+							@RequestParam String roomNumber,
+							@RequestParam String type,
+							@RequestParam int size,
+							@RequestParam int capacity,
+							@RequestParam double price,
+							@RequestParam String description) throws IOException {
+
+		Room room = roomService.getRoomById(id); 
+		if (image != null && !image.isEmpty()) {
+			String uploadDir = "src/main/resources/static/images/room/";
+			String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+			Path path = Paths.get(uploadDir + fileName);
+			Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+			room.setImage_path("/images/room/" + fileName);
+		}
+		room.setRoomNumber(roomNumber);
+		room.setType(type);
+		room.setSize(size);
+		room.setCapacity(capacity);
+		room.setPrice(price);
+		room.setDescription(description);
+		roomService.saveRoom(room);
+
+		return "redirect:/admin/rooms";
+	}
 
 	/*
 	 * =========================
