@@ -2,10 +2,12 @@ package com.reservia.controller;
 
 import com.reservia.entity.Booking;
 import com.reservia.entity.BookingStatus;
+import com.reservia.entity.Room;
 import com.reservia.entity.User;
 import com.reservia.repository.BookingRepository;
 import com.reservia.service.AuthService;
 import com.reservia.service.BookingService;
+import com.reservia.service.RoomService;
 import com.reservia.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +21,6 @@ import java.time.LocalDate;
 @Controller
 @RequestMapping("/admin")
 public class AdminDashboardController {
-
-	@Autowired
-	private AuthService authService;
-
 	@Autowired
 	private BookingRepository bookingRepository;
     @Autowired
@@ -30,13 +28,9 @@ public class AdminDashboardController {
 
 	@Autowired
 	private BookingService bookingService;
+    @Autowired
+    private RoomService roomService;
 
-
-	/*
-	 * =========================
-	 * DASHBOARD
-	 * =========================
-	 */
 	@GetMapping("/dashboard")
 	public String dashboard(Model model) {
 
@@ -67,12 +61,6 @@ public class AdminDashboardController {
 		return "pages/adminDashboard/dashboard";
 	}
 
-
-	/*
-	 * =========================
-	 * USERS
-	 * =========================
-	 */
 	@GetMapping("/users")
 	public String users(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size, Model model) {
 		Page<User> usersPage = userService.getUsers(page, size);
@@ -91,58 +79,42 @@ public class AdminDashboardController {
 		return "redirect:/admin/users";
 	}
 
+	@GetMapping("/bookings")
+	public String bookings(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, Model model) {
+		Page<Booking> bookingPage = bookingService.getAllBookings(page, size);
 
-	/*
-	 * =========================
-	 * BOOKINGS
-	 * =========================
-	 */
-		@GetMapping("/bookings")
-		public String bookings(
-				@RequestParam(defaultValue = "0") int page,
-				@RequestParam(defaultValue = "5") int size,
-				Model model) {
+		model.addAttribute("bookings", bookingPage.getContent());
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", bookingPage.getTotalPages());
+		model.addAttribute("activePage", "bookings");
 
-			Page<Booking> bookingPage = bookingService.getAllBookings(page, size);
+		return "pages/adminDashboard/bookings";
+	}
 
-			model.addAttribute("bookings", bookingPage.getContent());
-			model.addAttribute("currentPage", page);
-			model.addAttribute("totalPages", bookingPage.getTotalPages());
-			model.addAttribute("activePage", "bookings");
+	@PostMapping("/bookings/update-status/{id}")
+	public String updateBookingStatus(@PathVariable Long id, @RequestParam BookingStatus status) {
+		bookingService.updateBookingStatus(id, status);
+		return "redirect:/admin/bookings";
+	}
 
-			return "pages/adminDashboard/bookings";
-		}
-
-		@PostMapping("/bookings/update-status/{id}")
-			public String updateBookingStatus(
-					@PathVariable Long id,
-					@RequestParam BookingStatus status) {
-
-				bookingService.updateBookingStatus(id, status);
-
-				return "redirect:/admin/bookings";
-			}
-
-
-	/*
-	 * =========================
-	 * ROOMS
-	 * =========================
-	 */
 	@GetMapping("/rooms")
-	public String rooms(Model model) {
+	public String rooms(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
+		Page<Room> roomPage = roomService.getRooms(page, size);
 
+		model.addAttribute("rooms", roomPage.getContent());
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", roomPage.getTotalPages());
 		model.addAttribute("activePage", "rooms");
 
 		return "pages/adminDashboard/rooms";
 	}
 
+	@PostMapping("/rooms/delete/{id}")
+	public String deleteRoom(@PathVariable Long id) {
+		roomService.deleteRoom(id);
+		return "redirect:/admin/rooms";
+	}
 
-	/*
-	 * =========================
-	 * SETTINGS
-	 * =========================
-	 */
 	@GetMapping("/settings")
 	public String settings(Model model) {
 

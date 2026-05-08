@@ -4,7 +4,142 @@
 
 <div th:fragment="content_adminDashboard">
 
-    <h3>Rooms Management</h3>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <div>
+            <h4>Rooms Management</h4>
+            <p class="form-subtitle">
+                Manage all hotel rooms, pricing and availability.
+            </p>
+        </div>
+
+        <div class="my-3" data-bs-toggle="modal" data-bs-target="#addRoomModal">
+            <button type="button" class="theme-btn btn-style sm-btn fill w-100">
+                <span><i class="fa fa-plus me-2"></i>Add Room</span>
+            </button>
+        </div>
+
+    </div>
+
+    <div th:if="${#lists.isEmpty(rooms)}">
+        <p>No rooms found.</p>
+    </div>
+
+    <table class="table table-striped"
+           th:if="${!#lists.isEmpty(rooms)}">
+
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Type</th>
+                <th>Size</th>
+                <th>Capacity</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            <tr th:each="room, iterStat : ${rooms}">
+                <td>
+                    <img th:src="@{${room.image_path}}" alt="room" style="width:70px;height:50px;object-fit:cover;border-radius:6px;">
+                </td>
+                <td th:text="${room.type}"></td>
+                <td><span th:text="${room.size + ' m²'}"></span></td>
+                <td><span th:text="${room.capacity + ' Guests'}"></span></td>
+                <td th:text="${room.price + ' TND'}"></td>
+                <td class="px-4 gap-3">
+                    <a href="#" style="margin-right:5px;">
+                        <i class="fas fa-edit"></i>
+                    </a>
+
+                    <a href="#" style="color:red;" data-bs-toggle="modal" th:data-bs-target="'#deleteModal' + ${room.id}">
+                        <i class="fas fa-trash"></i>
+                    </a>
+
+                    <!-- DELETE MODAL -->
+                    <div class="modal fade"
+                         th:id="'deleteModal' + ${room.id}"
+                         tabindex="-1">
+
+                        <div class="modal-dialog modal-dialog-centered">
+
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+
+                                    <h5 class="modal-title">Delete Room</h5>
+
+                                    <button type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="modal">
+                                    </button>
+
+                                </div>
+
+                                <div class="modal-body">
+
+                                    <p>
+                                        Do you really want to delete
+                                        <strong th:text="${room.type}"></strong> ?
+                                    </p>
+
+                                </div>
+
+                                <div class="modal-footer">
+
+                                    <button type="button"
+                                            class="theme-btn btn-style border"
+                                            data-bs-dismiss="modal">
+                                        <span>Cancel</span>
+                                    </button>
+
+                                    <form th:action="@{/admin/rooms/delete/{id}(id=${room.id})}"
+                                          method="post">
+
+                                        <button type="submit"
+                                                class="theme-btn btn-style fill">
+                                            <span>Delete</span>
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <!-- PAGINATION -->
+    <nav class="simple-pagination"
+         th:if="${totalPages > 1}">
+
+        <a th:if="${currentPage > 0}"
+           th:href="@{/admin/rooms(page=${currentPage - 1})}">
+            ←
+        </a>
+
+        <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+           th:href="@{/admin/rooms(page=${i})}"
+           th:text="${i + 1}"
+           th:classappend="${i == currentPage} ? 'active' : ''">
+        </a>
+
+        <a th:if="${currentPage < totalPages - 1}"
+           th:href="@{/admin/rooms(page=${currentPage + 1})}">
+            →
+        </a>
+
+    </nav>
 
 </div>
 

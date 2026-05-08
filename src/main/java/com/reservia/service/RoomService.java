@@ -43,4 +43,8 @@ public class RoomService {
     public List<Room> getAvailableRooms(LocalDate start, LocalDate end) {
         return roomRepository.findAvailableRooms(start, end);
     }
+
+    public void deleteRoom(Long id) {
+        roomRepository.deleteById(id);
+    }
 }
