@@ -40,7 +40,13 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (user.getRole().name().equals("ROLE_ADMIN")) {
+            throw new RuntimeException("Cannot delete admin user");
+        }
+
+        userRepository.delete(user);
     }
 }
 
