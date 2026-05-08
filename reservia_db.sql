@@ -148,14 +148,14 @@ CREATE TABLE `room` (
 --
 
 INSERT INTO `room` (`capacity`, `price`, `size`, `id`, `image_path`, `type`, `description`) VALUES
-(1, 120, 20, 1, '/images/rooms/room1.jpg', 'Simple', 'Chambre simple confortable'),
-(2, 180, 30, 2, '/images/rooms/room2.jpg', 'Double', 'Chambre double avec balcon'),
-(4, 350, 50, 3, '/images/rooms/room3.jpg', 'Suite', 'Suite familiale luxueuse'),
-(2, 220, 35, 4, '/images/rooms/room4.jpg', 'Double', 'Vue sur mer'),
-(1, 100, 18, 5, '/images/rooms/room5.jpg', 'Simple', 'Petit budget'),
-(5, 500, 70, 6, '/images/rooms/room6.jpg', 'Suite Luxe', 'Suite premium avec jacuzzi'),
-(2, 210, 32, 7, '/images/rooms/room7.jpg', 'Double', 'Chambre moderne'),
-(3, 390, 55, 8, '/images/rooms/room8.jpg', 'Suite', 'Suite élégante');
+(1, 120, 20, 1, '/images/room/room1.jpg', 'Simple', 'Chambre simple confortable'),
+(2, 180, 30, 2, '/images/room/room2.jpg', 'Double', 'Chambre double avec balcon'),
+(4, 350, 50, 3, '/images/room/room3.jpg', 'Suite', 'Suite familiale luxueuse'),
+(2, 220, 35, 4, '/images/room/room4.jpg', 'Double', 'Vue sur mer'),
+(1, 100, 18, 5, '/images/room/room5.jpg', 'Simple', 'Petit budget'),
+(5, 500, 70, 6, '/images/room/room6.jpg', 'Suite Luxe', 'Suite premium avec jacuzzi'),
+(2, 210, 32, 7, '/images/room/room7.jpg', 'Double', 'Chambre moderne'),
+(3, 390, 55, 8, '/images/room/room8.jpg', 'Suite', 'Suite élégante');
 
 -- --------------------------------------------------------
 
