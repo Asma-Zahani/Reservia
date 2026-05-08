@@ -13158,6 +13158,25 @@ input[type="number"] {
 .text-primary {
   color: #ab8a62 !important;
 }
+
+.image-preview-box {
+  width: 300px;
+  height: 200px;
+  border-radius: 10px;
+  overflow: hidden;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ddd;
+  background: #f8f9fa;
+}
+
+.image-preview-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 /*
 if you need custom styles, please add it in this file below
 
