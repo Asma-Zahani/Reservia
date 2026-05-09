@@ -76,13 +76,13 @@
                                 Open Hours: Monday – Sunday <br>
 
                                 Telephone:
-                                <a class="link__item gap-10" th:href="'tel:' + ${settings.phone}"
+                                <a th:href="'tel:' + ${settings.phone}"
                                    th:text="${settings.phone}">
                                 </a>
                                 <br>
 
                                 Email:
-                                <a class="link__item gap-10" th:href="'mailto:' + ${settings.email}"
+                                <a th:href="'mailto:' + ${settings.email}"
                                    th:text="${settings.email}">
                                 </a>
                             </p>
