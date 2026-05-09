@@ -4,13 +4,13 @@
             <div class="row justify-content-between">
                 <div class="col-lg-6 col-md-6">
                     <div class="social__links">
-                        <a class="link__item gap-10" href="tel:#"><i class="flaticon-phone-flip"></i> +12505550199</a>
-                        <a class="link__item gap-10" href="mailto:#"><i class="flaticon-envelope"></i> moonlit@gmail.com</a>
+                        <a class="link__item gap-10" href="tel:#"><i class="flaticon-phone-flip"></i><span th:text="${settings.phone}"></span></a>
+                        <a class="link__item gap-10" href="mailto:#"><i class="flaticon-envelope"></i><span th:text="${settings.email}"></span></a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="location">
-                        <a class="link__item gap-10" href="#"><i class="flaticon-marker"></i>280 Augusta Avenue, M5T 2L9 Toronto, Canada</a>
+                        <a class="link__item gap-10" href="#"><i class="flaticon-marker"></i><span th:text="${settings.address}"></span></a>
                     </div>
                 </div>
             </div>
@@ -45,7 +45,7 @@
 
                     </div>
                     <div class="main__logo">
-                        <a th:href="@{/}" ><img class="logo__class" th:src="@{/images/logo/logo.svg}" alt="moonlit"></a>
+                        <a th:href="@{/}" ><img class="logo__class" th:src="@{/images/logo/logo.svg}" alt="reservia"></a>
                     </div>
                     <div class="main__right">
                         <div sec:authorize="hasRole('USER')">
@@ -88,7 +88,7 @@
                             </a>
                         </div>
                         <p class="description">
-                            Welcome to Moonlit, where luxury meets comfort in the heart of canada. Since 1999, we have been dedicated to providing.
+                            Welcome to Reservia, where luxury meets comfort in the heart of canada. Since 1999, we have been dedicated to providing.
                         </p>
                     </div>
                     <div class="offcanvase__mobile__menu">
