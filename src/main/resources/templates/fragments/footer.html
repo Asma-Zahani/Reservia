@@ -44,9 +44,26 @@
                     <div class="rts__widget">
                         <span class="widget__title">Contact Us</span>
                         <ul>
-                            <li><a href="tel:+12505550199"><i class="flaticon-phone-flip"></i> +12505550199</a></li>
-                            <li><a href="mailto:UjJw6@example.com"><i class="flaticon-envelope"></i>Moonlit@gmail.com</a></li>
-                            <li><a href="#"><i class="flaticon-marker"></i> 280 Augusta Avenue, M5T 2L9 Toronto, Canada</a></li>
+                            <li>
+                                <a th:href="'tel:' + ${settings.phone}">
+                                    <i class="flaticon-phone-flip"></i>
+                                    <span th:text="${settings.phone}"></span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a th:href="'mailto:' + ${settings.email}">
+                                    <i class="flaticon-envelope"></i>
+                                    <span th:text="${settings.email}"></span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    <i class="flaticon-marker"></i>
+                                    <span th:text="${settings.address}"></span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -56,7 +73,7 @@
             <div class="container">
                 <div class="row">
                     <div class="copyright__wrapper">
-                        <p class="mb-0">Copyright © <span id="year"></span> Moonlit. All rights reserved.</p>
+                        <p class="mb-0">Copyright © <span id="year"></span> Reservia. All rights reserved.</p>
                         <div class="footer__social__link">
                             <a href="#" class="link__item">Facebook</a>
                             <a href="#" class="link__item">Linkedin</a>

@@ -25,7 +25,7 @@
                     <div class="rts__contact">
                         <span class="h4 d-block mb-30 text-center">Love to hear from you
                             Get in touch!</span>
-                        <form action="https://html.themewant.com/moonlit/mailer.php" method="post" class="rts__contact__form" id="contact-form">
+                        <form action="" method="post" class="rts__contact__form" id="contact-form">
                             <div class="form-input">
                                 <label for="name">Your Name</label>
                                 <div class="pr">
@@ -71,23 +71,42 @@
 
                         <div class="contact__info__item">
                             <h4>Hotel Info Center</h4>
-                            <p>
+
+                            <p th:if="${settings != null}">
                                 Open Hours: Monday – Sunday <br>
-                                Telephone: +12505550199 <br>
-                                Fax: +12505550199 <br>
-                                Email: info@moonlit.com
-                            </p>
-                        </div>
-                        <div class="contact__info__item">
-                            <h4>Hotel location</h4>
-                            <p>
-                                Address: The Ritz-Carlton (California, USA) <br>
-                                Telephone: +12505550199 <br>
-                                Fax: +12505550199 <br>
-                                Email: info@moonlit.com
+
+                                Telephone:
+                                <a class="link__item gap-10" th:href="'tel:' + ${settings.phone}"
+                                   th:text="${settings.phone}">
+                                </a>
+                                <br>
+
+                                Email:
+                                <a class="link__item gap-10" th:href="'mailto:' + ${settings.email}"
+                                   th:text="${settings.email}">
+                                </a>
                             </p>
                         </div>
 
+                        <div class="contact__info__item">
+                            <h4>Hotel Location</h4>
+                            <p th:if="${settings != null}">
+                                Address:
+                                <span th:text="${settings.address}"></span>
+                                <br>
+
+                                Telephone:
+                                <a th:href="'tel:' + ${settings.phone}"
+                                   th:text="${settings.phone}">
+                                </a>
+                                <br>
+
+                                Email:
+                                <a th:href="'mailto:' + ${settings.email}"
+                                   th:text="${settings.email}">
+                                </a>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
