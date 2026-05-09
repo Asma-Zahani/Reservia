@@ -52,4 +52,6 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate
     );
+
+    List<Room> findTop10ByOrderByIdDesc();
 }
