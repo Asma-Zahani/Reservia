@@ -119,6 +119,15 @@ All CSS Structure Follow this Order
   top: 0;
 }
 
+.event__newsletter__bg {
+  position: relative;
+  background-image: url("../images/pages/cta__bg.webp");
+  padding: 65px 0;
+}
+.event__newsletter__bg::before {
+  background-color: rgba(0, 8, 52, 0.8);
+}
+
 .subtitle__icon__three::after, .subtitle__icon__four::after, .subtitle__icon__three::before, .subtitle__icon__four::before, .subtitle__icon__two::before, .subtitle__icon__five::before, .subtitle__icon::after, .subtitle__icon::before {
   transform: translate(0, 50%);
 }

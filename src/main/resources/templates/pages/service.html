@@ -138,7 +138,6 @@
                             <h2 class="content__title h3 lh-1">Spa & Wellness</h2>
                         </div>
                         <p class="font-sm mt-30 wow fadeInUp">At our Fitness & Yoga Services, we are dedicated to helping you achieve your health and wellness goals. Our comprehensive program offers a variety of classes designed to suit all levels, from beginners to advanced practitioners.</p>
-                        <a href="#" class="underline__style wow fadeInUp" data-wow-delay=".4s">Read More</a>
                     </div>
                 </div>
                 <!-- single service item end -->
@@ -154,7 +153,6 @@
                             <h2 class="content__title h3 lh-1">Romantic Getaway</h2>
                         </div>
                         <p class="font-sm mt-30 wow fadeInUp">At our Fitness & Yoga Services, we are dedicated to helping you achieve your health and wellness goals. Our comprehensive program offers a variety of classes designed to suit all levels, from beginners to advanced practitioners.</p>
-                        <a href="#" class="underline__style wow fadeInUp" data-wow-delay=".4s">Read More</a>
                     </div>
                 </div>
                 <!-- single service item end -->
@@ -163,88 +161,37 @@
     </div>
     <!-- our service end -->
 
-    <!-- client testimonial  -->
-    <div class="rts__section section__padding">
+            <!-- event newsletter -->
+    <div class="rts__section event__newsletter__bg">
         <div class="container">
-            <div class="row mb-40 position-relative">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="section__topbar">
-                        <span class="h6 subtitle__icon__five d-block wow fadeInUp">Testimonial</span>
-                        <h2 class="content__title h2 lh-1 wow fadeInUp">What Our Client Say</h2>
-                    </div>
-                    <div class="slider__navigation">
-                        <div class="nav__btn button-next">
-                            <img th:src="@{/images/icon/arrow-left-short.svg}" alt="">
-                        </div>
-                        <div class="nav__btn button-prev">
-                            <img th:src="@{/images/icon/arrow-right-short.svg}" alt="">
-                        </div>
+            <div class="row g-30 align-items-center">
+                <div class="col-lg-6">
+                    <div class="event__newsletter__text">
+                        <h2 class="mb-0">We're Here to Help
+                            Reach Out to Us Today
+                            And Join Our Hotel
+                        </h2>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-11">
-                    <div class="testimonial__slider overflow-hidden">
-                        <div class="swiper-wrapper">
+                <div class="col-lg-6">
+                    <div class="event__newsletter__contact">
 
-                            <div class="swiper-slide">
-                                <div class="testimonial__item__content">
-                                    <div class="author__icon">
-                                        <img th:src="@{/images/author/author-2x.webp}" alt="">
-                                    </div>
-                                    <div class="testimonial__content">
-                                        <div class="single__slider__item ">
-                                            <div class="slider__rating mb-20">
-                                                <i class="flaticon-star"></i>
-                                                <i class="flaticon-star"></i>
-                                                <i class="flaticon-star"></i>
-                                                <i class="flaticon-star"></i>
-                                                <i class="flaticon-star-sharp-half-stroke"></i>
-                                            </div>
-                                            <span class="slider__text d-block">Choosing Bokinn was one of the best decisions we've ever made. They have proven to be a reliable and innovative partner, always ready to tackle new challenges with and expertise.Their commitment to and delivering tailored.</span>
-                                            <div class="slider__author__info">
-                                                <div class="slider__author__info__content">
-                                                    <h6 class="mb-0">Sarah Martinez</h6>
-                                                    <span>COO of Apex Solutions</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="testimonial__item__content">
-                                    <div class="author__icon">
-                                        <img th:src="@{/images/author/author-2.webp}" alt="">
-                                    </div>
-                                    <div class="testimonial__content">
-                                        <div class="single__slider__item ">
-                                            <div class="slider__rating mb-20">
-                                                <i class="flaticon-star"></i>
-                                                <i class="flaticon-star"></i>
-                                                <i class="flaticon-star"></i>
-                                                <i class="flaticon-star"></i>
-                                                <i class="flaticon-star-sharp-half-stroke"></i>
-                                            </div>
-                                            <span class="slider__text d-block">Choosing Bokinn was one of the best decisions we've ever made. They have proven to be a reliable and innovative partner, always ready to tackle new challenges with and expertise.Their commitment to and delivering tailored.</span>
-                                            <div class="slider__author__info">
-                                                <div class="slider__author__info__content">
-                                                    <h6 class="mb-0">Al Amin Hossen</h6>
-                                                    <span>COO of Apex Solutions</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="contact__method">
+                            <span class="h6">Reservation By Phone</span>
+                            <a href="callto:121"><i class="flaticon-phone-flip"></i><span th:text="${'+216' + settings.phone}"></span></a>
+                        </div>
 
+                        <div class="contact__method">
+                            <span class="h6">Reservation By Email</span>
+                            <a href="mailto:example@example.com"><img th:src="@{/images/icon/mail.svg}" alt=""><span th:text="${settings.email}"></span></a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- client testimonial  end -->
+    <!-- event newsletter end -->
+
 </div>
 
 </html>
