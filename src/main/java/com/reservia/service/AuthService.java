@@ -25,6 +25,8 @@ public class AuthService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private EmailService emailService;
 
     public void register(AuthRequest request) {
         User user = new User();
@@ -34,6 +36,12 @@ public class AuthService {
         user.setRole(Role.valueOf("ROLE_USER"));
 
         userRepository.save(user);
+
+        try {
+            emailService.sendWelcomeEmail(user.getEmail(), user.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void login(AuthRequest request) {
