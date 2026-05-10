@@ -15,7 +15,9 @@
                         <div th:if="${success != null and !#strings.isEmpty(success)}" class="alert alert-success">
                             <span th:text="${success}"></span>
                         </div>
-
+                        <div th:if="${registerSuccess != null and !#strings.isEmpty(registerSuccess)}" class="alert alert-success">
+                            <span th:text="${registerSuccess}"></span>
+                        </div>
                     <form action="/auth/login" method="POST" class="d-flex flex-column gap-3">
                         <div class="form-group">
                             <label for="email-popup" class="text-dark mb-3">Your Email</label>
@@ -110,9 +112,8 @@
                         <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
-                        <div th:if="${success}" class="alert alert-success">
                             <span th:text="${success}"></span>
-                        </div>
+                    
 
                         <div th:if="${error}" class="alert alert-danger">
                             <span th:text="${error}"></span>
