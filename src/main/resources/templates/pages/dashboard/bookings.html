@@ -3,28 +3,36 @@
       th:replace="~{layouts/dashboard_layout :: dashboard_layout}">
 
 <div th:fragment="content_dashboard">
-    <h4>My Bookings</h4>
+
+    <h4>Bookings Management</h4>
+
     <p class="form-subtitle">
-        Here you can view all your bookings, check their details, and manage them easily.
+        Manage all reservations and monitor booking status.
     </p>
 
     <div th:if="${#lists.isEmpty(bookings)}">
-        <p>No booking found.</p>
+        <p>No bookings found.</p>
     </div>
 
-    <table class="table table-striped" th:if="${!#lists.isEmpty(bookings)}">
+    <table class="table table-striped"
+           th:if="${!#lists.isEmpty(bookings)}">
+
         <thead>
         <tr>
             <th>ID</th>
+            <th>User</th>
             <th>Booking Date</th>
             <th>Status</th>
-            <th>Total</th>
+            <th>Total Price</th>
             <th>Actions</th>
         </tr>
         </thead>
+
         <tbody>
+
         <tr th:each="booking, iterStat : ${bookings}">
             <td th:text="${'#' + booking.id}"></td>
+            <td th:text="${booking.user.name}"></td>
             <td th:text="${booking.bookingDate}"></td>
             <td>
                 <span class="badge px-3 py-1" th:classappend="${booking.status.name() == 'CONFIRMED'} ? 'bg-success' :
@@ -33,10 +41,16 @@
                       th:text="${booking.status}">
                 </span>
             </td>
-            <td th:text="${booking.totalPrice}"></td>
+
+
+            <td th:text="${booking.totalPrice + ' DT'}"></td>
+
             <td class="px-4 gap-3">
                 <a href="#" data-bs-toggle="modal" th:data-bs-target="'#bookingModal' + ${iterStat.index}" title="View Details">
                     <i class="fas fa-eye"></i>
+                </a>
+                <a href="#" title="Edit" data-bs-toggle="modal" th:data-bs-target="'#editModal' + ${booking.id}">
+                    <i class="fas fa-edit"></i>
                 </a>
 
                 <div class="modal fade" th:id="'bookingModal' + ${iterStat.index}" tabindex="-1">
@@ -179,172 +193,121 @@
                     </div>
                 </div>
 
-<!--                <a href="#" title="Edit" style="margin-right:5px;" data-bs-toggle="modal" th:data-bs-target="'#editModal' + ${booking.id}">-->
-<!--                    <i class="fas fa-edit"></i>-->
-<!--                </a>-->
-
-<!--                <div class="modal fade" th:id="'editModal' + ${booking.id}" tabindex="-1">-->
-<!--                    <div class="modal-dialog modal-dialog-centered modal-lg">-->
-<!--                        <div class="modal-content border-0 rounded-3">-->
-
-<!--                            <div class="modal-header border-0" style="background-color:#f8f6f3;">-->
-<!--                                <h4 class="modal-title fw-semibold" style="color:#2c2c2c;">-->
-<!--                                    Edit Booking #<span th:text="${booking.id}"></span>-->
-<!--                                </h4>-->
-<!--                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>-->
-<!--                            </div>-->
-
-<!--                            <div class="modal-body" style="color:#2c2c2c;">-->
-
-<!--                                &lt;!&ndash; Date picker pour changer la période &ndash;&gt;-->
-<!--                                <div class="mb-3">-->
-<!--                                    <label class="form-label">Period</label>-->
-<!--                                    <div class="row g-2">-->
-<!--                                        <div class="col-md-6">-->
-<!--                                            <input type="date" class="form-control" name="startDate" th:value="${booking.items[0].startDate}" />-->
-<!--                                        </div>-->
-<!--                                        <div class="col-md-6">-->
-<!--                                            <input type="date" class="form-control" name="endDate" th:value="${booking.items[0].endDate}" />-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div class="form-actions mt-2">-->
-<!--                                        <button type="button" class="theme-btn btn-style border"-->
-<!--                                                th:onclick="'fetchAvailableRooms(' + ${booking.id} + ', this)'">-->
-<!--                                            <span>Check Available Rooms</span>-->
-<!--                                        </button>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-
-<!--                                <div th:id="'availableRooms' + ${booking.id}"></div>-->
-
-<!--                                &lt;!&ndash; Extra services &ndash;&gt;-->
-<!--                                <h5 class="fw-semibold mt-4 mb-3" style="color:#9c7b53;">Extra Services</h5>-->
-<!--                                <div th:each="extra : ${allExtraServices}">-->
-<!--                                    <input type="checkbox" th:id="'extra' + ${booking.id} + '_' + ${extra.id}"-->
-<!--                                           th:name="'extraServices'"-->
-<!--                                           th:value="${extra.id}"-->
-<!--                                           th:checked="${booking.extraServices.contains(extra)}">-->
-<!--                                    <label th:for="'extra' + ${booking.id} + '_' + ${extra.id}" th:text="${extra.name}"></label>-->
-<!--                                </div>-->
-
-<!--                            </div>-->
-
-<!--                            <div class="modal-footer border-0 gap-2">-->
-<!--                                <button type="button" class="theme-btn btn-style border" data-bs-dismiss="modal">-->
-<!--                                    <span>Close</span>-->
-<!--                                </button>-->
-
-<!--                                &lt;!&ndash; Formulaire de validation &ndash;&gt;-->
-<!--                                <form th:action="@{/booking/updateRoomsAndExtras/{id}(id=${booking.id})}" method="post">-->
-<!--                                    <input type="hidden" name="selectedRooms" th:id="'selectedRoomsInput' + ${booking.id}" />-->
-<!--                                    <button type="submit" class="theme-btn btn-style fill">-->
-<!--                                        <span>Update Booking</span>-->
-<!--                                    </button>-->
-<!--                                </form>-->
-<!--                            </div>-->
-
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-                <a href="#" title="Delete" style="color:red;" data-bs-toggle="modal" th:data-bs-target="'#deleteModal' + ${booking.id}">
-                    <i class="fas fa-trash"></i>
-                </a>
-
-                <div class="modal fade" th:id="'deleteModal' + ${booking.id}" tabindex="-1">
-                    <div class="modal-dialog modal-dialog-centered">
+                <div class="modal fade" th:id="'editModal' + ${booking.id}" tabindex="-1">
+                    <form th:action="@{/admin/bookings/update-status/{id}(id=${booking.id})}" method="post"  class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
-
+                            <!-- HEADER -->
                             <div class="modal-header">
-                                <h5 class="modal-title">Booking Action</h5>
+                                <h5 class="modal-title">Update Booking Status</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
 
+                            <!-- BODY -->
                             <div class="modal-body">
-                                <p>
-                                    Do you really want to cancel booking #<strong th:text="${booking.id}"></strong>?<br>
-                                    Once canceled, this action cannot be reversed.
-                                </p>
-                            </div>
 
-                            <div class="modal-footer">
+                                <div class="d-flex flex-column">
+                                    <label class="form-label">Status</label>
+                                    <select name="status" class="form-select">
+                                        <option value="PENDING" th:selected="${booking.status.name() == 'PENDING'}">
+                                            Pending
+                                        </option>
+                                        <option value="CONFIRMED" th:selected="${booking.status.name() == 'CONFIRMED'}">
+                                            Confirmed
+                                        </option>
+                                        <option value="CANCELLED" th:selected="${booking.status.name() == 'CANCELLED'}">
+                                            Cancelled
+                                        </option>
+                                        <option value="COMPLETED" th:selected="${booking.status.name() == 'COMPLETED'}">
+                                            Completed
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer gap-2">
                                 <button type="button" class="theme-btn btn-style border" data-bs-dismiss="modal">
                                     <span>Cancel</span>
                                 </button>
 
-                                <form th:action="@{/booking/cancel/{id}(id=${booking.id})}" method="post">
-                                    <button type="submit" class="theme-btn btn-style fill">
-                                        <span>Cancel booking</span>
-                                    </button>
-                                </form>
+                                <button type="submit" class="theme-btn btn-style fill">
+                                    <span>Update Status</span>
+                                </button>
                             </div>
 
                         </div>
-                    </div>
+                    </form>
                 </div>
             </td>
+
+<!--            <td>-->
+
+<!--                <form th:action="@{/admin/bookings/udate-status/{id}(id=${booking.id})}"-->
+<!--                      method="post"-->
+<!--                      class="d-flex gap-2">-->
+
+<!--                    <select name="status"-->
+<!--                            class="form-select">-->
+
+<!--                        <option value="PENDING"-->
+<!--                                th:selected="${booking.status.name() == 'PENDING'}">-->
+<!--                            Pending-->
+<!--                        </option>-->
+
+<!--                        <option value="CONFIRMED"-->
+<!--                                th:selected="${booking.status.name() == 'CONFIRMED'}">-->
+<!--                            Confirmed-->
+<!--                        </option>-->
+
+<!--                        <option value="CANCELLED"-->
+<!--                                th:selected="${booking.status.name() == 'CANCELLED'}">-->
+<!--                            Cancelled-->
+<!--                        </option>-->
+
+<!--                        <option value="COMPLETED"-->
+<!--                                th:selected="${booking.status.name() == 'COMPLETED'}">-->
+<!--                            Completed-->
+<!--                        </option>-->
+
+<!--                    </select>-->
+
+<!--                    <button type="submit"-->
+<!--                            class="theme-btn btn-style fill">-->
+
+<!--                        <span>Update</span>-->
+
+<!--                    </button>-->
+
+<!--                </form>-->
+
+<!--            </td>-->
+
         </tr>
+
         </tbody>
+
     </table>
 
+    <!-- PAGINATION -->
+    <nav class="simple-pagination"
+         th:if="${totalPages > 1}">
 
-    <nav class="simple-pagination" th:if="${totalPages > 1}">
         <a th:if="${currentPage > 0}"
-           th:href="@{/dashboard/bookings(page=${currentPage - 1})}">
+           th:href="@{/admin/bookings(page=${currentPage - 1})}">
             ←
         </a>
 
         <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-           th:href="@{/dashboard/bookings(page=${i})}"
+           th:href="@{/admin/bookings(page=${i})}"
            th:text="${i + 1}"
            th:classappend="${i == currentPage} ? 'active' : ''">
         </a>
 
         <a th:if="${currentPage < totalPages - 1}"
-           th:href="@{/dashboard/bookings(page=${currentPage + 1})}">
+           th:href="@{/admin/bookings(page=${currentPage + 1})}">
             →
         </a>
+
     </nav>
 
-    <script>
-        function printBooking(index) {
-            const content = document.getElementById('printArea' + index).innerHTML;
-            const printWindow = window.open('', '_blank', 'width=900,height=700');
-
-            printWindow.document.open();
-            printWindow.document.write(`
-        <html>
-        <head>
-            <title>Print Booking</title>
-            <style>
-                body { font-family: Arial, sans-serif; padding: 20px; }
-                table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-                th { background: #f5f5f5; }
-                .badge { padding: 5px 10px; border-radius: 5px; }
-                h5 { font-size: 18px; margin-top: 20px; }
-                button, .grand-total { visibility: hidden; }
-            </style>
-        </head>
-        <body>
-            ${content}
-        </body>
-        </html>
-    `);
-            printWindow.document.close();
-
-            // Attendre que le contenu soit chargé avant d'imprimer
-            printWindow.onload = function () {
-                printWindow.focus();
-                printWindow.print();
-
-                // Fermer automatiquement après impression (optionnel)
-                printWindow.onafterprint = function () {
-                    printWindow.close();
-                };
-            };
-        }
-    </script>
 </div>
 
 </html>

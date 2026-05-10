@@ -62,7 +62,7 @@ public class AuthController {
             if (user.getRole() == Role.ROLE_ADMIN) {
                 return "redirect:/admin/dashboard";
             }
-            return "redirect:/dashboard";
+            return "redirect:/account";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute(
                     "loginError",
