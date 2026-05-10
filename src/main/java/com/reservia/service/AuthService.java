@@ -2,7 +2,10 @@ package com.reservia.service;
 
 import com.reservia.entity.Role;
 import com.reservia.entity.User;
+import com.reservia.entity.VerificationToken;
+import com.reservia.repository.TokenRepository;
 import com.reservia.repository.UserRepository;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,6 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.reservia.dto.AuthRequest;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 public class AuthService {
@@ -27,8 +33,10 @@ public class AuthService {
     private AuthenticationManager authenticationManager;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private TokenRepository tokenRepository;
 
-    public void register(AuthRequest request) {
+    public void register(AuthRequest request) throws MessagingException {
         User user = new User();
         user.setEmail(request.getEmail());
         user.setName(request.getNom());
@@ -37,21 +45,33 @@ public class AuthService {
 
         userRepository.save(user);
 
-        try {
-            emailService.sendWelcomeEmail(user.getEmail(), user.getName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String token = UUID.randomUUID().toString();
+
+        VerificationToken vt = new VerificationToken();
+        vt.setToken(token);
+        vt.setUser(user);
+        vt.setExpiryDate(LocalDateTime.now().plusHours(24));
+
+        tokenRepository.save(vt);
+        emailService.sendVerificationEmail(user.getEmail(), token);
     }
 
     public void login(AuthRequest request) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (user.isEnabled()) {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+        else {
+            throw new RuntimeException("Please verify your email before logging in.");
+        }
+
     }
 
     public User getCurrentUser() {
@@ -65,19 +85,16 @@ public class AuthService {
         throw new RuntimeException("User not authenticated");
     }
 
-
     public boolean changePassword(String currentPassword, String newPassword) {
-    User user = getCurrentUser();
-    if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
-        return false;
+        User user = getCurrentUser();
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            return false;
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+
+        return true;
     }
-    user.setPassword(passwordEncoder.encode(newPassword));
-    userRepository.save(user);
-
-    return true;
-}
-
-
 
     public boolean updateAccount(String nom, String email) {
         User user = getCurrentUser();
@@ -94,17 +111,4 @@ public class AuthService {
         User current = getCurrentUser();
         return !current.getEmail().equals(newEmail);
     }
-
-    public void reAuthenticate(String newPassword) {
-    User user = getCurrentUser();
-
-    Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(
-                    user.getEmail(),
-                    newPassword
-            )
-    );
-
-    SecurityContextHolder.getContext().setAuthentication(authentication);
-}
 }

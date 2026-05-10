@@ -1,9 +1,12 @@
 package com.reservia.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import com.reservia.entity.Role;
 import com.reservia.entity.User;
+import com.reservia.entity.VerificationToken;
+import com.reservia.repository.TokenRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,9 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final TokenRepository tokenRepository;
+    private final EmailService emailService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, TokenRepository tokenRepository, EmailService emailService) {
         this.userRepository = userRepository;
+        this.tokenRepository = tokenRepository;
+        this.emailService = emailService;
     }
 
     @Override
@@ -53,6 +60,26 @@ public class UserService implements UserDetailsService {
         }
 
         userRepository.delete(user);
+    }
+
+    public void verifyUser(String token) {
+        VerificationToken vt = tokenRepository.findByToken(token).orElseThrow(() -> new RuntimeException("Invalid token"));
+
+        if (vt.getExpiryDate().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("Token expired");
+        }
+
+        User user = vt.getUser();
+        user.setEnabled(true);
+
+        userRepository.save(user);
+        tokenRepository.delete(vt); // bonus sécurité
+
+        try {
+            emailService.sendWelcomeEmail(user.getEmail(), user.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 
