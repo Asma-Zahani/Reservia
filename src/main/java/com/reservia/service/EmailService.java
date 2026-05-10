@@ -15,6 +15,29 @@ public class EmailService {
     private final JavaMailSender mailSender;
     private final TemplateEngine templateEngine;
 
+    public void sendVerificationEmail(String to, String token) throws MessagingException {
+        String link = "http://localhost:8085/auth/verify?token=" + token;
+
+        Context context = new Context();
+        context.setVariable("link", link);
+
+        String html = templateEngine.process("emails/verify-email", context);
+
+        MimeMessage message = mailSender.createMimeMessage();
+
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        helper.setTo(to);
+        helper.setSubject("Verify your Reservia account");
+        helper.setText(html, true);
+
+        mailSender.send(message);
+    }
+
+//    public void sendResetPasswordEmail(String to, String token) throws MessagingException {
+//        String link = "http://localhost:8085/auth/reset-password?token=" + token;
+//    }
+
     public void sendWelcomeEmail(String to, String name) throws MessagingException {
         Context context = new Context();
         context.setVariable("name", name);
