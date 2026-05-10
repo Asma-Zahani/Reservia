@@ -29,7 +29,7 @@ public class IndexController {
 		return "pages/home";
 	}
 
-	@RequestMapping(value = "/contact", method = RequestMethod.GET)
+	@GetMapping("/contact")
 	public String contact() {
 		return "pages/contact";
 	}
