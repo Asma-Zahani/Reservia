@@ -18,6 +18,9 @@
                         <div th:if="${registerSuccess != null and !#strings.isEmpty(registerSuccess)}" class="alert alert-success">
                             <span th:text="${registerSuccess}"></span>
                         </div>
+                        <div th:if="${verifySuccess != null and !#strings.isEmpty(verifySuccess)}" class="alert alert-success">
+                            <span th:text="${verifySuccess}"></span>
+                        </div>
                     <form action="/auth/login" method="POST" class="d-flex flex-column gap-3">
                         <div class="form-group">
                             <label for="email-popup" class="text-dark mb-3">Your Email</label>
