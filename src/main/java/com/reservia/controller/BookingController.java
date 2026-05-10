@@ -25,7 +25,7 @@ public class BookingController {
     public String addBooking(@ModelAttribute BookingRequest bookingRequest, @RequestParam Map<String,String> allParams) {
         try {
             bookingService.createBooking(bookingRequest, allParams);
-            return "redirect:/dashboard/bookings";
+            return "redirect:/account/bookings";
         } catch (RoomNotAvailableException | OptimisticLockException e) {
             return "redirect:/rooms/available?startDate="
                     + UriUtils.encode(bookingRequest.getStartDate(), StandardCharsets.UTF_8)
