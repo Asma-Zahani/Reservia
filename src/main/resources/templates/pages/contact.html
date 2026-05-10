@@ -25,9 +25,8 @@
                     <div class="rts__contact">
                         <span class="h4 d-block mb-30 text-center">Love to hear from you
                             Get in touch!</span>
-                        <form action="/contact" method="post" class="rts__contact__form" id="contact-form">
-                            <div th:if="${contactSuccess}" class="alert alert-success" th:text="${contactSuccess}"></div>
-                            <div th:if="${contactError}" class="alert alert-danger" th:text="${contactError}"></div>
+                        <form th:action="@{/contact}" th:method="post" class="rts__contact__form" id="contact-form">
+                            <div id="messages"></div>
                             <div class="form-input">
                                 <label for="name">Your Name</label>
                                 <div class="pr">
@@ -51,7 +50,6 @@
                             </div>
                             <button type="submit" class="theme-btn btn-style fill w-100"><span>Send Message</span></button>
                         </form>
-                        <div id="form-messages" class="mt-20"></div>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -115,6 +113,28 @@
         </div>
     </div>
     <!-- contact area end -->
+    <script>
+        document.getElementById("contact-form").addEventListener("submit", function(e) {
+            e.preventDefault(); // empêche le reload
+
+            const formData = new FormData(this);
+
+            fetch("/contact", {
+                method: "POST",
+                body: formData
+            })
+                .then(response => {
+                    // ici on peut juste afficher un message
+                    document.getElementById("messages").innerHTML =
+                        "<div class='alert alert-success'>Your message has been sent successfully!</div>";
+                    this.reset(); // reset le formulaire
+                })
+                .catch(error => {
+                    document.getElementById("messages").innerHTML =
+                        "<div class='alert alert-danger'>Failed to send message. Please try again later.</div>";
+                });
+        });
+    </script>
 </div>
 
 </html>
