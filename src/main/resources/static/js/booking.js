@@ -1,4 +1,25 @@
 let bookingList = [];
+
+/* =========================
+   FETCH DISPONIBILITÉ
+========================= */
+async function getAvailable(id, startDate, endDate) {
+    const res = await fetch(
+        `/rooms/${id}/availableQuantity?startDate=${formatDate(startDate)}&endDate=${formatDate(endDate)}`
+    );
+
+    const data = await res.json();
+
+    console.log("Available rooms for room " + id + ":", data);
+
+    return data.available;
+}
+
+function formatDate(dateStr) {
+    const [day, month, year] = dateStr.split("-");
+    return `${year}-${month}-${day}`;
+}
+
 /* =========================
    ADD TO BOOKING
 ========================= */
@@ -26,7 +47,7 @@ window.addToBooking = function(id, type, price, image) {
 /* =========================
    RENDER SELECTION
 ========================= */
-function renderSelection() {
+async function renderSelection() {
     let container = document.getElementById("selectionContainer");
     let title = document.getElementById("selectionTitle");
 
@@ -39,15 +60,26 @@ function renderSelection() {
 
     title.style.display = "block";
 
-    bookingList.forEach(room => {
+    for (let room of bookingList) {
+
+        // ⚡ dates de réservation (adapte selon ton UI)
+        let startDate = document.getElementById("check__in_2").value;
+        let endDate = document.getElementById("check__out_2").value;
+
+        let available = await getAvailable(room.id, startDate, endDate);
+
+        room.maxQty = available;
+
         container.innerHTML += `
         <div class="latest__post mb-20 text-start">
             <div class="single__post">
+
                 <div class="single__post__thumb">
                     <img src="${room.image}" height="115" width="120">
                 </div>
 
                 <div class="single__post__meta">
+
                     <a class="font-sm text-truncate d-block" style="max-width:210px;">
                         ${room.type}
                     </a>
@@ -55,32 +87,44 @@ function renderSelection() {
                     <span>${room.price} TND / Night</span>
 
                     <div class="quantity-box">
-                         <input type="hidden" name="roomIds" value="${room.id}">
-                         <input type="hidden" name="room_${room.id}_qty" value="${room.qty}">
+                        <input type="hidden" name="roomIds" value="${room.id}">
+                        <input type="hidden" name="room_${room.id}_qty" value="${room.qty}">
                         <button type="button" onclick="changeQty(${room.id}, -1)">−</button>
                         <input type="number" value="${room.qty}" readonly>
-                        <button type="button" onclick="changeQty(${room.id}, 1)">+</button>
+                        <button type="button" onclick="changeQty(${room.id}, 1, ${available})"> + </button>
                     </div>
                 </div>
+
             </div>
         </div>
         `;
-    });
+    }
 }
 
 /* =========================
    CHANGE QTY
 ========================= */
-window.changeQty = function(id, delta) {
+window.changeQty = function(id, delta, maxQty) {
 
     let room = bookingList.find(r => r.id === id);
     if (!room) return;
 
-    room.qty += delta;
+    let newQty = room.qty + delta;
 
-    if (room.qty <= 0) {
-        bookingList = bookingList.filter(r => r.id !== id);
+    if (newQty < 1) return;
+
+    // sécurité si maxQty est null/undefined
+    if (maxQty === undefined || maxQty === null) {
+        console.warn("maxQty not loaded yet for room:", id);
+        return;
     }
+
+    if (newQty > maxQty) {
+        alert(`Only ${maxQty} rooms available for these dates`);
+        return;
+    }
+
+    room.qty = newQty;
 
     renderSelection();
     updateTotal();

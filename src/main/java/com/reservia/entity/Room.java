@@ -23,6 +23,7 @@ public class Room {
     private int size;
     private int capacity;
     private Double price;
+    private Integer totalQuantity;
 
     @Lob
     @Column(columnDefinition = "TEXT")

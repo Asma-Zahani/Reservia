@@ -7,6 +7,7 @@ import com.reservia.repository.BookingItemRepository;
 import com.reservia.repository.BookingRepository;
 import com.reservia.repository.ExtraServiceRepository;
 import com.reservia.repository.RoomRepository;
+import org.jspecify.annotations.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -185,4 +186,7 @@ public class BookingService {
     bookingRepository.save(booking);
 }
 
+    public Integer getReservedQuantityBetweenDates(Long roomId, LocalDate startDate, LocalDate endDate) {
+        return bookingItemRepository.getReservedQuantityBetweenDates(roomId, startDate, endDate);
+    }
 }
