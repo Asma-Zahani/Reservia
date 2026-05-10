@@ -5,13 +5,16 @@ import com.reservia.service.BookingService;
 import com.reservia.service.ExtraServiceService;
 import com.reservia.service.RoomService;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/rooms")
@@ -68,15 +71,23 @@ public class RoomController {
 		model.addAttribute("startDate", startDate);
 		model.addAttribute("endDate", endDate);
 		model.addAttribute("extraServices", extraServiceService.getAll());
-
 		return "pages/rooms/booking";
 	}
 
-	@GetMapping("/availableRooms")
-	@ResponseBody
-	public List<Room> getAvailableRooms(@RequestParam LocalDate startDate,
-										@RequestParam LocalDate endDate) {
-		return roomService.getAvailableRooms(startDate, endDate);
+	@GetMapping("/{id}/availableQuantity")
+	public ResponseEntity<Map<String, Object>> getAvailableQuantity(@PathVariable Long id,
+			@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
+		Room room = roomService.findById(id);
+
+		Integer reserved = bookingService.getReservedQuantityBetweenDates(id, startDate, endDate);
+		Integer available = room.getTotalQuantity() - reserved;
+
+		Map<String, Object> response = new HashMap<>();
+		response.put("roomId", id);
+		response.put("reserved", reserved);
+		response.put("available", available);
+
+		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping("/{id}/disabledDates")

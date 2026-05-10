@@ -347,46 +347,4 @@
     </script>
 </div>
 
-<script>
-    function fetchAvailableRooms(bookingId, button) {
-        const modal = button.closest('.modal'); // récupère la modal parente
-        const startDate = modal.querySelector('input[name="startDate"]').value;
-        const endDate = modal.querySelector('input[name="endDate"]').value;
-
-        const container = modal.querySelector('#availableRooms' + bookingId);
-
-        fetch(`/rooms/availableRooms?startDate=${startDate}&endDate=${endDate}`)
-            .then(res => res.json())
-            .then(data => {
-                container.innerHTML = '';
-                if(data.length === 0){
-                    container.innerHTML = '<p>No rooms available for selected dates.</p>';
-                    return;
-                }
-
-                data.forEach(room => {
-                    const div = document.createElement('div');
-                    div.innerHTML = `
-                    <input type="checkbox" value="${room.id}" name="rooms" id="room${bookingId}_${room.id}">
-                    <label for="room${bookingId}_${room.id}">${room.type} - ${room.price} TND</label>
-                `;
-                    container.appendChild(div);
-                });
-
-                // Mettre à jour l'input caché lors du submit
-                const form = modal.querySelector('form');
-                if(!form.dataset.listenerAdded) {
-                    form.addEventListener('submit', function(e) {
-                        const selected = Array.from(container.querySelectorAll('input[name="rooms"]:checked'))
-                            .map(el => el.value)
-                            .join(',');
-                        modal.querySelector('#selectedRoomsInput' + bookingId).value = selected;
-                    });
-                    form.dataset.listenerAdded = true;
-                }
-            })
-            .catch(err => alert('Error fetching rooms: ' + err));
-    }
-</script>
-
 </html>

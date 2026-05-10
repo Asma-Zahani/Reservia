@@ -18,4 +18,18 @@ public interface BookingItemRepository extends JpaRepository<BookingItem, Long> 
     @Query("SELECT b FROM BookingItem b " +
             "WHERE b.room.id = :roomId AND b.booking.status != 'CANCELLED'")
     List<BookingItem> findActiveBookingItemsByRoom(@Param("roomId") Long roomId);
+
+    @Query("""
+        SELECT COALESCE(SUM(bi.quantity), 0)
+        FROM BookingItem bi
+        WHERE bi.room.id = :roomId
+        AND bi.booking.status <> 'CANCELLED'
+        AND bi.startDate < :endDate
+        AND bi.endDate > :startDate
+    """)
+    Integer getReservedQuantityBetweenDates(
+            Long roomId,
+            LocalDate startDate,
+            LocalDate endDate
+    );
 }
