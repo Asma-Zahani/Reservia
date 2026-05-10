@@ -35,5 +35,30 @@
     <div th:insert="~{fragments/ui-utils :: back_to_top}"></div>
     <div th:insert="~{fragments/ui-utils :: preloader}"></div>
     <div th:insert="~{fragments/ui-utils :: scripts}"></div>
+
+    <!-- À placer avant la fermeture du </body> -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const loginError     = /*[[${loginError}]]*/ null;
+    const registerError  = /*[[${registerError}]]*/ null;
+    const registerSuccess = /*[[${registerSuccess}]]*/ null;
+    const success        = /*[[${success}]]*/ null;
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+        if (loginError) {
+            new bootstrap.Modal(document.getElementById('loginModal')).show();
+        }
+
+        if (registerError || registerSuccess) {
+            new bootstrap.Modal(document.getElementById('signupModal')).show();
+        }
+
+
+
+    });
+    /*]]>*/
+</script>
+
 </body>
 </html>

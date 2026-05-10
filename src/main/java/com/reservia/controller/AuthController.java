@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.reservia.dto.AuthRequest;
 import com.reservia.service.AuthService;
@@ -23,15 +24,39 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/register")
-    public String register(AuthRequest request) {
+@PostMapping("/register")
+public String register(AuthRequest request,
+                       RedirectAttributes redirectAttributes) {
+
+    try {
+
         service.register(request);
+
+        redirectAttributes.addFlashAttribute(
+                "registerSuccess",
+                "Compte créé avec succès !"
+        );
+
+        return "redirect:/";
+
+    } catch (Exception e) {
+
+        redirectAttributes.addFlashAttribute(
+                "registerError",
+                e.getMessage()
+        );
 
         return "redirect:/";
     }
+}
 
-    @PostMapping("/login")
-    public String login(AuthRequest request, HttpSession session) {
+@PostMapping("/login")
+public String login(AuthRequest request,
+                    HttpSession session,
+                    RedirectAttributes redirectAttributes) {
+
+    try {
+
         service.login(request);
 
         User user = (User) userService.loadUserByUsername(request.getEmail());
@@ -41,10 +66,21 @@ public class AuthController {
                 SecurityContextHolder.getContext()
         );
 
+
         if (user.getRole() == Role.ROLE_ADMIN) {
             return "redirect:/admin/dashboard";
-        } else {
-            return "redirect:/dashboard";
         }
+
+        return "redirect:/dashboard";
+
+    } catch (Exception e) {
+
+        redirectAttributes.addFlashAttribute(
+                "loginError",
+                "Email ou mot de passe incorrect"
+        );
+
+        return "redirect:/";
     }
+}
 }
