@@ -9,6 +9,7 @@ import com.reservia.service.BookingService;
 import com.reservia.service.PaymentService;
 import com.stripe.exception.StripeException;
 
+
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ public class AccountController {
 
 	@Autowired
 	private PaymentService paymentService;
+
 
 	@GetMapping
 	public String dashboard(Model model) {
@@ -119,6 +121,7 @@ public class AccountController {
 		return "pages/account/history";
 	}
 
+
 @GetMapping("/bookings/pay/{id}")
 public String pay(@PathVariable Long id) throws StripeException {
     Booking booking = bookingService.getBookingById(id);
@@ -146,4 +149,5 @@ public String pay(@PathVariable Long id) throws StripeException {
 		public String paymentCancel() {
 			return "redirect:/account/bookings?cancel";
 		}
+
 }
