@@ -122,32 +122,31 @@ public class AdminDashboardController {
 	 * BOOKINGS
 	 * =========================
 	 */
-		@GetMapping("/bookings")
-		public String bookings(
-				@RequestParam(defaultValue = "0") int page,
-				@RequestParam(defaultValue = "5") int size,
-				Model model) {
+	@GetMapping("/bookings")
+	public String bookings(
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "5") int size,
+			Model model) {
 
-			Page<Booking> bookingPage = bookingService.getAllBookings(page, size);
+		Page<Booking> bookingPage = bookingService.getAllBookings(page, size);
 
-			model.addAttribute("bookings", bookingPage.getContent());
-			model.addAttribute("currentPage", page);
-			model.addAttribute("totalPages", bookingPage.getTotalPages());
-			model.addAttribute("activePage", "bookings");
+		model.addAttribute("bookings", bookingPage.getContent());
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", bookingPage.getTotalPages());
+		model.addAttribute("activePage", "bookings");
 
-			return "pages/adminDashboard/bookings";
-		}
+		return "pages/adminDashboard/bookings";
+	}
 
-		@PostMapping("/bookings/update-status/{id}")
-			public String updateBookingStatus(
-					@PathVariable Long id,
-					@RequestParam BookingStatus status) {
+	@PostMapping("/bookings/update-status/{id}")
+	public String updateBookingStatus(
+			@PathVariable Long id,
+			@RequestParam BookingStatus status) {
 
-				bookingService.updateBookingStatus(id, status);
+		bookingService.updateBookingStatus(id, status);
 
-				return "redirect:/admin/bookings";
-			}
-
+		return "redirect:/admin/bookings";
+	}
 
 	/*
 	 * =========================
@@ -185,8 +184,8 @@ public class AdminDashboardController {
 		room.setPrice(price);
 		room.setDescription(description);
 		roomService.saveRoom(room);
-    return "redirect:/admin/rooms";
-}
+		return "redirect:/admin/rooms";
+	}
 
 	@PostMapping("/rooms/delete/{id}")
 	public String deleteRoom(@PathVariable Long id) {

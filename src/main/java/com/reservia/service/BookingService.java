@@ -7,6 +7,7 @@ import com.reservia.repository.BookingItemRepository;
 import com.reservia.repository.BookingRepository;
 import com.reservia.repository.ExtraServiceRepository;
 import com.reservia.repository.RoomRepository;
+import jakarta.mail.MessagingException;
 import org.jspecify.annotations.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,14 +31,16 @@ public class BookingService {
     private final RoomRepository roomRepository;
     private final ExtraServiceRepository extraServiceRepository;
     private final BookingItemRepository bookingItemRepository;
+    private final EmailService emailService;
 
     public BookingService(BookingRepository bookingRepository, AuthService authService,
-                          RoomRepository roomRepository, ExtraServiceRepository extraServiceRepository, BookingItemRepository bookingItemRepository) {
+                          RoomRepository roomRepository, ExtraServiceRepository extraServiceRepository, BookingItemRepository bookingItemRepository, EmailService emailService) {
         this.bookingRepository = bookingRepository;
         this.authService = authService;
         this.roomRepository = roomRepository;
         this.extraServiceRepository = extraServiceRepository;
         this.bookingItemRepository = bookingItemRepository;
+        this.emailService = emailService;
     }
 
     public Booking getBookingById(Long id) {
@@ -209,14 +212,20 @@ public class BookingService {
 }
 
     public void updateBookingStatus(Long id, BookingStatus status) {
+        Booking booking = bookingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
 
-    Booking booking = bookingRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Booking not found"));
+        booking.setStatus(status);
+        bookingRepository.save(booking);
 
-    booking.setStatus(status);
-
-    bookingRepository.save(booking);
-}
+        if (status == BookingStatus.CONFIRMED) {
+            try {
+                emailService.sendBookingVerifiedEmail(booking.getUser().getEmail(), "#" + booking.getId());
+            } catch (MessagingException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
     public Integer getReservedQuantityBetweenDates(Long roomId, LocalDate startDate, LocalDate endDate) {
         return bookingItemRepository.getReservedQuantityBetweenDates(roomId, startDate, endDate);

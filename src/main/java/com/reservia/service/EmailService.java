@@ -73,4 +73,21 @@ public class EmailService {
 
         mailSender.send(message);
     }
+
+    public void sendBookingVerifiedEmail(String to, String bookingReference) throws MessagingException {
+        Context context = new Context();
+        context.setVariable("bookingReference", bookingReference);
+        context.setVariable("websiteUrl", "http://localhost:8085/account/bookings");
+
+        String html = templateEngine.process("emails/booking-verified-email", context);
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+        helper.setTo(to);
+        helper.setSubject("Your booking has been verified!");
+        helper.setText(html, true);
+
+        mailSender.send(message);
+    }
 }
