@@ -138,8 +138,7 @@
                                     <input type="checkbox" th:id="${extraService.name}" name="extraServiceIds" th:value="${extraService.id}"
                                            onchange="updateTotal()" th:data-price="${extraService.price}" th:data-per-night="${extraService.perNight}" disabled>
                                     <label th:for="${extraService.name}" th:text="${extraService.name}"></label>
-                                    <span th:if="${extraService.perNight}" th:text="${extraService.price} + ' TND / Night'"></span>
-                                    <span th:if="${!extraService.perNight}">Free</span>
+                                    <span th:text="${extraService.price == 0} ? 'Free' : ${extraService.price + ' TND'} + (${extraService.perNight} ? ' / Night' : '')"></span>
                                 </div>
 
 <!--                                <div class="query__input checkbox wow fadeInUp">-->
