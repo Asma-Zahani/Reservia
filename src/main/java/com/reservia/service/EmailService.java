@@ -66,7 +66,8 @@ public class EmailService {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-        helper.setTo("support@reservia.com"); // ou ton email de contact
+        helper.setTo("contact.reservia@gmail.com");
+        helper.setReplyTo(email);
         helper.setSubject("New Contact Message from " + name);
         helper.setText(html, true);
 

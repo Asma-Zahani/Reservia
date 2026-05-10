@@ -49,7 +49,7 @@ public class IndexController {
 			e.printStackTrace();
 		}
 
-		return "redirect:/#contact"; // redirige vers la section contact de la page
+		return "redirect:/contact";
 	}
 
 	@RequestMapping(value = "/about", method = RequestMethod.GET)
