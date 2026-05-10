@@ -52,7 +52,15 @@
 
     <div class="rts__section section__padding">
         <div class="container">
-            <div class="row g-30 main__content sticky-wrap">
+            <div th:if="${#lists.isEmpty(rooms)}" class="col-12 text-center">
+                <p>
+                    No rooms are available from
+                    <strong th:text="${startDate}"></strong>
+                    to
+                    <strong th:text="${endDate}"></strong>.
+                </p>
+            </div>
+            <div th:unless="${#lists.isEmpty(rooms)}" class="row g-30 main__content sticky-wrap">
                 <div class="col-lg-7 col-xl-8">
                     <div class="row g-30">
                         <div th:each="room : ${rooms}" class="col-xl-6 col-lg-12 col-md-6">
