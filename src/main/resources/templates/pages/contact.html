@@ -25,7 +25,9 @@
                     <div class="rts__contact">
                         <span class="h4 d-block mb-30 text-center">Love to hear from you
                             Get in touch!</span>
-                        <form action="" method="post" class="rts__contact__form" id="contact-form">
+                        <form th:action="@{/contact}" method="post" class="rts__contact__form" id="contact-form">
+                            <div th:if="${contactSuccess}" class="alert alert-success" th:text="${contactSuccess}"></div>
+                            <div th:if="${contactError}" class="alert alert-danger" th:text="${contactError}"></div>
                             <div class="form-input">
                                 <label for="name">Your Name</label>
                                 <div class="pr">
