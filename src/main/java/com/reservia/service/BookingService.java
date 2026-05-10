@@ -188,10 +188,14 @@ public class BookingService {
         return disabledDates;
     }
 
-    public Page<Booking> getActiveBookings(User user, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return bookingRepository.findByUserAndStatuses(user, List.of(BookingStatus.PENDING, BookingStatus.CONFIRMED), pageable);
-    }
+        public Page<Booking> getActiveBookings(User user, int page, int size) {
+            Pageable pageable = PageRequest.of(page, size);
+            return bookingRepository.findByUserAndStatuses(
+                user,
+                List.of(BookingStatus.PENDING, BookingStatus.CONFIRMED, BookingStatus.PAID),
+                pageable
+            );
+        }
 
 
     public Page<Booking> getHistoryBookings(User user, int page, int size) {

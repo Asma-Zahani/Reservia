@@ -1,9 +1,14 @@
 package com.reservia.controller;
 
 import com.reservia.entity.Booking;
+import com.reservia.entity.BookingStatus;
+import com.reservia.entity.User;
 import com.reservia.service.AuthService;
 
 import com.reservia.service.BookingService;
+import com.reservia.service.PaymentService;
+import com.stripe.exception.StripeException;
+
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +27,9 @@ public class AccountController {
     private AuthService authService;
     @Autowired
     private BookingService bookingService;
+
+	@Autowired
+	private PaymentService paymentService;
 
 	@GetMapping
 	public String dashboard(Model model) {
@@ -110,4 +118,32 @@ public class AccountController {
 
 		return "pages/account/history";
 	}
+
+@GetMapping("/bookings/pay/{id}")
+public String pay(@PathVariable Long id) throws StripeException {
+    Booking booking = bookingService.getBookingById(id);
+    
+    User currentUser = authService.getCurrentUser();
+    if (!booking.getUser().getId().equals(currentUser.getId())) {
+        return "redirect:/account/bookings";
+    }
+    
+    if (booking.getStatus() != BookingStatus.CONFIRMED) {
+        return "redirect:/account/bookings";
+    }
+
+    String checkoutUrl = paymentService.createCheckoutSession(booking);
+    return "redirect:" + checkoutUrl;
+}
+
+		@GetMapping("/bookings/pay/success/{bookingId}")
+		public String paymentSuccess(@PathVariable Long bookingId) {
+			paymentService.markBookingAsPaid(bookingId);
+			return "redirect:/account/bookings?success";
+		}
+
+		@GetMapping("/bookings/pay/cancel")
+		public String paymentCancel() {
+			return "redirect:/account/bookings?cancel";
+		}
 }

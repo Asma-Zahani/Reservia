@@ -197,7 +197,7 @@
 
                             <!-- BODY -->
                             <div class="modal-body" style="color:#2c2c2c;">
-                                <p>Amount to pay: <strong th:text="@{${booking.totalPrice}}"></strong></p>
+                            <p>Amount to pay: <strong th:text="${booking.totalPrice + ' TND'}"></strong></p>
                                 <p>Click the button below to pay securely online.</p>
                                 <!-- Ici vous pouvez mettre votre formulaire de paiement ou intégrer Stripe/PayPal -->
                             </div>

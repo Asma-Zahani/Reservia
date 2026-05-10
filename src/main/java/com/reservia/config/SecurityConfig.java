@@ -26,6 +26,7 @@ public class SecurityConfig {
                         .requestMatchers("/account/**", "/booking/**").hasAnyRole("USER","ADMIN")
                         .requestMatchers("/auth/**", "/", "/about", "/service", "/contact", "/rooms/**",
                                 "/css/**", "/fonts/**", "/images/**", "/js/**").permitAll()
+                        .requestMatchers("/account/bookings/pay/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex
