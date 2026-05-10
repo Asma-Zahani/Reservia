@@ -369,7 +369,7 @@ INSERT INTO settings
 VALUES
     (
         'Route Touristique, Hammamet 8050, Tunisie',
-        'contact@reservia.tn',
+        'contact.reservia@gmail.com',
         'Reservia Luxury Hotel',
         '+216 72 555 210'
     );
