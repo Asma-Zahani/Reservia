@@ -23,20 +23,24 @@ function formatDate(dateStr) {
 /* =========================
    ADD TO BOOKING
 ========================= */
-window.addToBooking = function(id, type, price, image) {
+window.addToBooking = async function(id, type, price, image) {
+    let startDate = document.getElementById("check__in_2").value;
+    let endDate = document.getElementById("check__out_2").value;
 
+    let available = await getAvailable(id, startDate, endDate);
     let existing = bookingList.find(r => r.id === id);
+    let currentQty = existing ? existing.qty : 0;
+
+    if (currentQty + 1 > available) {
+        alert(`Only ${available} rooms available for these dates`);
+        return;
+    }
 
     if (existing) {
         existing.qty++;
+        existing.maxQty = available;
     } else {
-        bookingList.push({
-            id,
-            type,
-            price,
-            image,
-            qty: 1
-        });
+        bookingList.push({id, type, price, image, qty: 1, maxQty: available});
     }
 
     renderSelection();
@@ -104,23 +108,19 @@ async function renderSelection() {
 /* =========================
    CHANGE QTY
 ========================= */
-window.changeQty = function(id, delta, maxQty) {
+window.changeQty = function(id, delta) {
 
     let room = bookingList.find(r => r.id === id);
     if (!room) return;
 
     let newQty = room.qty + delta;
 
+    // minimum 1
     if (newQty < 1) return;
 
-    // sécurité si maxQty est null/undefined
-    if (maxQty === undefined || maxQty === null) {
-        console.warn("maxQty not loaded yet for room:", id);
-        return;
-    }
-
-    if (newQty > maxQty) {
-        alert(`Only ${maxQty} rooms available for these dates`);
+    // sécurité max disponible
+    if (room.maxQty !== undefined && newQty > room.maxQty) {
+        alert(`Only ${room.maxQty} rooms available for these dates`);
         return;
     }
 
