@@ -13,8 +13,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT r FROM Room r WHERE r.id IN :ids")
+    @Query(value = "SELECT * FROM rooms WHERE id IN (:ids) FOR UPDATE", nativeQuery = true)
     List<Room> findRoomsForUpdate(@Param("ids") List<Long> ids);
 
     List<Room> findTop10ByOrderByIdDesc();
