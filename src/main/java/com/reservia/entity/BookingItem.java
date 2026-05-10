@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-//@Table(name = "booking_items")
+@Table(name = "booking_items")
 public class BookingItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

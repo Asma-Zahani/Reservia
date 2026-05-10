@@ -1,7 +1,7 @@
 =========================
 ROOMS
 =========================
-INSERT INTO room
+INSERT INTO rooms
 (capacity, description, image_path, price, size, type, room_number, total_quantity)
 VALUES
 
@@ -231,7 +231,7 @@ VALUES
 -- USERS
 -- =========================
 
-INSERT INTO user (email, name, password, role)
+INSERT INTO users (email, name, password, role)
 VALUES
     (
         'admin@reservia.tn',
@@ -281,7 +281,7 @@ VALUES
 -- BOOKINGS
 -- =========================
 
-INSERT INTO booking
+INSERT INTO bookings
 (booking_date, status, total_price, user_id, version)
 VALUES
 
@@ -299,7 +299,7 @@ VALUES
 -- BOOKING ITEMS
 -- =========================
 
-INSERT INTO booking_item
+INSERT INTO booking_items
 (end_date, price, quantity, start_date, booking_id, room_id)
 VALUES
 
@@ -378,7 +378,7 @@ VALUES
 -- BOOKINGS (TODAY BOOKINGS)
 -- =========================================
 
-INSERT INTO booking
+INSERT INTO bookings
 (booking_date, status, total_price, version, user_id)
 VALUES
 
@@ -408,7 +408,7 @@ VALUES
 -- adapte si nécessaire
 -- =========================================
 
-INSERT INTO booking_item
+INSERT INTO booking_items
 (end_date, price, quantity, start_date, booking_id, room_id)
 VALUES
 

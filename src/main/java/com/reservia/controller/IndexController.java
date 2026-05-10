@@ -1,19 +1,21 @@
 package com.reservia.controller;
 
 import com.reservia.repository.RoomRepository;
+import com.reservia.service.EmailService;
+import jakarta.mail.MessagingException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class IndexController {
 	private final RoomRepository roomRepository;
+	private final EmailService emailService;
 
-	public IndexController(RoomRepository roomRepository) {
+	public IndexController(RoomRepository roomRepository, EmailService emailService) {
 		this.roomRepository = roomRepository;
+		this.emailService = emailService;
 	}
 
 	@GetMapping("/")
@@ -30,6 +32,24 @@ public class IndexController {
 	@RequestMapping(value = "/contact", method = RequestMethod.GET)
 	public String contact() {
 		return "pages/contact";
+	}
+
+	@PostMapping("/contact")
+	public String submitContact(
+			@RequestParam("name") String name,
+			@RequestParam("email") String email,
+			@RequestParam("msg") String message,
+			RedirectAttributes redirectAttributes
+	) {
+		try {
+			emailService.sendContactEmail(name, email, message);
+			redirectAttributes.addFlashAttribute("contactSuccess", "Your message has been sent successfully!");
+		} catch (MessagingException e) {
+			redirectAttributes.addFlashAttribute("contactError", "Failed to send message. Please try again later.");
+			e.printStackTrace();
+		}
+
+		return "redirect:/#contact"; // redirige vers la section contact de la page
 	}
 
 	@RequestMapping(value = "/about", method = RequestMethod.GET)
