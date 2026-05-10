@@ -4,6 +4,7 @@ import com.reservia.repository.RoomRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -15,11 +16,16 @@ public class IndexController {
 		this.roomRepository = roomRepository;
 	}
 
-	@GetMapping( "/")
-	public String index(Model model) {
+	@GetMapping("/")
+	public String index(Model model,
+						@ModelAttribute("loginError") String loginError,
+						@ModelAttribute("registerError") String registerError,
+						@ModelAttribute("registerSuccess") String registerSuccess,
+						@ModelAttribute("success") String success) {
+
 		model.addAttribute("rooms", roomRepository.findTop10ByOrderByIdDesc());
 		return "pages/home";
-	 }
+	}
 
 	@RequestMapping(value = "/contact", method = RequestMethod.GET)
 	public String contact() {
