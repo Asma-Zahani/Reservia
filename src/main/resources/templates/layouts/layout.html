@@ -50,9 +50,13 @@
             new bootstrap.Modal(document.getElementById('loginModal')).show();
         }
 
-        if (registerError || registerSuccess) {
-            new bootstrap.Modal(document.getElementById('signupModal')).show();
-        }
+    if (registerError) {
+        new bootstrap.Modal(document.getElementById('signupModal')).show();
+    }
+
+    if (registerSuccess) {
+        new bootstrap.Modal(document.getElementById('loginModal')).show();
+    }
 
 
 

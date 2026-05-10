@@ -33,8 +33,8 @@ public String register(AuthRequest request,
         service.register(request);
 
         redirectAttributes.addFlashAttribute(
-                "registerSuccess",
-                "Compte créé avec succès !"
+            "registerSuccess",
+            "Compte créé avec succès ! Vous pouvez maintenant vous connecter."
         );
 
         return "redirect:/";
