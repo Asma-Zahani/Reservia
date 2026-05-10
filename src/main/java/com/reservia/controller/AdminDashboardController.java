@@ -169,7 +169,7 @@ public class AdminDashboardController {
 	@PostMapping("/rooms/add")
 	public String addRoom( @RequestParam("image") MultipartFile image, @RequestParam String roomNumber, @RequestParam String type, @RequestParam int size, @RequestParam int capacity, @RequestParam double price, @RequestParam String description) throws IOException{
 		Room room = new Room();
-		String uploadDir = "src/main/resources/static/images/room/";
+		String uploadDir = "src/main/resources/static/images/pages/room/";
 		String fileName = image.getOriginalFilename();
 		Path path = Paths.get(uploadDir + fileName);
 		Files.copy(
@@ -177,7 +177,7 @@ public class AdminDashboardController {
 				path,
 				StandardCopyOption.REPLACE_EXISTING
 		);
-		room.setImage_path("/images/room/" + fileName);
+		room.setImage_path("/images/pages/room/" + fileName);
 		room.setRoomNumber(roomNumber);
 		room.setType(type);
 		room.setSize(size);
