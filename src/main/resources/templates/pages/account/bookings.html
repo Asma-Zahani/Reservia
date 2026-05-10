@@ -180,7 +180,7 @@
                 </div>
 
                 <!-- Pay Online -->
-                <a href="#" data-bs-toggle="modal" th:data-bs-target="'#paymentModal' + ${iterStat.index}" title="Pay Online">
+                <a href="#" th:if="${booking.status.name() == 'CONFIRMED'}" data-bs-toggle="modal" th:data-bs-target="'#paymentModal' + ${iterStat.index}" title="Pay Online">
                     <i class="fas fa-credit-card" style="color:#4CAF50;"></i>
                 </a>
 
