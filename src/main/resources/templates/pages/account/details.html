@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layouts/dashboard_layout :: dashboard_layout}">
+      th:replace="~{layouts/account_layout :: account_layout}">
 
-<div th:fragment="content_dashboard">
+<div th:fragment="content_account">
     <div class="account-form">
 
         <h4>Account Details</h4>
         <p class="form-subtitle">Update your personal information below.</p>
 
-        <form th:action="@{/dashboard/account/update}" method="post">
+        <form th:action="@{/account/update}" method="post">
 
             <!-- Name -->
             <div class="custom-field">

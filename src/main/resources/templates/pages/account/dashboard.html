@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/account_layout :: account_layout}">
+
+<div th:fragment="content_account">
+    <h4>
+        Welcome back, <span th:text="${#authentication.principal.name}">User</span>!
+    </h4>
+
+    <p>
+        Here’s a quick overview of your account. From your dashboard, you can
+        <a th:href="@{/account/bookings}" class="color_underline">
+            view, edit, or cancel your bookings
+        </a>, as well as
+        <a th:href="@{/account/history}" class="color_underline">
+            check your booking history
+        </a>,
+        <a th:href="@{/account/account}" class="color_underline">
+            update your account details
+        </a>, and
+        <a th:href="@{/account/change-password}" class="color_underline">
+            change your password
+        </a>.
+    </p>
+</div>
+
+</html>

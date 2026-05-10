@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layouts/dashboard_layout :: dashboard_layout}">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layouts/account_layout :: account_layout}">
 
-<div th:fragment="content_dashboard">
+<div th:fragment="content_account">
     <h4>Booking History</h4>
     <p class="form-subtitle">
         Here you can view all your booking history and check their details.
@@ -184,18 +184,18 @@
 
     <nav class="simple-pagination" th:if="${totalPages > 1}">
         <a th:if="${currentPage > 0}"
-           th:href="@{/dashboard/history(page=${currentPage - 1})}">
+           th:href="@{/account/history(page=${currentPage - 1})}">
             ←
         </a>
 
         <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-           th:href="@{/dashboard/history(page=${i})}"
+           th:href="@{/account/history(page=${i})}"
            th:text="${i + 1}"
            th:classappend="${i == currentPage} ? 'active' : ''">
         </a>
 
         <a th:if="${currentPage < totalPages - 1}"
-           th:href="@{/dashboard/history(page=${currentPage + 1})}">
+           th:href="@{/account/history(page=${currentPage + 1})}">
             →
         </a>
     </nav>

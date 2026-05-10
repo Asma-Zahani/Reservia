@@ -1,119 +1,246 @@
 package com.reservia.controller;
 
-import com.reservia.dto.BookingRequest;
 import com.reservia.entity.Booking;
+import com.reservia.entity.BookingStatus;
 import com.reservia.entity.Room;
+import com.reservia.entity.Settings;
+import com.reservia.entity.User;
+import com.reservia.repository.BookingRepository;
 import com.reservia.service.AuthService;
-
 import com.reservia.service.BookingService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
+import com.reservia.service.RoomService;
+import com.reservia.service.SettingsService;
+import com.reservia.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 
 @Controller
-@RequestMapping("/dashboard")
+@RequestMapping("/admin")
 public class DashboardController {
 
-    @Autowired
-    private AuthService authService;
-    @Autowired
-    private BookingService bookingService;
+	@Autowired
+	private AuthService authService;
 
-	@GetMapping
+	@Autowired
+	private BookingRepository bookingRepository;
+    @Autowired
+    private UserService userService;
+
+	@Autowired
+	private BookingService bookingService;
+
+	@Autowired
+	private SettingsService settingsService;
+
+	@Autowired
+	private RoomService roomService;
+
+	/*
+	 * =========================
+	 * DASHBOARD
+	 * =========================
+	 */
+	@GetMapping("/dashboard")
 	public String dashboard(Model model) {
+
 		model.addAttribute("activePage", "dashboard");
-		model.addAttribute("user", authService.getCurrentUser());
+
+		LocalDate today = LocalDate.now();
+
+		model.addAttribute("todayBookings",
+				bookingRepository.countTodayBookings(today));
+
+		model.addAttribute("monthRevenue",
+				bookingRepository.revenueByMonth(
+						today.getMonthValue(),
+						today.getYear()
+				));
+
+		model.addAttribute("occupiedRooms",
+				bookingRepository.countOccupiedRoomsToday(today));
+
+		model.addAttribute("totalRooms",
+				bookingRepository.count());
+
+		// Recent bookings
+		 model.addAttribute("recentBookings", bookingRepository.findTop5ByOrderByBookingDateDesc());
+
 		return "pages/dashboard/dashboard";
 	}
 
-	@GetMapping("/account")
-	public String account(Model model) {
-		model.addAttribute("activePage", "account");
-		model.addAttribute("user", authService.getCurrentUser());
-		return "pages/dashboard/account-details";
+
+	/*
+	 * =========================
+	 * USERS
+	 * =========================
+	 */
+	@GetMapping("/users")
+	public String users(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, Model model) {
+		Page<User> usersPage = userService.getUsers(page, size);
+
+		model.addAttribute("users", usersPage.getContent());
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", usersPage.getTotalPages());
+		model.addAttribute("activePage", "users");
+
+		return "pages/dashboard/users";
 	}
 
-	@PostMapping("/account/update")
-	public String updateAccount(@RequestParam String nom, @RequestParam String email, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-		boolean emailChanged = authService.isEmailChanged(email);
-		boolean success = authService.updateAccount(nom, email);
-		if (success) {
-			if (emailChanged) {
-				SecurityContextHolder.clearContext();
-				request.getSession().invalidate();
-				return "redirect:/";
-			}
-			redirectAttributes.addFlashAttribute("successMessage", "Account updated successfully.");
-		} else {
-			redirectAttributes.addFlashAttribute("errorMessage", "Failed to update account.");
-		}
-		return "redirect:/dashboard/account";
+	@PostMapping("/users/delete/{id}")
+	public String deleteUser(@PathVariable Long id) {
+		userService.deleteUser(id);
+		return "redirect:/admin/users";
 	}
 
-	@GetMapping("/change-password")
-    public String changePasswordPage(Model model) {
-        model.addAttribute("activePage", "change-password");
-        return "pages/dashboard/change-password";
-    }
+	@PostMapping("/users/update/{id}")
+	public String updateUser(@PathVariable Long id, @RequestParam String name, @RequestParam String email) {
+		userService.getUserById(id).ifPresent(user -> {
+			user.setName(name);
+			user.setEmail(email);
+			userService.saveUser(user);
+		});
 
-    @PostMapping("/change-password")
-    public String handleChangePassword(
-            @RequestParam("currentPassword") String currentPassword,
-            @RequestParam("newPassword") String newPassword,
-            @RequestParam("confirmPassword") String confirmPassword,
-            RedirectAttributes redirectAttributes) {
+		return "redirect:/admin/users";
+	}
 
-        if (!newPassword.equals(confirmPassword)) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Les mots de passe ne correspondent pas.");
-            return "redirect:/dashboard/change-password";
-        }
-
-        boolean success = authService.changePassword(currentPassword, newPassword);
-        
-        if (success) {
-            redirectAttributes.addFlashAttribute("successMessage", "Mot de passe mis à jour !");
-        } else {
-            redirectAttributes.addFlashAttribute("errorMessage", "Ancien mot de passe incorrect.");
-        }
-
-        return "redirect:/dashboard/change-password";
-    }
-
+	/*
+	 * =========================
+	 * BOOKINGS
+	 * =========================
+	 */
 	@GetMapping("/bookings")
-	public String bookings(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size, Model model) {
-		var user = authService.getCurrentUser();
+	public String bookings(
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "5") int size,
+			Model model) {
 
-		Page<Booking> bookingPage = bookingService.getActiveBookings(user, page, size);
+		Page<Booking> bookingPage = bookingService.getAllBookings(page, size);
 
-		model.addAttribute("activePage", "bookings");
 		model.addAttribute("bookings", bookingPage.getContent());
 		model.addAttribute("currentPage", page);
 		model.addAttribute("totalPages", bookingPage.getTotalPages());
+		model.addAttribute("activePage", "bookings");
 
 		return "pages/dashboard/bookings";
 	}
 
-	@GetMapping("/history")
-	public String history(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size, Model model) {
-		var user = authService.getCurrentUser();
+	@PostMapping("/bookings/update-status/{id}")
+	public String updateBookingStatus(
+			@PathVariable Long id,
+			@RequestParam BookingStatus status) {
 
-		Page<Booking> bookingPage = bookingService.getHistoryBookings(user, page, size);
+		bookingService.updateBookingStatus(id, status);
 
-		model.addAttribute("activePage", "history");
-		model.addAttribute("bookings", bookingPage.getContent());
-		model.addAttribute("currentPage", page);
-		model.addAttribute("totalPages", bookingPage.getTotalPages());
-
-		return "pages/dashboard/history";
+		return "redirect:/admin/bookings";
 	}
+
+	/*
+	 * =========================
+	 * ROOMS
+	 * =========================
+	 */
+	@GetMapping("/rooms")
+	public String rooms(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
+		Page<Room> roomPage = roomService.getRooms(page, size);
+
+		model.addAttribute("rooms", roomPage.getContent());
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", roomPage.getTotalPages());
+		model.addAttribute("activePage", "rooms");
+
+		return "pages/dashboard/rooms";
+	}
+
+	@PostMapping("/rooms/add")
+	public String addRoom( @RequestParam("image") MultipartFile image, @RequestParam String roomNumber, @RequestParam String type, @RequestParam int size, @RequestParam int capacity, @RequestParam double price, @RequestParam String description) throws IOException{
+		Room room = new Room();
+		String uploadDir = "src/main/resources/static/images/pages/room/";
+		String fileName = image.getOriginalFilename();
+		Path path = Paths.get(uploadDir + fileName);
+		Files.copy(
+				image.getInputStream(),
+				path,
+				StandardCopyOption.REPLACE_EXISTING
+		);
+		room.setImage_path("/images/pages/room/" + fileName);
+		room.setRoomNumber(roomNumber);
+		room.setType(type);
+		room.setSize(size);
+		room.setCapacity(capacity);
+		room.setPrice(price);
+		room.setDescription(description);
+		roomService.saveRoom(room);
+		return "redirect:/admin/rooms";
+	}
+
+	@PostMapping("/rooms/delete/{id}")
+	public String deleteRoom(@PathVariable Long id) {
+		roomService.deleteRoom(id);
+		return "redirect:/admin/rooms";
+	}
+
+	@PostMapping("/rooms/update/{id}")
+	public String updateRoom(@PathVariable Long id,
+							@RequestParam(value = "image", required = false) MultipartFile image,
+							@RequestParam String roomNumber,
+							@RequestParam String type,
+							@RequestParam int size,
+							@RequestParam int capacity,
+							@RequestParam double price,
+							@RequestParam String description) throws IOException {
+
+		Room room = roomService.getRoomById(id); 
+		if (image != null && !image.isEmpty()) {
+			String uploadDir = "src/main/resources/static/images/room/";
+			String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+			Path path = Paths.get(uploadDir + fileName);
+			Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+			room.setImage_path("/images/room/" + fileName);
+		}
+		room.setRoomNumber(roomNumber);
+		room.setType(type);
+		room.setSize(size);
+		room.setCapacity(capacity);
+		room.setPrice(price);
+		room.setDescription(description);
+		roomService.saveRoom(room);
+
+		return "redirect:/admin/rooms";
+	}
+
+	/*
+	 * =========================
+	 * SETTINGS
+	 * =========================
+	 */
+	@GetMapping("/settings")
+	public String settings(Model model) {
+
+		model.addAttribute("settings",
+				settingsService.getSettings());
+
+		model.addAttribute("activePage", "settings");
+
+		return "pages/dashboard/settings";
+	}
+
+	@PostMapping("/settings")
+	public String saveSettings(@ModelAttribute Settings settings) {
+
+		settingsService.save(settings);
+
+		return "redirect:/admin/settings";
+	}
+
 }
