@@ -27,6 +27,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**", "/", "/about", "/service", "/contact", "/rooms/**",
                                 "/css/**", "/fonts/**", "/images/**", "/js/**").permitAll()
                         .requestMatchers("/account/bookings/pay/**").authenticated()
+                        .requestMatchers("/payment/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex

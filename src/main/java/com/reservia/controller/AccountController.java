@@ -139,15 +139,15 @@ public String pay(@PathVariable Long id) throws StripeException {
     return "redirect:" + checkoutUrl;
 }
 
-		@GetMapping("/bookings/pay/success/{bookingId}")
-		public String paymentSuccess(@PathVariable Long bookingId) {
-			paymentService.markBookingAsPaid(bookingId);
-			return "redirect:/account/bookings?success";
-		}
+@GetMapping("/bookings/pay/success/{bookingId}")
+public String paymentSuccess(@PathVariable Long bookingId) {
+    paymentService.markBookingAsPaid(bookingId);
+    return "redirect:/account/bookings?success";
+}
 
-		@GetMapping("/bookings/pay/cancel")
-		public String paymentCancel() {
-			return "redirect:/account/bookings?cancel";
-		}
+@GetMapping("/bookings/pay/cancel")
+public String paymentCancel() {
+    return "redirect:/account/bookings?cancel";
+}
 
 }

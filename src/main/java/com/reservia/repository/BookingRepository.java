@@ -30,13 +30,13 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     long countTodayBookings(@Param("today") LocalDate today);
 
     // Revenus du mois
-    @Query("""
-        SELECT COALESCE(SUM(b.totalPrice), 0) FROM Booking b
-        WHERE MONTH(b.bookingDate) = :month
-        AND YEAR(b.bookingDate) = :year
-        AND b.status = 'CONFIRMED'
-    """)
-    Double revenueByMonth(@Param("month") int month, @Param("year") int year);
+        @Query("""
+            SELECT COALESCE(SUM(b.totalPrice), 0) FROM Booking b
+            WHERE MONTH(b.bookingDate) = :month
+            AND YEAR(b.bookingDate) = :year
+            AND b.status = 'PAID'
+        """)
+        Double revenueByMonth(@Param("month") int month, @Param("year") int year);
 
     // Chambres occupees aujourd'hui
     @Query("""
