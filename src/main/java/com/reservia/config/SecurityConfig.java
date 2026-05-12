@@ -24,10 +24,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/account/**", "/booking/**").hasAnyRole("USER","ADMIN")
-                        .requestMatchers("/auth/**", "/", "/about", "/service", "/contact", "/rooms/**",
+                        .requestMatchers("/auth/**", "/", "/about", "/service", "/contact", "/rooms/**", "/payment/**",
                                 "/css/**", "/fonts/**", "/images/**", "/js/**").permitAll()
                         .requestMatchers("/account/bookings/pay/**").authenticated()
-                        .requestMatchers("/payment/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex

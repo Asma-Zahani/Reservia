@@ -440,12 +440,23 @@
         $.gdprcookie.init();
       },
       datePicker: function (e) {
+
         $(function () {
-          $("#check__in, #check__out").datepicker({
-              dateFormat: "dd-mm-yy",
-              duration: "fast"
+
+          $("#check__in").datepicker({
+            dateFormat: "dd-mm-yy",
+            duration: "fast",
+            minDate: 0
           });
-      });
+
+          $("#check__out").datepicker({
+            dateFormat: "dd-mm-yy",
+            duration: "fast",
+            minDate: 0
+          });
+
+        });
+
       },
       magnificPopup: function (e) {
         $('.gallery').each(function() { 

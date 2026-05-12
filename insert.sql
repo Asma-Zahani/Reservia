@@ -1,6 +1,3 @@
-=========================
-ROOMS
-=========================
 INSERT INTO rooms
 (capacity, description, image_path, price, size, type, room_number, total_quantity)
 VALUES
@@ -225,19 +222,13 @@ VALUES
     1
 );
 
-
-
--- =========================
--- USERS
--- =========================
-
 INSERT INTO users (email, name, password, role)
 VALUES
     (
-        'admin@reservia.tn',
-        'Administrateur',
-        '$2a$10$rLfP5rDWhnOE0qsQUEkESeSb0NOvVnt1JuNKHBG7XQlkQHm7/NUiS',
-        'ROLE_ADMIN'
+        'zh.asmazahani@gmail.com',
+        'Asma Zh',
+        '$2a$10$3.FHO5FZQeVl4QgPapgFm.YQ9B50RnYwB6xgd5yq4x4D7pUd2WbKe',
+        'ROLE_USER'
     ),
 
     (
@@ -261,43 +252,21 @@ VALUES
         'ROLE_USER'
     );
 
-
-
--- =========================
--- EXTRA SERVICES
--- =========================
-
 INSERT INTO extra_service (name, per_night, price)
 VALUES
     ('Breakfast Buffet', b'1', 25),
     ('Airport Transfer', b'0', 80),
     ('Spa Access', b'1', 40),
-    ('Private Parking', b'0', 15),
+    ('Private Parking', b'0', 0),
     ('Pet Friendly Service', b'1', 20);
-
-
-
--- =========================
--- BOOKINGS
--- =========================
 
 INSERT INTO bookings
 (booking_date, status, total_price, user_id, version)
 VALUES
-
     (CURDATE(), 'CONFIRMED', 985, 2, 1),
-
     (CURDATE(), 'PENDING', 560, 3, 1),
-
     (CURDATE(), 'COMPLETED', 1340, 4, 1),
-
     (CURDATE(), 'CANCELLED', 320, 2, 1);
-
-
-
--- =========================
--- BOOKING ITEMS
--- =========================
 
 INSERT INTO booking_items
 (end_date, price, quantity, start_date, booking_id, room_id)
@@ -339,12 +308,6 @@ VALUES
         1
     );
 
-
-
--- =========================
--- BOOKING EXTRA SERVICES
--- =========================
-
 INSERT INTO booking_extra_services
 (booking_id, extra_service_id)
 VALUES
@@ -360,10 +323,6 @@ VALUES
 
     (4, 5);
 
--- =========================
--- SETTINGS
--- =========================
-
 INSERT INTO settings
 (address, email, hotel_name, phone)
 VALUES
@@ -373,10 +332,6 @@ VALUES
         'Reservia Luxury Hotel',
         '+216 72 555 210'
     );
-
--- =========================================
--- BOOKINGS (TODAY BOOKINGS)
--- =========================================
 
 INSERT INTO bookings
 (booking_date, status, total_price, version, user_id)
@@ -399,15 +354,6 @@ VALUES
     (DATE_ADD(CURDATE(), INTERVAL 1 DAY), 'PENDING', 1600, 1, 4),
     (DATE_ADD(CURDATE(), INTERVAL 2 DAY), 'CONFIRMED', 1850, 1, 5);
 
-
-
--- =========================================
--- BOOKING ITEMS
--- IMPORTANT:
--- booking_id commence après les anciens IDs
--- adapte si nécessaire
--- =========================================
-
 INSERT INTO booking_items
 (end_date, price, quantity, start_date, booking_id, room_id)
 VALUES
@@ -428,12 +374,6 @@ VALUES
     (DATE_ADD(CURDATE(), INTERVAL 1 DAY), 430, 1, CURDATE(), 17, 12),
     (DATE_ADD(CURDATE(), INTERVAL 5 DAY), 1600, 1, DATE_ADD(CURDATE(), INTERVAL 1 DAY), 18, 16),
     (DATE_ADD(CURDATE(), INTERVAL 7 DAY), 1850, 1, DATE_ADD(CURDATE(), INTERVAL 2 DAY), 19, 7);
-
-
-
--- =========================================
--- EXTRA SERVICES
--- =========================================
 
 INSERT INTO booking_extra_services
 (booking_id, extra_service_id)

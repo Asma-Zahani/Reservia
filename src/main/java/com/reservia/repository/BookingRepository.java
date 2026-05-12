@@ -34,7 +34,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             SELECT COALESCE(SUM(b.totalPrice), 0) FROM Booking b
             WHERE MONTH(b.bookingDate) = :month
             AND YEAR(b.bookingDate) = :year
-            AND b.status = 'PAID'
+            AND b.status IN ('PAID', 'COMPLETED')
         """)
         Double revenueByMonth(@Param("month") int month, @Param("year") int year);
 
